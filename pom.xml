@@ -10,12 +10,13 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!--        <module>tool-desensitization</module>-->
+        <module>tool-desensitization</module>
         <module>ydxy</module>
         <module>lin-maven-bom</module>
         <module>redis-spring-boot-autoconfigure</module>
         <module>redis-spring-boot-samples</module>
         <module>mongodb-demo</module>
+        <module>springboot-elasticsearch</module>
     </modules>
     <properties>
         <revision>1.0-SNAPSHOT</revision>

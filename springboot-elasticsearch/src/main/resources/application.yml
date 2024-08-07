@@ -1,0 +1,14 @@
+##端口号
+server:
+  port: 8080
+  servlet:
+    context-path: /es
+
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    encoding: UTF-8

@@ -1,0 +1,12 @@
+##日志级别
+logging:
+  level:
+    com:
+      keyvin: info
+
+##ES配置
+elasticsearch:
+  host: 127.0.0.1
+  port: 9200
+  protocol: http
+  clusterName: keyvin-test

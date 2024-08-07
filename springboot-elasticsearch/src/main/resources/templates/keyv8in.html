@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=2.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Vue园丽搜索</title>
+    <style type="text/css">
+        body, html {
+            padding: 0;
+            margin: 0;
+        }
+
+        #box {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input {
+            width: 500px;
+            height: 30px;
+            text-indent: 4px;
+        }
+
+        .baidu input {
+            height: 30px;
+            cursor: pointer;
+            color: #fff;
+            letter-spacing: 1px;
+            background: #3385ff;
+            border: 1px solid #2d78f4;
+        }
+
+        ul {
+            padding: 0;
+            margin-top: 6px;
+        }
+
+        li {
+            list-style: none;
+            margin: 4px;
+        }
+
+        li:hover {
+            background: #ccc;
+        }
+
+        .bgcolor {
+            background: #ccc;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue-resource/1.3.1/vue-resource.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            new Vue({
+                el: '#box',
+                data: {
+                    inputText: '',
+                    text: '',
+                    nowIndex: -1,
+                    result: []
+                },
+                methods: {
+                    show(ev) {
+                        if (ev.keyCode == 38 || ev.keyCode == 40) {
+                            if (this.nowIndex < -1) {
+                                return;
+                            }
+                            if (this.nowIndex != this.result.length && this.nowIndex != -1) {
+                                this.inputText = this.result[this.nowIndex];
+                            }
+                            return;
+                        }
+                        if (ev.keyCode == 13) {
+                            window.open('https://www.baidu.com/s?wd=' + this.inputText, '_blank');
+                            this.inputText = '';
+                        }
+                        this.text = this.inputText;
+                        this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su', {
+                            params: {
+                                wd: this.inputText
+                            },
+                            jsonp: 'cb'
+                        }).then(res = > {
+                            this.result = res.data.s;
+                    })
+                    },
+                    goto() {
+                        window.open('https://www.baidu.com/s?wd=' + this.inputText, '_blank');
+                        this.inputText = '';
+                    },
+                    gotoItem(item) {
+                        window.open('https://www.baidu.com/s?wd=' + item, '_blank');
+                        this.inputText = '';
+                    },
+                    down() {
+                        this.nowIndex++;
+                        if (this.nowIndex == this.result.length) {
+                            this.nowIndex = -1;
+                            this.inputText = this.text;
+                        }
+                    },
+                    up() {
+                        this.nowIndex--;
+                        if (this.nowIndex < -1) {
+                            this.nowIndex = -1;
+                            return;
+                        }
+                        if (this.nowIndex == -1) {
+                            this.nowIndex = this.result.length;
+                            this.inputText = this.text;
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+<div id="box">
+    <img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png" width="270"
+         height="129">
+    <div>
+        <div>
+            <input
+                    type="text"
+                    class="input"
+                    placeholder="请输入搜索内容 "
+                    v-model='inputText'
+                    @keyup='show($event)'
+                    @keydown.down='down()'
+                    @keydown.up.prevent='up()'
+            >
+            <span class="baidu" @click="goto()">
+     <input type="submit" value="园丽一下">
+    </span>
+        </div>
+
+        <ul>
+            <li v-for="(item, index) in result" :class='{bgcolor: index==nowIndex}' @click="gotoItem(item)">
+                {{item}}
+            </li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>

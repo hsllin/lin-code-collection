@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>yuanli yixia</title>
+    <script src="./jquery-3.3.1.min.js"></script>
+    <style>
+        input:focus {
+            border: 2px solid rgb(62, 88, 206);
+        }
+        input {
+            text-indent: 5px;
+            padding-left: 5px;
+            font-size: 16px;
+        }
+        .suggestUl {
+            position: absolute;
+            width: 38%;
+            padding: 0px;
+            margin: 0px 26%;
+        }
+        .suggestUl li {
+            display: block;
+            font: 14px/25px '微软雅黑','黑体',sans-serif;
+            margin: 0px;
+            color: rgb(66, 139, 202);
+            text-align: left;
+            padding: 1px;
+        }
+        .suggestUl li:hover {
+            cursor: pointer;
+            margin: 0px;
+            background-color: rgb(227,227,227);
+        }
+    </style>
+    <!--input初始状态-->
+    <style class="input/css">
+        .input {
+            width: 39%;
+            height: 45px;
+            vertical-align: top;
+            box-sizing: border-box;
+            border: 2px solid rgb(207, 205, 205);
+            border-right: 2px solid rgb(62, 88, 206);
+            border-bottom-left-radius: 10px;
+            border-top-left-radius: 10px;
+            outline: none;
+            margin: 0;
+            display: inline-block;
+            padding-right: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            line-height: 16px;
+        }
+    </style>
+    <!--button初始状态-->
+    <style class="button/css">
+        .button {
+            height: 45px;
+            width: 130px;
+            vertical-align: middle;
+            text-indent: -8px;
+            padding-left: -8px;
+            background-color: rgb(62, 88, 206);
+            color: white;
+            font-size: 18px;
+            outline: none;
+            border: none;
+            border-bottom-right-radius: 10px;
+            border-top-right-radius: 10px;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+</head>
+<body>
+<!--包含table的div-->
+<div>
+    <table border="0" cellpadding="8.2px" cellspacing="5px" width="420px" class="table">
+        <tr>
+            <th>
+                <font size="2px" face="宋体">
+                    <a href="http://news.baidu.com/" style="text-decoration: none; color: black;"
+                       οnmοuseοver="this.style.color = 'rgb(62, 88, 206)'" οnmοuseοut="this.style.color = 'black'">工作</a>
+                </font>
+            </th>
+            <th>
+                <font size="2px" face="仿宋">
+                    <a href="https://www.hao123.com/" style="text-decoration: none; color: black;"
+                       οnmοuseοver="this.style.color = 'rgb(62, 88, 206)'" οnmοuseοut="this.style.color = 'black'">学校</a>
+                </font>
+            </th>
+            <th>
+                <font size="2px" face="宋体">
+                    <a href="http://map.baidu.com/" style="text-decoration: none; color: black;"
+                       οnmοuseοver="this.style.color = 'rgb(62, 88, 206)'" οnmοuseοut="this.style.color = 'black'">总结</a>
+                </font>
+            </th>
+            <th>
+                <font size="2px" face="宋体">
+                    <a href="https://haokan.baidu.com/?sfrom=baidu-top" style="text-decoration: none; color: black;"
+                       οnmοuseοver="this.style.color = 'rgb(62, 88, 206)'" οnmοuseοut="this.style.color = 'black'">学术</a>
+                </font>
+            </th>
+            <th>
+                <font size="2px" face="宋体">
+                    <a href="http://tieba.baidu.com/" style="text-decoration: none; color: black;"
+                       οnmοuseοver="this.style.color = 'rgb(62, 88, 206)'" οnmοuseοut="this.style.color = 'black'">考试</a>
+                </font>
+            </th>
+            <th>
+                <font size="2px" face="宋体">
+                    <a href="http://xueshu.baidu.com/" style="text-decoration: none; color: black;"
+                       οnmοuseοver="this.style.color = 'rgb(62, 88, 206)'" οnmοuseοut="this.style.color = 'black'">天气</a>
+                </font>
+            </th>
+            <th>
+                <font size="2px" face="宋体">
+                    <a href="http://www.baidu.com/more/" style="text-decoration: none; color: black;"
+                       οnmοuseοver="this.style.color = 'rgb(62, 88, 206)'" οnmοuseοut="this.style.color = 'black'">更多</a>
+                </font>
+            </th>
+        </tr>
+    </table>
+</div>
+<!--包含input和button的div-->
+<div style="font-size: 0px;">
+    <div align="center" style="margin: 20px 0;">
+        <img src="./img/hh.jpg" alt="搜索" width="100px" class="pic" />
+    </div>
+    <div align="center">
+        <!--action实现跳转-->
+        <form action="">
+            <input type="text" class="input" name="input" id="yuanliyixia" autoComplete="off"/>
+            <input type="submit" class="button" value="搜索" />
+        </form>
+    </div>
+</div>
+
+<script>
+        function autoShowSG(id) {
+        var wd=$(id)[0].clientWidth;
+        var hg=$(id)[0].clientHeight;
+        var suggest='<ul id="suggest" class="suggestUl"></ul>';
+        $(id).after(suggest);
+        $(id).bind('keyup click',function (e) {
+            var name= $(this).val();
+            if(name != 0){
+                $.ajax({
+                    type: "GET",
+                    url: "./search/suggester",
+                    data: {
+                        key: name
+                    },
+                    //返回数据的格式，"xml", "html", "script", "json", "jsonp", "text".
+                    dataType: "json",
+                    //在请求之前调用的函数
+                    beforeSend:function(){
+                    },
+                    //成功返回之后调用的函数
+                    success:function(data, status){
+                        console.log("success:", data);
+                        var html='';
+                        if(data.code==200){
+                            data.body.forEach(function (obj) {
+                                html += "<li>" +obj.es+"</li>";
+                            });
+                        }
+                        if(html !=''){
+                            $('#suggest').show();
+                            $('#suggest').html(html);
+                            $('#suggest li').bind('click',function(e){
+                                $(id).val($(e.target).html());
+                                $('#suggest').hide();
+                            });
+                        }else{
+                            $('#suggest').html("");
+                            $('#suggest').hide();
+                        }
+                    },
+                    //调用执行后调用的函数
+                    complete: function(){
+
+                    },
+                    //调用出错执行的函数
+                    error: function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log("error");
+                    }
+                });
+            }else{
+                $('#suggest').html("");
+                $('#suggest').hide();
+            }
+        });
+
+        $(id).blur(function () {
+            setTimeout(function () {
+                $('#suggest').hide();
+            },150);
+        })
+
+    }
+    autoShowSG('#yuanliyixia') ;
+</script>
+</body>
+</html>
