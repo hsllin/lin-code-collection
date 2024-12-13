@@ -39,6 +39,7 @@
         <fastJson.version>1.2.72</fastJson.version>
         <httpclient.version>4.5.12</httpclient.version>
         <thymeleaf.version></thymeleaf.version>
+        <logstash.version>5.3</logstash.version>
 
     </properties>
 
@@ -220,6 +221,13 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${httpclient.version}</version>
+            </dependency>
+
+            <!--集成logstash-->
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash.version}</version>
             </dependency>
 
         </dependencies>

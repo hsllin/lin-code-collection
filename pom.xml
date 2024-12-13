@@ -17,6 +17,7 @@
         <module>redis-spring-boot-samples</module>
         <module>mongodb-demo</module>
         <module>springboot-elasticsearch</module>
+        <module>elk-springboot-demo</module>
     </modules>
     <properties>
         <revision>1.0-SNAPSHOT</revision>

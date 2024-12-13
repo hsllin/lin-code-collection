@@ -1,0 +1,42 @@
+version: '2'
+services:
+  elasticsearch:
+    image: elasticsearch:7.8.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - $PWD/elasticsearch/data:/usr/share/elasticsearch/data
+    hostname: elasticsearch
+    #restart: always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  kibana:
+    image: kibana:7.8.0
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200 #elasticsearch查询接口地址
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    hostname: kibana
+    depends_on:
+      - elasticsearch  #后于elasticsearch启动
+    #restart: always
+    ports:
+      - "5601:5601"
+
+  logstash:
+    image: logstash:7.8.0
+    #command: logstash -f /etc/logstash/logstash.conf  #logstash启动时使用的配置文件 (弃用)
+    volumes:
+      #- $PWD/logstash/pipeline:/etc/logstash  #logstash配文件位置 (弃用)
+      - $PWD/logstash/pipeline:/usr/share/logstash/pipeline  #logstash配文件位置目录, logstash启动时默认找配置目录
+    hostname: logstash
+    #restart: always
+    depends_on:
+      - elasticsearch  #后于elasticsearch启动
+    ports:
+      - "5044:5044"
+      - "4560:4560"
+      - "9600:9600"
+
