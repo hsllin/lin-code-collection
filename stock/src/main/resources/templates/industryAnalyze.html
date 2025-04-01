@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>行业投研</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*body {*/
+        /*    font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;*/
+        /*    line-height: 1.6;*/
+        /*    padding: 20px;*/
+        /*    background-color: #f5f5f5;*/
+        /*}*/
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 0 auto;*/
+        /*}*/
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .title {
+            font-size: 1.0em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .title-red {
+            color: #2bc3f1;
+        }
+
+        .title-bold {
+            font-weight: 700;
+        }
+
+        .img-container {
+            margin: 15px 0;
+        }
+
+        .main-img {
+            max-width: 40%;
+            height: 50%;
+            width: 50%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .keyword {
+            background: #e8f4ff;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            color: #1890ff;
+        }
+
+        .content {
+            color: #666;
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .stats span {
+            margin-left: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .title {
+                font-size: 1.2em;
+            }
+
+            .meta-info {
+                flex-direction: column;
+            }
+
+            .stats span {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/industryAnalyze.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container" id="industryCard">
+
+
+    </div>
+</div>
+</body>
+</html>

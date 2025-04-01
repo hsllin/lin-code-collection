@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /*body {*/
+        /*    font-family: "Microsoft YaHei", Arial, sans-serif;*/
+        /*    max-width: 1200px;*/
+        /*    margin: 20px auto;*/
+        /*    padding: 20px;*/
+        /*    background-color: #f5f6fa;*/
+        /*}*/
+
+        .timeline {
+            display: grid;
+            gap: 30px;
+        }
+
+        .day-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .date-header {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .streak-level {
+            margin-bottom: 25px;
+        }
+
+        .streak-title {
+            color: #63b7ee;
+            font-weight: 600;
+            margin: 15px 0;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .streak-title::before {
+            content: "📈";
+            margin-right: 8px;
+        }
+
+        .stock-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+        }
+
+        .stock-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .stock-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .stock-name {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .stock-code {
+            color: #7f8c8d;
+            font-family: monospace;
+        }
+
+        @media (max-width: 768px) {
+            .stock-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 3px 8px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 4px 6px 0 0;
+            transition: background 0.3s;
+            float: right;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/lianbanchi.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <div class="timeline" id="lianban">
+            <!-- 2025-01-22 -->
+            <section class="day-section">
+                <h2 class="date-header">2025-01-22 连板信息</h2>
+
+                <div class="streak-level">
+                    <h3 class="streak-title">7连板</h3>
+                    <div class="stock-list">
+                        <div class="stock-item">
+                            <span class="stock-name">冀凯股份</span>
+                            <span class="stock-code">002691</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="streak-level">
+                    <h3 class="streak-title">5连板</h3>
+                    <div class="stock-list">
+                        <div class="stock-item">
+                            <span class="stock-name">瀛通通讯</span>
+                            <span class="stock-code">002861</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="streak-level">
+                    <h3 class="streak-title">4连板</h3>
+                    <div class="stock-list">
+                        <div class="stock-item">
+                            <span class="stock-name">电光科技</span>
+                            <span class="stock-code">002730</span>
+                        </div>
+                        <div class="stock-item">
+                            <span class="stock-name">华脉科技</span>
+                            <span class="stock-code">603042</span>
+                        </div>
+                        <div class="stock-item">
+                            <span class="stock-name">兴业股份</span>
+                            <span class="stock-code">603928</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他连板级别... -->
+            </section>
+
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

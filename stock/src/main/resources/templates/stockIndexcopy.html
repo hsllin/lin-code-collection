@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Plain Page</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f6fa;
+            padding: 20px;
+        }
+
+        .stockcontainer {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .industry-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .up { color: #e74c3c; }
+        .down { color: #2ecc71; }
+
+        .industry-item {
+            flex: 1;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin: 0 8px;
+        }
+
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .positive { color: #e74c3c; }
+        .negative { color: #2ecc71; }
+        .icon { margin-right: 5px; }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/stockIndex.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div class="stockcontainer">
+            <!-- 上涨行业 -->
+            <div class="card">
+                <div class="header up">📈 快速上涨行业</div>
+                <div class="industry-group">
+                    <div class="industry-item" id="industry-item">
+<!--                        <div class="industry-name">化学制药</div>-->
+<!--                        <div class="industry-change up">涨幅：-0.05%</div>-->
+                        <div class="stock-item">
+                            <span>🐲 圣诺生物</span>
+                            <span class="positive">+5.05%</span>
+                        </div>
+                        <div class="stock-item">
+                            <span>⬇️ 华仁药业</span>
+                            <span class="negative">-8.04%</span>
+                        </div>
+                        <div class="stock-item">
+                            <span>🐲 圣诺生物</span>
+                            <span class="positive">+5.05%</span>
+                        </div>
+                        <div class="stock-item">
+                            <span>⬇️ 华仁药业</span>
+                            <span class="negative">-8.04%</span>
+                        </div>
+                        <div class="stock-item">
+                            <span>🐲 圣诺生物</span>
+                            <span class="positive">+5.05%</span>
+                        </div>
+                        <div class="stock-item">
+                            <span>⬇️ 华仁药业</span>
+                            <span class="negative">-8.04%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下跌行业 -->
+            <div class="card">
+                <div class="header down">📉 跌幅行业</div>
+                <div class="industry-group">
+                    <div class="industry-item">
+                        <div class="industry-name">电机</div>
+                        <div class="industry-change down">涨幅：-3.17%</div>
+                        <div class="stock-item">
+                            <span>🐲 八方股份</span>
+                            <span class="positive">+0.27%</span>
+                        </div>
+                        <div class="stock-item">
+                            <span>⬇️ 兆威机电</span>
+                            <span class="negative">-7.55%</span>
+                        </div>
+                    </div>
+                    <div class="industry-item">
+                        <div class="industry-name">通信设备</div>
+                        <div class="industry-change down">涨幅：-3.13%</div>
+                        <div class="stock-item">
+                            <span>🐲 长飞光纤</span>
+                            <span class="positive">+9.00%</span>
+                        </div>
+                        <div class="stock-item">
+                            <span>⬇️ 银河电子</span>
+                            <span class="negative">-9.93%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

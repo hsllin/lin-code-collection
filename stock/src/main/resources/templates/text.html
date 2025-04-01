@@ -1,0 +1,39 @@
+<div class="concept-card">
+    <div class="concept-header">
+        <div class="concept-title">
+            {{ concept.name }}
+            <span class="change-rate">({{ concept.change }}%)</span>
+        </div>
+        <div>
+            <span class="tag">涨停股: {{ concept.limit_up_num }}</span>
+            <span class="tag">连板数: {{ concept.continuous_plate_num }}</span>
+        </div>
+    </div>
+
+    <table class="stock-table">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>代码</th>
+            <th>连板</th>
+            <th>最新价</th>
+            <th>概念标签</th>
+            <th>涨停原因</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="stock in concept.stock_list">
+            <td class="limit-up">{{ stock.name }}</td>
+            <td>{{ stock.code }}</td>
+            <td>{{ stock.continue_num }}连板</td>
+            <td>{{ stock.latest }}</td>
+            <td>
+                <div v-for="tag in stock.reason_type.split('+')"
+                     class="tag">{{ tag }}
+                </div>
+            </td>
+            <td class="reason-info">{{ stock.reason_info }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

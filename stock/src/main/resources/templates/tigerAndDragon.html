@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>最强风口</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f5f6f8;
+            padding: 20px;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .stock-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stock-basic {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stock-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stock-label {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .stock-value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .positive {
+            color: #e74c3c;
+        }
+
+        .negative {
+            color: #2ecc71;
+        }
+
+        .card-content {
+            display: flex;
+            gap: 30px;
+        }
+
+        .overview-section {
+            flex: 1;
+        }
+
+        .detail-section {
+            flex: 2;
+        }
+
+        .overview-box {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+
+        .overview-item {
+            flex: 1;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #666;
+            font-weight: normal;
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        .branch-name {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/tigerAndDragon.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <div id="app">
+            <!-- 示例数据绑定结构 -->
+            <div class="stock-card">
+<!--                <div class="card-header">-->
+<!--                    <div class="stock-basic">-->
+<!--                        <div class="stock-item">-->
+<!--                            <span class="stock-label">股票代码</span>-->
+<!--                            <span class="stock-value">{{stock.stockCode}}</span>-->
+<!--                        </div>-->
+<!--                        <div class="stock-item">-->
+<!--                            <span class="stock-label">股票名称</span>-->
+<!--                            <span class="stock-value">{{stock.stockName}}</span>-->
+<!--                        </div>-->
+<!--                        <div class="stock-item">-->
+<!--                            <span class="stock-label">收盘价</span>-->
+<!--                            <span class="stock-value">{{stock.closeValue}}</span>-->
+<!--                        </div>-->
+<!--                        <div class="stock-item">-->
+<!--                            <span class="stock-label">涨跌幅</span>-->
+<!--                            <span class="stock-value" :class="stock.chg >= 0 ? 'positive' : 'negative'">-->
+<!--                            {{(stock.chg * 100).toFixed(2)}}%-->
+<!--                        </span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <div class="card-content">
+                    <div class="overview-section">
+
+                        <div class="concept-card">
+                            <table class="stock-table">
+                                <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>代码</th>
+                                    <th>幅度</th>
+                                    <th>净买入</th>
+                                    <th>买入</th>
+                                    <th>卖出</th>
+                                    <th>标签</th>
+                                </tr>
+                                </thead>
+                                <tbody id="stockList">
+                                </tbody>
+                            </table>
+                        </div>
+<!--                        <div class="overview-box">-->
+<!--                            <div class="overview-item">-->
+<!--                                <div class="stock-label">总买入</div>-->
+<!--                                <div class="stock-value">{{(stock.lhbBranch.buyValueTotal / 10000).toFixed(2)}}万</div>-->
+<!--                            </div>-->
+<!--                            <div class="overview-item">-->
+<!--                                <div class="stock-label">总卖出</div>-->
+<!--                                <div class="stock-value">{{(stock.lhbBranch.sellValueTotal / 10000).toFixed(2)}}万</div>-->
+<!--                            </div>-->
+<!--                            <div class="overview-item">-->
+<!--                                <div class="stock-label">净买入</div>-->
+<!--                                <div class="stock-value" :class="stock.lhbBranch.netValueTotal >= 0 ? 'positive' : 'negative'">-->
+<!--                                    {{(stock.lhbBranch.netValueTotal / 10000).toFixed(2)}}万-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="stock-item">-->
+<!--                            <span class="stock-label">上榜原因</span>-->
+<!--                            <span class="stock-value">{{stock.infoClassName}}</span>-->
+<!--                        </div>-->
+                    </div>
+
+                    <div class="detail-section">
+                        <div style="margin-bottom: 20px;">
+                            <h4>买入营业部（前5）</h4>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>营业部名称</th>
+                                    <th>买入</th>
+                                    <th>卖出</th>
+                                    <th>净买入</th>
+                                    <th>买入占比</th>
+                                    <th>卖出占比</th>
+
+                                </tr>
+                                </thead>
+                                <tbody id ="buy">
+                                <tr >
+                                    <td class="branch-name">{{branch.branchName}}</td>
+                                    <td>{{(branch.buyValue / 10000).toFixed(2)}}万</td>
+                                    <td>{{(branch.buyRatio * 100).toFixed(2)}}%</td>
+                                    <td>{{(branch.sellValue / 10000).toFixed(2)}}万</td>
+                                    <td>{{(branch.sellRatio * 100).toFixed(2)}}%</td>
+                                    <td :class="branch.netValue >= 0 ? 'positive' : 'negative'">
+                                        {{(branch.netValue / 10000).toFixed(2)}}万
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div>
+                            <h4>卖出营业部（前5）</h4>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>营业部名称</th>
+                                    <th>卖出金额</th>
+                                    <th>卖出占比</th>
+                                    <th>买入金额</th>
+                                    <th>买入占比</th>
+                                    <th>净卖出</th>
+                                </tr>
+                                </thead>
+                                <tbody id="sell">
+                                <tr v-for="branch in stock.lhbBranch.sellBranches">
+                                    <td class="branch-name">{{branch.branchName}}</td>
+                                    <td>{{(branch.sellValue / 10000).toFixed(2)}}万</td>
+                                    <td>{{(branch.sellRatio * 100).toFixed(2)}}%</td>
+                                    <td>{{(branch.buyValue / 10000).toFixed(2)}}万</td>
+                                    <td>{{(branch.buyRatio * 100).toFixed(2)}}%</td>
+                                    <td :class="branch.netValue >= 0 ? 'negative' : 'positive'">
+                                        {{(Math.abs(branch.netValue) / 10000).toFixed(2)}}万
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+</body>
+</html>

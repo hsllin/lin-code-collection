@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/webjars/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/webjars/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/css/custom.min.css" rel="stylesheet">
+    <style>
+        /* 新增样式 */
+        :root {
+            --accent-color: #1890ff;
+            --hover-accent: #40a9ff;
+            --surface-color: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #595959;
+            --divider-color: #f0f0f0;
+        }
+
+        /* 新闻容器 */
+        .news-container {
+            /*max-width: 800px;*/
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* 卡片增强 */
+        .news-card {
+            background: var(--surface-color);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        /* 日期头 */
+        .date-header {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
+            position: relative;
+        }
+
+        .date-header::before {
+            content: "";
+            width: 4px;
+            height: 24px;
+            background: var(--accent-color);
+            margin-right: 1rem;
+            border-radius: 2px;
+        }
+
+        /* 新闻列表 */
+        .news-list {
+            padding: 0 2rem;
+        }
+
+        /* 新闻条目增强 */
+        .news-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--divider-color);
+            transition: background 0.2s;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .time {
+            font-family: 'Courier New', monospace;
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            align-self: start;
+            padding-top: 2px;
+        }
+
+        .title {
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .title:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* 刷新按钮优化 */
+        .refresh-btn {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.5rem 1.25rem;
+            background: var(--accent-color);
+            color: white !important;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: var(--hover-accent);
+            /*transform: translateY(-50%) rotate(180deg);*/
+        }
+
+        /* 响应式优化 */
+        @media (max-width: 768px) {
+            .news-card {
+                border-radius: 0;
+                margin: 0 -1rem;
+            }
+
+            .news-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                padding: 1rem 0;
+            }
+
+            .time {
+                font-size: 0.8rem;
+                color: #8c8c8c;
+            }
+
+            .title {
+                -webkit-line-clamp: 3;
+            }
+
+            .refresh-btn {
+                position: static;
+                transform: none;
+                margin: 0 2rem 1rem;
+                width: calc(100% - 4rem);
+                justify-content: center;
+            }
+        }
+
+        /* 加载动画 */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0 }
+            100% { background-position: 1000px 0 }
+        }
+
+        .loading-placeholder {
+            background: linear-gradient(90deg, #f6f6f6 25%, #f0f0f0 50%, #f6f6f6 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+            border-radius: 4px;
+            min-height: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/wallStreetNews.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="news-container">
+        <section class="news-card">
+            <div class="date-header">
+                <h2 class="date-header" id="time">2025年1月27日 星期一</h2>
+                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+                    <i class="fa fa-refresh"></i>
+                    <span>刷新列表</span>
+                </a>
+            </div>
+
+            <div class="news-list" id="news-list">
+                <!-- 示例新闻条目 -->
+                <div class="news-item">
+                    <div class="time">09:30</div>
+                    <a href="#" class="title" target="_blank">
+                        证监会发布新规：促进资本市场健康发展，加强投资者保护措施
+                        <span class="badge-new">NEW</span>
+                    </a>
+                </div>
+
+                <!-- 加载占位符 -->
+                <div class="news-item loading-placeholder" style="height: 60px; border: none"></div>
+                <div class="news-item loading-placeholder" style="height: 60px; border: none; opacity: 0.8"></div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

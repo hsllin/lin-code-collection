@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>量比排行</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <style>
+        /** {*/
+        /*    margin: 0;*/
+        /*    padding: 0;*/
+        /*    box-sizing: border-box;*/
+        /*}*/
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 20px auto;*/
+        /*    padding: 0 15px;*/
+        /*}*/
+
+        .title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .stock-table {
+            width: 100%;
+            border-spacing: 0;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #fafafa;
+            color: #666;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        td {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .stock-code { width: 10%; text-align: left; }
+        .stock-name { width: 15%; text-align: left; }
+        .volume-ratio { width: 10%;text-align: left; color: #2e2d2d; font-weight: 500; }
+        .price { width: 10%;text-align: left; }
+        .change { width: 10%; text-align: left;}
+        .latest-price { width: 10%;text-align: left; }
+        .amount { width: 15%;text-align: left; }
+        .volume { width: 10%; text-align: left;}
+
+        .code { color: #63b7ee; }
+        .up { color: #2e2d2d; }
+        .down { color: #63b7ee; }
+
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 10px 15px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 8px 15px 0 0;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/ratioRanking.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h4 class="date-header" id="time" style="margin: 0;">量比排行分析</h4>
+            <div>
+                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+                    <i class="fa fa-refresh"></i> 刷新
+                </a>
+            </div>
+        </div>
+        <table class="stock-table">
+            <thead>
+            <tr>
+                <th class="stock-code">股票代码</th>
+                <th class="stock-name">股票名称</th>
+                <th class="volume-ratio">量比</th>
+                <th class="volume-ratio">换手率</th>
+                <th class="change">涨跌幅</th>
+                <th class="latest-price">最新价</th>
+                <th class="amount">成交金额</th>
+                <th class="amount">最高</th>
+                <th class="amount">最低</th>
+                <th class="amount">振幅</th>
+            </tr>
+            </thead>
+            <tbody id="ratioRanking">
+            <tr>
+                <td class="stock-code">600519</td>
+                <td class="stock-name">贵州茅台</td>
+                <td class="volume-ratio">5.82</td>
+                <td>1825.60</td>
+                <td class="change up">+2.35%</td>
+                <td class="latest-price">1830.50</td>
+                <td class="amount">15.82亿</td>
+                <td class="volume">86,500</td>
+            </tr>
+            <tr>
+                <td class="stock-code">300750</td>
+                <td class="stock-name">宁德时代</td>
+                <td class="volume-ratio">4.63</td>
+                <td>238.40</td>
+                <td class="change up">+1.87%</td>
+                <td class="latest-price">240.80</td>
+                <td class="amount">8.94亿</td>
+                <td class="volume">372,000</td>
+            </tr>
+            <tr>
+                <td class="stock-code">601318</td>
+                <td class="stock-name">中国平安</td>
+                <td class="volume-ratio">3.95</td>
+                <td>45.20</td>
+                <td class="change down">-0.65%</td>
+                <td class="latest-price">44.90</td>
+                <td class="amount">6.73亿</td>
+                <td class="volume">149,800</td>
+            </tr>
+            <tr>
+                <td class="stock-code">000001</td>
+                <td class="stock-name">平安银行</td>
+                <td class="volume-ratio">2.87</td>
+                <td>10.85</td>
+                <td class="change up">+0.93%</td>
+                <td class="latest-price">10.95</td>
+                <td class="amount">4.28亿</td>
+                <td class="volume">391,000</td>
+            </tr>
+            <tr>
+                <td class="stock-code">002241</td>
+                <td class="stock-name">歌尔股份</td>
+                <td class="volume-ratio">2.15</td>
+                <td>18.60</td>
+                <td class="change down">-1.24%</td>
+                <td class="latest-price">18.37</td>
+                <td class="amount">3.15亿</td>
+                <td class="volume">171,200</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>
+</body>
+</html>

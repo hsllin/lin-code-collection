@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Plain Page</title>
+    <meta charset="utf-8">
+</head>
+<style>
+    .refresh-btn {
+        padding: 3px 8px;
+        background: #0c91f8; /* 主色调绿色 */
+        color: white !important;
+        border-radius: 6px;
+        margin: 4px 6px 0 0;
+        transition: background 0.3s;
+        float: right;
+    }
+
+    .refresh-btn:hover {
+        background: #63b7ee; /* 悬停深绿色 */
+        cursor: pointer;
+    }
+
+    .refresh-btn .fa-refresh {
+        margin-right: 5px;
+
+    }
+</style>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="">
+
+        <div class="clearfix"></div>
+        <li>
+            <a href="javascript:;" onclick="downloadAllData()" class="refresh-btn" title="下载当日复盘">
+                <i class="fa fa-refresh"></i> 下载当日复盘
+            </a>
+        </li>
+
+    </div>
+</div>
+</body>
+</html>

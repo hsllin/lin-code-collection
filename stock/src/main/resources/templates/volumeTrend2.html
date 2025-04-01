@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>成交趋势</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f5f6fa;
+        }
+
+        /*.container {*/
+        /*    max-width: 1400px;*/
+        /*    margin: 0 auto;*/
+        /*}*/
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #73879C;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f5f6fa;
+        }
+
+        .positive {
+            color: #63b7ee;
+            font-weight: bold;
+        }
+
+        .negative {
+            color: #737070;
+            font-weight: bold;
+        }
+        /*body { font-family: Arial, sans-serif; margin: 20px; }*/
+        /*table { border-collapse: collapse; width: 100%; }*/
+        /*th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }*/
+        /*th { background-color: #f2f2f2; cursor: pointer; }*/
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .sort-indicator { margin-left: 5px; }
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 10px 15px;
+            background: #73879C; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 8px 15px 0 0;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #73879C; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/echarts.min.js"></script>
+    <script type="text/javascript" src="/js/volumeTrend2.js"></script>
+</head>
+
+<body>
+
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+
+    <div class="container">
+        <li>
+            <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+                <i class="fa fa-refresh"></i> 刷新
+            </a>
+            <a href="javascript:;" onclick="updateVolumeTrendData()" class="refresh-btn" title="刷新数据">
+                <i class="fa fa-refresh"></i> 同步数据
+            </a>
+        </li>
+        <table>
+            <thead>
+            <tr>
+                <th>日期</th>
+                <th>成交金额（亿）</th>
+                <th>涨停</th>
+                <th>跌停</th>
+                <th>连板高度</th>
+                <th>上涨个股</th>
+                <th>下跌个股</th>
+                <th>1连板</th>
+                <th>2连板</th>
+                <th>3连板</th>
+                <th>4连板</th>
+                <th>5连板</th>
+            </tr>
+            </thead>
+            <tbody id="order">
+            <!-- 数据行将由JavaScript生成 -->
+            </tbody>
+        </table>
+        <div id="mainChart" class="chart-container" style="height:500px"></div>
+
+    </div>
+</div>
+</body>
+</html>

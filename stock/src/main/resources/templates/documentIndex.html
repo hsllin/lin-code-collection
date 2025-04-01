@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>公告列表</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 0 auto;*/
+        /*    background: white;*/
+        /*    padding: 20px;*/
+        /*    border-radius: 8px;*/
+        /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+        /*}*/
+
+        .filters {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        #searchInput, #typeFilter {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        #searchInput {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .stock-code {
+            font-family: monospace;
+            color: #2c3e50;
+        }
+
+        .st-mark {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/document.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="container">
+        <h2>股票公告列表</h2>
+
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="输入股票代码或名称搜索...">
+            <select id="typeFilter">
+                <option value="">所有类型</option>
+                <option value="风险提示性公告">风险提示</option>
+                <option value="投资理财">投资理财</option>
+                <option value="关联交易">关联交易</option>
+                <option value="违法违规">违法违规</option>
+            </select>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>发布时间</th>
+                <th>公告类型</th>
+                <th>股票代码</th>
+                <th>公司简称</th>
+                <th>公告标题</th>
+            </tr>
+            </thead>
+            <tbody id="announcements">
+            <!-- 数据由JavaScript动态加载 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

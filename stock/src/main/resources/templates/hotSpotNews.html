@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        /*.container {*/
+        /*    max-width: 800px;*/
+        /*    margin: 0 auto;*/
+        /*}*/
+
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .date-header {
+            color: #1a1a1a;
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e4e7ed;
+        }
+
+        .news-item {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .time {
+            color: #909399;
+            min-width: 80px;
+            font-size: 14px;
+        }
+
+        .title {
+            flex-grow: 1;
+            color: #303133;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .title:hover {
+            color: #409eff;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .news-card {
+                padding: 15px;
+            }
+
+            .date-header {
+                font-size: 18px;
+            }
+
+            .news-item {
+                flex-direction: column;
+            }
+
+            .time {
+                margin-bottom: 5px;
+            }
+        }
+
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 10px 15px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 8px 15px 0 0;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/hotSpotNews.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <section class="news-card">
+            <!-- 新增刷新按钮 -->
+            <li>
+                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+                    <i class="fa fa-refresh"></i> 刷新
+                </a>
+            </li>
+            <h2 class="date-header" id="time">2025年1月27日 星期一</h2>
+            <div class="news-list" id="news-list">
+
+<!--                <div class="news-item">-->
+<!--                    <span class="time">01:22</span>-->
+<!--                    <a href="https://finance.eastmoney.com/a/202501263308506469.html" class="title" target="_blank">利好来了！证监会节前出台《促进资本市场指数化投资高质量发展行动方案》</a>-->
+<!--                </div>-->
+<!--                <div class="news-item">-->
+<!--                    <span class="time">01:07</span>-->
+<!--                    <a href="https://finance.eastmoney.com/a/202501273308592914.html" class="title" target="_blank">被动基金成A股"顶梁柱" 霸屏指数成份股十大流通股东</a>-->
+<!--                </div>-->
+<!--                <div class="news-item">-->
+<!--                    <span class="time">01:05</span>-->
+<!--                    <a href="https://finance.eastmoney.com/a/202501263308518521.html" class="title" target="_blank">养殖户3000多头猪死亡 牧原股份遭索赔近700万元</a>-->
+<!--                </div>-->
+<!--                <div class="news-item">-->
+<!--                    <span class="time">01:02</span>-->
+<!--                    <a href="https://finance.eastmoney.com/a/202501273308591067.html" class="title" target="_blank">2月新规来了！事关食品安全、家庭房产分割</a>-->
+<!--                </div>-->
+<!--                <div class="news-item">-->
+<!--                    <span class="time">00:59</span>-->
+<!--                    <a href="https://finance.eastmoney.com/a/202501263308511858.html" class="title" target="_blank">"并购好时机！"全球顶级并购机构发声：中国并购机会远多于5年前</a>-->
+<!--                </div>-->
+<!--                <div class="news-item">-->
+<!--                    <span class="time">00:49</span>-->
+<!--                    <a href="https://finance.eastmoney.com/a/202501263308446517.html" class="title" target="_blank">AMD火速"站台"DeepSeek 利空英伟达？美国私募：GPU市场格局或被改写！</a>-->
+<!--                </div>-->
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

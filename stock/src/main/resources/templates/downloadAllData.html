@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>一键复盘</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <style>
+        .concept-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+        .concept-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .concept-title {
+            font-size: 18px;
+            color: #737070;
+            font-weight: bold;
+        }
+        .change-rate {
+            color: #737070;
+            font-weight: bold;
+        }
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .stock-table th {
+            background: #f8f9fa;
+            padding: 10px;
+            text-align: left;
+        }
+        .stock-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        /*.reason-info {*/
+        /*    max-width: 300px;*/
+        /*    white-space: pre-wrap;*/
+        /*    line-height: 1.5;*/
+        /*}*/
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #1ABB9C;
+            color: #cf1322;
+            border-color: #0c91f8;
+            margin: 2px;
+        }
+        .limit-up {
+            color: #737070;
+            font-weight: bold;
+        }
+         刷新按钮样式
+        .refresh-btn {
+            padding: 10px 15px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 8px 15px 0 0;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+        }
+
+        /* 涨停原因优化 */
+        .reason-cell {
+            position: relative;
+            max-width: 200px;
+            cursor: pointer;
+        }
+
+        .reason-preview {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+            color: #666;
+        }
+
+        /* 悬停气泡提示 */
+        .reason-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.9em;
+            line-height: 1.6;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            pointer-events: none;
+        }
+
+        .reason-cell:hover .reason-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(5px);
+        }
+
+        /* 展开详情样式 */
+        .reason-full {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .reason-full.active {
+            display: block;
+        }
+
+        .reason-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #666;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2 class="date-header" id="time" style="margin: 0;">一键复盘</h2>
+            <div>
+                <a href="javascript:;" onclick="downloadAllData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
+                    <i class="fa fa-refresh"></i> 导出
+                </a>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+</body>
+</html>

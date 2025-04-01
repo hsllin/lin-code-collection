@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .stock-table th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .stock-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .stock-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .concept-tag {
+            display: inline-block;
+            background-color: #e8f4fc;
+            color: #2c3e50;
+            padding: 4px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .price {
+            color: #0c91f8;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .time {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                overflow-x: auto;
+            }
+        }
+
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 3px 8px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 4px 6px 0 0;
+            transition: background 0.3s;
+            float: right;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/lianban.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container" id="main">
+        <!--                <h3>1连板 </h3>-->
+        <!--                <table class="stock-table">-->
+        <!--                    <thead>-->
+        <!--                    <tr>-->
+        <!--                        <th>股票名称</th>-->
+        <!--                        <th>价格</th>-->
+        <!--                        <th>概念</th>-->
+        <!--                        <th>涨停时间</th>-->
+        <!--                    </tr>-->
+        <!--                    </thead>-->
+        <!--                    <tbody>-->
+        <!--                    &lt;!&ndash; 数据行开始 &ndash;&gt;-->
+        <!--                    <tr>-->
+        <!--                        <td>星光股份(002076)</td>-->
+        <!--                        <td class="price">4.27</td>-->
+        <!--                        <td>-->
+        <!--                            <span class="concept-tag">量子科技</span>-->
+        <!--                            <span class="concept-tag">数据中心</span>-->
+        <!--                            <span class="concept-tag">锂电池</span>-->
+        <!--                            <span class="concept-tag">创投</span>-->
+        <!--                        </td>-->
+        <!--                        <td class="time">2025-03-17 09:33:15</td>-->
+        <!--                    </tr>-->
+        <!--                    </tbody>-->
+        <!--                </table>-->
+
+        <h3>1连板 </h3>
+        <table class="stock-table">
+            <thead>
+            <tr>
+                <th>股票名称</th>
+                <th>价格</th>
+                <th>概念</th>
+                <th>涨停时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 数据行开始 -->
+            <tr>
+                <td>星光股份(002076)</td>
+                <td class="price">4.27</td>
+                <td>
+                    <span class="concept-tag">量子科技</span>
+                    <span class="concept-tag">数据中心</span>
+                    <span class="concept-tag">锂电池</span>
+                    <span class="concept-tag">创投</span>
+                </td>
+                <td class="time">2025-03-17 09:33:15</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

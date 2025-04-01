@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /*body {*/
+        /*    font-family: "Microsoft YaHei", Arial, sans-serif;*/
+        /*    max-width: 1200px;*/
+        /*    margin: 20px auto;*/
+        /*    padding: 20px;*/
+        /*    background-color: #f5f6fa;*/
+        /*}*/
+
+        .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 25px 0 15px;
+            color: #2c3e50;
+            border-left: 4px solid;
+            padding-left: 10px;
+        }
+
+        .up-section .section-title {
+            border-color: #27ae60;
+        }
+
+        .down-section .section-title {
+            border-color: #e74c3c;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .data-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        .index-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .index-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .positive {
+            color: #2e2d2d;
+        }
+
+        .negative {
+            color: #27ae60;
+        }
+
+        .stock-detail {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 10px 15px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 8px 15px 0 0;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/conceptAndIndex.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <!-- 新增刷新按钮 -->
+        <li>
+            <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+                <i class="fa fa-refresh"></i> 刷新
+            </a>
+        </li>
+        <h2 class="date-header" id="time">2025年1月27日 星期一</h2>
+        <!-- 指数行情 -->
+        <div class="index-section">
+            <div class="section-title">🌍 全球主要指数</div>
+            <div class="index-container" id="index-container">
+                <div class="index-card">
+                    上证指数<br>
+                    <span class="neutral">3250.0</span>
+                    <span>0.0%</span>
+                </div>
+                <div class="index-card">
+                    深证成指<br>
+                    <span class="neutral">10156.0</span>
+                    <span class="negative">-1.0%</span>
+                </div>
+                <!-- 其他指数数据 -->
+            </div>
+        </div>
+
+        <!-- 快速上涨概念 -->
+        <div class="up-section">
+            <div class="section-title">📈 快速上涨概念</div>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>概念</th>
+                    <th>概念涨幅</th>
+                    <th>领涨龙头</th>
+                    <th>最大跌幅</th>
+                    <th>上涨家数</th>
+                    <th>下跌家数</th>
+                </tr>
+                </thead>
+                <tbody id="increaseTr">
+                <tr>
+                    <td>银行</td>
+                    <td class="positive">+1.49%</td>
+                    <td>
+                        <div class="stock-detail">
+                            齐鲁银行<br>
+                            <span class="positive">+4.91%</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="stock-detail">
+                            光大银行(601818)<br>
+                            <span>0.0%</span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- 其他上涨行业数据 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 跌幅概念 -->
+        <div class="down-section">
+            <div class="section-title">📉 跌幅概念</div>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>概念</th>
+                    <th>概念跌幅</th>
+                    <th>抗跌个股</th>
+                    <th>最大跌幅</th>
+                    <th>上涨家数</th>
+                    <th>下跌家数</th>
+                </tr>
+                </thead>
+                <tbody id="decreaseTr">
+                <tr>
+                    <td>电机</td>
+                    <td class="negative">-3.17%</td>
+                    <td>
+                        <div class="stock-detail">
+                            八方股份<br>
+                            <span class="positive">+0.27%</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="stock-detail">
+                            兆威机电(003021)<br>
+                            <span class="negative">-7.55%</span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- 其他下跌行业数据 -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- 快速上涨行业 -->
+        <div class="up-section">
+            <div class="section-title">📈 快速上涨行业</div>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>行业</th>
+                    <th>行业涨幅</th>
+                    <th>领涨龙头</th>
+                    <th>最大跌幅</th>
+                    <th>上涨家数</th>
+                    <th>下跌家数</th>
+                </tr>
+                </thead>
+                <tbody id="increaseIndustry">
+                <tr>
+                    <td>银行</td>
+                    <td class="positive">+1.49%</td>
+                    <td>
+                        <div class="stock-detail">
+                            齐鲁银行<br>
+                            <span class="positive">+4.91%</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="stock-detail">
+                            光大银行(601818)<br>
+                            <span>0.0%</span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- 其他上涨行业数据 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 跌幅行业 -->
+        <div class="down-section">
+            <div class="section-title">📉 跌幅行业</div>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>行业</th>
+                    <th>行业跌幅</th>
+                    <th>抗跌个股</th>
+                    <th>最大跌幅</th>
+                    <th>上涨家数</th>
+                    <th>下跌家数</th>
+                </tr>
+                </thead>
+                <tbody id="decreaseIndustry">
+                <tr>
+                    <td>电机</td>
+                    <td class="negative">-3.17%</td>
+                    <td>
+                        <div class="stock-detail">
+                            八方股份<br>
+                            <span class="positive">+0.27%</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="stock-detail">
+                            兆威机电(003021)<br>
+                            <span class="negative">-7.55%</span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- 其他下跌行业数据 -->
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>
