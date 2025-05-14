@@ -24,6 +24,9 @@ public class DownLoadController {
     @Autowired
     VolumeTrendService volumeTrendService;
 
+    @Autowired
+    ZhaBanChiService zhaBanChiService;
+
 
     @RequestMapping("/downloadAllData")
     public ResponseEntity<Boolean> downloadAllData(HttpServletRequest request, Model model) {
@@ -35,6 +38,7 @@ public class DownLoadController {
         limitDownPoolService.downloadLimitDownData();
         lianBanChiService.downloadData(date);
         volumeTrendService.saveOrUpdateData();
+        zhaBanChiService.downloadData(date);
         return ResponseEntity.ok(true);
     }
 }

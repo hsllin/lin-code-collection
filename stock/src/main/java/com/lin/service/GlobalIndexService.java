@@ -89,7 +89,7 @@ public class GlobalIndexService {
         System.out.println(listBeanList.size());
         List<ConceptAndIndex.Index> resultList = new ArrayList<>();
         for (GloabalIndex.DataBean.DiffBean bean : listBeanList) {
-            double index = CommonUtils.formatPrice(bean.getF3() / 100);
+            double index = CommonUtils.formatPrice(bean.getF3() == null ? 0 : bean.getF3() / 100);
             double curent = bean.getF2() == null ? 0.00 : CommonUtils.formatPrice(bean.getF2() / 100);
             String title = bean.getF14() + " " + curent + " " + index + "% ";
             System.out.println(title);
@@ -119,14 +119,14 @@ public class GlobalIndexService {
                     if (bean.getIndex() > 0.3) {
                         shangZhenCountTime += 1;
                         if (shangZhenCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅：" + bean.getIndex() + "%", "");
                         }
 
                     }
                     if (bean.getIndex() < 0.3) {
                         shangZhenPaoLuCountTime += 1;
                         if (shangZhenPaoLuCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "狗砸总砸盘，快跑 " + "跌幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "砸盘，快跑 " + "跌幅：" + bean.getIndex() + "%", "");
                         }
                     }
                 }
@@ -134,14 +134,14 @@ public class GlobalIndexService {
                     if (bean.getIndex() > 0.3) {
                         shenZhenCountTime += 1;
                         if (shenZhenCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅：" + bean.getIndex() + "%", "");
                         }
 
                     }
                     if (bean.getIndex() < 0.3) {
                         shenZhenPaoLuCountTime += 1;
                         if (shenZhenPaoLuCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "狗砸总砸盘，快跑 " + "跌幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "砸盘，快跑 " + "跌幅：" + bean.getIndex() + "%", "");
                         }
                     }
                 }
@@ -149,14 +149,14 @@ public class GlobalIndexService {
                     if (bean.getIndex() > 0.3) {
                         chuangyebanCountTime += 1;
                         if (chuangyebanCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅：" + bean.getIndex() + "%", "");
                         }
 
                     }
                     if (bean.getIndex() < 0.3) {
                         chuangyebanPaoLuCountTime += 1;
                         if (chuangyebanPaoLuCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "狗砸总砸盘，快跑 " + "跌幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "砸盘，快跑 " + "跌幅：" + bean.getIndex() + "%", "");
                         }
                     }
                 }
@@ -164,14 +164,14 @@ public class GlobalIndexService {
                     if (bean.getIndex() > 0.3) {
                         hengshengCountTime += 1;
                         if (hengshengCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅：" + bean.getIndex() + "%", "");
                         }
 
                     }
                     if (bean.getIndex() < 0.3) {
                         hengshengPaoLuCountTime += 1;
                         if (hengshengPaoLuCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "狗砸总砸盘，快跑 " + "跌幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "砸盘，快跑 " + "跌幅：" + bean.getIndex() + "%", "");
                         }
                     }
                 }
@@ -180,14 +180,14 @@ public class GlobalIndexService {
                     if (bean.getIndex() > 0.3) {
                         hengshengKejiCountTime += 1;
                         if (hengshengKejiCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "牛回速归 " + "涨幅：" + bean.getIndex() + "%", "");
                         }
 
                     }
                     if (bean.getIndex() < 0.3) {
                         hengshengKejiPaoLuCountTime += 1;
                         if (hengshengKejiPaoLuCountTime == 1) {
-                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "狗砸总砸盘，快跑 " + "跌幅达：" + bean.getIndex() + "%", "");
+                            WechatMessageUtils.sendMessageToWechat(bean.getName() + "-" + "砸盘，快跑 " + "跌幅：" + bean.getIndex() + "%", "");
                         }
                     }
                 }

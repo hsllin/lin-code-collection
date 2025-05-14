@@ -3,6 +3,7 @@ package com.lin.service;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
+import com.lin.bean.intradaychange.BuyChangeBean;
 import com.lin.bean.intradaychange.IntradayChange;
 import com.lin.util.CommonUtils;
 import com.ugrong.framework.redis.repository.cache.IStringRedisRepository;
@@ -22,12 +23,15 @@ public class IntraDayChangeService {
     IStringRedisRepository iStringRedisRepository;
     public static final String INCREASE = "8201";
     public static final String DECREASE = "8204";
+    public static final String BUY = "8193";
+    public static final String SELL = "8194";
 
     public static void main(String[] args) {
 
-        getIntradayChangeList(INCREASE);
-        System.out.println("-----------------------------------------------------");
-        getIntradayChangeList(DECREASE);
+//        getIntradayChangeList(INCREASE);
+//        System.out.println("-----------------------------------------------------");
+//        getIntradayChangeList(DECREASE);
+        getBuyChangeList(BUY);
     }
 
     public static List<IntradayChange.DataBean.AllstockBean> getIntradayChangeList(String type) {
@@ -48,7 +52,7 @@ public class IntraDayChangeService {
         IntradayChange bean = JSONUtil.toBean(JSONUtil.toJsonStr(result), IntradayChange.class);
         List<IntradayChange.DataBean.AllstockBean> allstockBeanList = bean.getData().getAllstock();
         HashMap<String, Integer> countMap = new HashMap<>();
-        Set<String> codeSet = new HashSet<>();
+
         for (int i = 1; i < 200; i++) {
             param.put("pageindex", i);
             String tempResult = HttpUtil.get(url, param);
@@ -58,7 +62,8 @@ public class IntraDayChangeService {
             }
             allstockBeanList.addAll(tempBean.getData().getAllstock());
         }
-        CollectionUtil.reverse(allstockBeanList);
+
+        Set<String> codeSet = new HashSet<>();
         Iterator<IntradayChange.DataBean.AllstockBean> allstockBeanIterator = allstockBeanList.iterator();
         while (allstockBeanIterator.hasNext()) {
             IntradayChange.DataBean.AllstockBean allstockBean = allstockBeanIterator.next();
@@ -69,8 +74,9 @@ public class IntraDayChangeService {
 
             codeSet.add(allstockBean.getC());
         }
+        CollectionUtil.reverse(allstockBeanList);
         String message = "";
-        String Increase;
+        String increase;
         StringBuilder txtBuilder = new StringBuilder();
         for (IntradayChange.DataBean.AllstockBean allstockBean : allstockBeanList) {
             if (type.equals(INCREASE)) {
@@ -88,8 +94,8 @@ public class IntraDayChangeService {
             }
 
 
-            Increase = allstockBean.getI().substring(0, allstockBean.getI().indexOf(","));
-            double IncreasePersent = Double.parseDouble(Increase) * 100;
+            increase = allstockBean.getI().substring(0, allstockBean.getI().indexOf(","));
+            double IncreasePersent = Double.parseDouble(increase) * 100;
             allstockBean.setTime(getTime(allstockBean.getTm()));
             allstockBean.setPercent(CommonUtils.formatPrice(IncreasePersent));
             allstockBean.setCount(countMap.get(allstockBean.getC()));
@@ -118,6 +124,86 @@ public class IntraDayChangeService {
         String minuteStr = minute > 9 ? minute + "" : "0" + minute;
         String secondStr = second > 9 ? second + "" : "0" + second;
         return hourStr + ":" + minuteStr + ":" + secondStr;
+    }
+
+    public static List<BuyChangeBean.DataDTO.AllstockDTO> getBuyChangeList(String type) {
+        String url = "https://push2ex.eastmoney.com/getAllStockChanges";
+
+//        8193
+        Map<String, Object> param = new HashMap<>();
+//        param.put("cb", "jQuery1123006755088795545139_173727505367");
+        param.put("type", type);
+//        8204
+        param.put("pageindex", "0");
+        param.put("pagesize", "64");
+        param.put("dpt", "wzchanges");
+        param.put("_", System.currentTimeMillis());
+        param.put("ut", "7eea3edcaed734bea9cbfc24409ed989");
+
+        String result = HttpUtil.get(url, param);
+        BuyChangeBean bean = JSONUtil.toBean(JSONUtil.toJsonStr(result), BuyChangeBean.class);
+        List<BuyChangeBean.DataDTO.AllstockDTO> allstockBeanList = bean.getData().getAllstock();
+        HashMap<String, Integer> countMap = new HashMap<>();
+
+        for (int i = 1; i < 200; i++) {
+            param.put("pageindex", i);
+            String tempResult = HttpUtil.get(url, param);
+            BuyChangeBean tempBean = JSONUtil.toBean(JSONUtil.toJsonStr(tempResult), BuyChangeBean.class);
+            if (null == tempBean.getData()) {
+                break;
+            }
+            allstockBeanList.addAll(tempBean.getData().getAllstock());
+        }
+
+        Set<String> codeSet = new HashSet<>();
+        Iterator<BuyChangeBean.DataDTO.AllstockDTO> allstockBeanIterator = allstockBeanList.iterator();
+        while (allstockBeanIterator.hasNext()) {
+            BuyChangeBean.DataDTO.AllstockDTO allstockBean = allstockBeanIterator.next();
+            countMap.put(allstockBean.getC(), countMap.get(allstockBean.getC()) == null ? allstockBean.getCount() : countMap.get(allstockBean.getC()) + 1);
+            if (codeSet.contains(allstockBean.getC()) || allstockBean.getC().startsWith("8") || allstockBean.getC().startsWith("3") || allstockBean.getC().startsWith("68")) {
+                allstockBeanIterator.remove();
+            }
+
+            codeSet.add(allstockBean.getC());
+        }
+        CollectionUtil.reverse(allstockBeanList);
+        String message = "";
+        String buy = "";
+        String percent = "";
+        StringBuilder txtBuilder = new StringBuilder();
+        for (BuyChangeBean.DataDTO.AllstockDTO allstockBean : allstockBeanList) {
+            buy = allstockBean.getI().substring(0, allstockBean.getI().indexOf(","));
+            percent = getContentBetweenCommas(allstockBean.getI());
+            double IncreasePersent = Double.parseDouble(percent) * 100;
+            allstockBean.setPercent(CommonUtils.formatPrice(IncreasePersent));
+            //多少手数
+            double buyNum = CommonUtils.formatPrice(Double.parseDouble(buy) / 1000000);
+            allstockBean.setTime(getTime(allstockBean.getTm()));
+            allstockBean.setBuyNum(buyNum);
+            allstockBean.setCount(countMap.get(allstockBean.getC()));
+            String finalSys = message + allstockBean.getTime() + " " + allstockBean.getN() + "(" + allstockBean.getC() + ")" + "大买单：" + buyNum + "万手" + "\033[0m" + "\r\n";
+            System.out.println(finalSys);
+            txtBuilder.append(finalSys);
+        }
+
+        return allstockBeanList;
+
+    }
+
+    public static String getContentBetweenCommas(String input) {
+        // 查找第一个逗号位置
+        int firstIndex = input.indexOf(',');
+        if (firstIndex == -1) return "逗号不足";
+
+        // 查找第二个逗号位置
+        int secondIndex = input.indexOf(',', firstIndex + 1);
+        if (secondIndex == -1) return "逗号不足";
+
+        // 查找第三个逗号位置
+        int thirdIndex = input.indexOf(',', secondIndex + 1);
+        if (thirdIndex == -1) return "逗号不足";
+
+        return input.substring(secondIndex + 1, thirdIndex);
     }
 
 

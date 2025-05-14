@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!--    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/yidong.js"></script>
+    <style>
+        /*body {*/
+        /*    font-family: "Microsoft YaHei", Arial, sans-serif;*/
+        /*    line-height: 1.6;*/
+        /*    max-width: 1200px;*/
+        /*    margin: 20px auto;*/
+        /*    padding: 0 20px;*/
+        /*    background-color: #f5f5f5;*/
+        /*}*/
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .event-header {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stock-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e8f4ff;
+            border-radius: 4px;
+            color: #1890ff;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+
+        .content-section {
+            margin: 12px 0;
+        }
+
+        .reason-list {
+            color: #666;
+            padding-left: 20px;
+        }
+
+        .detail-link {
+            color: #1890ff;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .detail-link:hover {
+            text-decoration: underline;
+        }
+
+        .stock-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            color: #666;
+            font-weight: bold;
+        }
+
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/yidong.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="container" id="mainData">
+        <!-- 数据项示例 -->
+        <div class="event-card">
+            <div class="event-header">
+                影响事件
+                <span class="stock-tag">武汉凡谷（002194）</span>
+            </div>
+            <div class="content-section">
+                <div><strong>今日走势：</strong>武汉凡谷今日触及涨停板，该股近一年涨停9次。</div>
+                <div class="reason-list">
+                    <strong>异动原因揭秘：</strong>
+                    <div>1、公司的主要业务是从事射频器件和射频子系统的研发、生产、销售和服务...</div>
+                </div>
+                <a href="#" class="detail-link">[详细内容]</a>
+            </div>
+            <div class="stock-info">
+                影响个股：武汉凡谷（002194）
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+</html>

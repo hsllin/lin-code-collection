@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!-- 引入Bootstrap -->
+<!--    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/zhaban.js"></script>
+    <script type="text/javascript" src="/js/chart.min.js"></script>
+
+    <style>
+        /* 新增在原有<style>标签内 */
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: #f8f9fa; /* 斑马纹底色 */
+            border-collapse: separate;
+            border-spacing: 0 8px; /* 行间距 */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(241,243,245,0.8);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        .table-light th {
+            background: linear-gradient(145deg, #2c3e50, #34495e); /* 渐变表头背景 */
+            color: white;
+            font-weight: 500;
+            padding: 16px;
+            border-bottom: 2px solid #2980b9;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stock-table {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .change-positive {
+            color: #3caee0;
+        }
+
+        .change-negative {
+            color: #3caee0;
+        }
+
+        .status-tag {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+
+        .limit-failed {
+            background: #fff1f0;
+            color: #ff4d4f;
+        }
+
+        .chart-container {
+            height: 60px;
+            width: 200px;
+        }
+
+        .market-tag {
+            border: 1px solid #eee;
+            border-radius: 2px;
+            padding: 1px 4px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container">
+        <div class="">
+            <h2 class="mb-4">炸板实时监控</h2>
+
+            <div class="table-responsive stock-table">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>代码</th>
+                        <th>名称</th>
+                        <th>最新价</th>
+                        <th>涨跌幅</th>
+                        <th>换手率</th>
+                        <th>流通值</th>
+                        <th>涨停成功率</th>
+                        <th>状态</th>
+                        <th>分时走势</th>
+                    </tr>
+                    </thead>
+                    <tbody id="stockData">
+                    <!-- 数据通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

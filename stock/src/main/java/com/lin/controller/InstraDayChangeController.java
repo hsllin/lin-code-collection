@@ -1,6 +1,7 @@
 package com.lin.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.lin.bean.intradaychange.BuyChangeBean;
 import com.lin.bean.intradaychange.IntradayChange;
 import com.lin.service.IntraDayChangeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,20 @@ public class InstraDayChangeController {
             stockList = intraDayChangeService.getIntradayChangeList(IntraDayChangeService.INCREASE);
         } else {
             stockList = intraDayChangeService.getIntradayChangeList(IntraDayChangeService.DECREASE);
+        }
+
+        CollectionUtil.reverse(stockList);
+        return ResponseEntity.ok(stockList);
+    }
+
+    @RequestMapping("/buyChange")
+    public ResponseEntity<List<BuyChangeBean.DataDTO.AllstockDTO>> buyChange(HttpServletRequest request, Model model) {
+        String type = request.getParameter("type");
+        List<BuyChangeBean.DataDTO.AllstockDTO> stockList = new ArrayList<>();
+        if (type.equals("1")) {
+            stockList = intraDayChangeService.getBuyChangeList(IntraDayChangeService.BUY);
+        } else {
+            stockList = intraDayChangeService.getBuyChangeList(IntraDayChangeService.SELL);
         }
 
         CollectionUtil.reverse(stockList);

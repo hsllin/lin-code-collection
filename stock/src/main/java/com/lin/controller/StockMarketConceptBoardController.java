@@ -1,0 +1,60 @@
+package com.lin.controller;
+
+import com.lin.bean.lianban.LimitDownPoolResultBean;
+import com.lin.service.LimitDownPoolService;
+import com.lin.service.SysnConceptStockService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * 股票了解
+ */
+@Controller
+public class StockMarketConceptBoardController {
+    @Autowired
+    LimitDownPoolService limitDownPoolService;
+    @Autowired
+    SysnConceptStockService sysnConceptStockService;
+
+    @RequestMapping("/getStockKnownList")
+    public ResponseEntity<List<LimitDownPoolResultBean>> list(HttpServletRequest request, Model model) {
+        String orderFiled = request.getParameter("orderFiled");
+        String orderBy = request.getParameter("orderBy");
+        List<LimitDownPoolResultBean> list = limitDownPoolService.getLimitDownPoolList(orderFiled, orderBy);
+
+//        CollectionUtil.reverse(list);
+        return ResponseEntity.ok(list);
+    }
+
+    @RequestMapping("/addOrEditStockKnownData")
+    public ResponseEntity<Boolean> addOrEditStockKnownData(HttpServletRequest request, Model model) {
+        String orderFiled = request.getParameter("orderFiled");
+        String orderBy = request.getParameter("orderBy");
+        limitDownPoolService.downloadLimitDownData();
+
+        return ResponseEntity.ok(true);
+    }
+
+    @RequestMapping("/deleteStockKnownData")
+    public ResponseEntity<Boolean> deleteStockKnownData(HttpServletRequest request, Model model) {
+        String orderFiled = request.getParameter("orderFiled");
+        String orderBy = request.getParameter("orderBy");
+        limitDownPoolService.downloadLimitDownData();
+
+        return ResponseEntity.ok(true);
+    }
+
+    @RequestMapping("/sysnConceptData")
+    public ResponseEntity<Boolean> sysnConceptData(HttpServletRequest request, Model model) {
+        sysnConceptStockService.sysnData();
+        return ResponseEntity.ok(true);
+    }
+
+
+}

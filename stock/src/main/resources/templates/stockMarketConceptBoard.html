@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <style>
+        /*body {*/
+        /*    font-family: '微软雅黑', Arial, sans-serif;*/
+        /*    max-width: 1000px;*/
+        /*    margin: 20px auto;*/
+        /*    padding: 20px;*/
+        /*    background-color: #f5f5f5;*/
+        /*}*/
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #stockSearch {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-results {
+            position: absolute;
+            width: 300px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            display: none;
+        }
+
+        .search-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .search-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .data-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: #f8f9fa;
+        }
+
+        .delete-btn {
+            color: #dc3545;
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/stockMarketConceptBoard.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <!-- 新增刷新按钮 -->
+    <li>
+        <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+            <i class="fa fa-refresh"></i> 刷新
+        </a>
+    </li>
+    <div class="stockcontainer">
+        <h2>概念管理系统</h2>
+
+        <!-- 搜索框 -->
+        <div class="search-box">
+            <input type="text" id="stockSearch" placeholder="输入名称/代码搜索...">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <!-- 数据录入表单 -->
+        <div class="form-section">
+            <form id="stockForm">
+                <div class="form-group">
+                    <label for="stockName">名称</label>
+                    <input type="text" id="stockName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="industry">所属行业</label>
+                    <input type="text" id="industry" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="concepts">概念板块</label>
+                    <input type="text" id="concepts" placeholder="多个概念用逗号分隔">
+                </div>
+
+                <div class="form-group">
+                    <label for="mainBusiness">主营业务</label>
+                    <textarea id="mainBusiness" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="profitStatus">盈亏情况</label>
+                    <select id="profitStatus">
+                        <option value="盈利">盈利</option>
+                        <option value="亏损">亏损</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="operationStatus">运营情况</label>
+                    <textarea id="operationStatus" rows="3"></textarea>
+                </div>
+
+                <button type="submit">提交记录</button>
+            </form>
+        </div>
+
+        <!-- 数据展示表格 -->
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>行业</th>
+                <th>概念板块</th>
+                <th>主营业务</th>
+                <th>盈亏</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="dataBody">
+            <!-- 数据将通过JS动态插入 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    // 模拟股票数据（实际应用中应连接API）
+    const stockData = [
+        { code: '600519', name: '贵州茅台', industry: '白酒' },
+        { code: '000858', name: '五粮液', industry: '白酒' },
+        { code: '300750', name: '宁德时代', industry: '新能源' },
+        { code: '600036', name: '招商银行', industry: '银行' }
+    ];
+
+    // 搜索功能实现
+    const searchInput = document.getElementById('stockSearch');
+    const searchResults = document.getElementById('searchResults');
+    const stockNameInput = document.getElementById('stockName');
+
+    searchInput.addEventListener('input', function(e) {
+        const keyword = e.target.value.toLowerCase();
+        const results = stockData.filter(item =>
+            item.name.includes(keyword) || item.code.includes(keyword)
+        );
+
+        searchResults.innerHTML = results.map(item => `
+                <div class="search-item" data-code="${item.code}">
+                    ${item.name} (${item.code})
+                </div>
+            `).join('');
+
+        searchResults.style.display = results.length ? 'block' : 'none';
+    });
+
+    // 点击搜索结果
+    searchResults.addEventListener('click', function(e) {
+        if(e.target.classList.contains('search-item')) {
+            const code = e.target.dataset.code;
+            const stock = stockData.find(item => item.code === code);
+            stockNameInput.value = `${stock.name} (${stock.code})`;
+            searchResults.style.display = 'none';
+        }
+    });
+
+    // 表单提交处理
+    const form = document.getElementById('stockForm');
+    const dataBody = document.getElementById('dataBody');
+
+    // 从localStorage加载数据
+    let records = JSON.parse(localStorage.getItem('stockRecords') || '[]');
+    renderTable();
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const record = {
+            name: document.getElementById('stockName').value,
+            industry: document.getElementById('industry').value,
+            concepts: document.getElementById('concepts').value,
+            mainBusiness: document.getElementById('mainBusiness').value,
+            profitStatus: document.getElementById('profitStatus').value,
+            operationStatus: document.getElementById('operationStatus').value,
+            timestamp: new Date().getTime()
+        };
+
+        records.push(record);
+        localStorage.setItem('stockRecords', JSON.stringify(records));
+        renderTable();
+        form.reset();
+    });
+
+    // 渲染表格
+    function renderTable() {
+        dataBody.innerHTML = records.map(record => `
+                <tr>
+                    <td>${record.name}</td>
+                    <td>${record.industry}</td>
+                    <td>${record.concepts}</td>
+                    <td>${record.mainBusiness}</td>
+                    <td>${record.profitStatus}</td>
+                    <td>
+                        <span class="delete-btn" onclick="deleteRecord(${record.timestamp})">删除</span>
+                    </td>
+                </tr>
+            `).join('');
+    }
+
+    // 删除记录
+    window.deleteRecord = function(timestamp) {
+        records = records.filter(r => r.timestamp !== timestamp);
+        localStorage.setItem('stockRecords', JSON.stringify(records));
+        renderTable();
+    }
+</script>
+</body>
+</html>

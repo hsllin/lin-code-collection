@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>热门排行</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: #f5f6f7;
+            padding: 20px;
+        }
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 0 auto;*/
+        /*}*/
+
+        /* 头部样式 */
+        .header {
+            padding: 30px 20px;
+            background: #ffffff;
+            border-radius: 12px 12px 0 0;
+            color: black;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        /* 导航标签 */
+        .nav-tabs {
+            display: flex;
+            gap: 30px;
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-tab {
+            color: #5A738E;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .nav-tab.active {
+            color: #1890ff;
+            border-bottom: 2px solid #1890ff;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 2fr;
+            gap: 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* 左侧大家在看 */
+        .watch-section {
+            border-right: 1px solid #eee;
+            padding-right: 30px;
+        }
+
+        /* 右侧快速飙升 */
+        .surge-section {
+            padding-left: 20px;
+        }
+
+        /* 板块标题 */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 15px;
+            color: #666;
+        }
+
+        .time-tab {
+            cursor: pointer;
+        }
+
+        .time-tab.active {
+            color: #1890ff;
+            font-weight: bold;
+        }
+
+        /* 股票条目 */
+        .stock-item {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stock-rank {
+            font-size: 18px;
+            color: #1890ff;
+            margin-right: 10px;
+        }
+
+        .stock-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .stock-change {
+            font-weight: bold;
+        }
+
+        .change-up {
+            color: #1e211f;
+        }
+
+        .change-down {
+            color: #52c41a;
+        }
+
+        .heat {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* 标签云 */
+        .tag-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            background: #3caee0;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .populartag {
+            -webkit-border-radius: 2px;
+            display: block;
+            float: left;
+            padding: 5px 9px;
+            text-decoration: none;
+            background: #3caee0;
+            color: #F1F6F7;
+            margin-right: 5px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-family: helvetica;
+        }
+
+        /* 热点原因 */
+        .hot-reason {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        /* 右侧飙升榜 */
+        .surge-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #fffbe6;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .watch-section {
+                border-right: none;
+                padding-right: 0;
+            }
+            .surge-section {
+                padding-left: 0;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/popularStock.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h2>同花顺热榜</h2>
+        </div>
+
+        <!-- 导航标签 -->
+        <div class="nav-tabs">
+            <span class="nav-tab active">热股</span>
+            <span class="nav-tab">板块</span>
+            <span class="nav-tab">东方财富</span>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 左侧大家在看 -->
+            <div class="watch-section" id="hot_content">
+                <div class="section-header">
+                    <h2 class="section-title">👀 大家在看</h2>
+                    <div class="time-filter">
+                        <span class="time-tab active">1小时</span>
+                        <span class="time-tab">24小时</span>
+                    </div>
+                </div>
+
+                <!-- 股票条目 -->
+                <div class="stock-item">
+                    <div class="stock-header">
+                        <div>
+                            <span class="stock-rank">1</span>
+                            <span class="stock-name">拓维信息</span>
+                            <span class="stock-change change-up">+10.01%</span>
+                        </div>
+                        <span class="heat">15.8万热度</span>
+                    </div>
+                    <div class="tag-group">
+                        <span class="tag">首板涨停</span>
+                        <span class="tag">DeepSeek概念</span>
+                        <span class="tag">华为欧拉</span>
+                    </div>
+                    <div class="hot-reason">
+                        🔥 华为昇腾+开源鸿蒙+一季报净利润增长。24半年报：公司依托AI、OpenHarmony...
+                    </div>
+                </div>
+
+                <div class="stock-item">
+                    <div class="stock-header">
+                        <div>
+                            <span class="stock-rank">2</span>
+                            <span class="stock-name">步步高</span>
+                            <span class="stock-change change-up">+10.01%</span>
+                        </div>
+                        <span class="heat">13.7万热度</span>
+                    </div>
+                    <div class="tag-group">
+                        <span class="tag">7天6板</span>
+                        <span class="tag">预制菜</span>
+                        <span class="tag">统一大市场</span>
+                    </div>
+                    <div class="hot-reason">
+                        🔥 零售+摘帽+一季报增长+年报扭亏。4月17日公司公告...
+                    </div>
+                </div>
+            </div>
+
+            <div class="watch-section" id="rise_content">
+                <div class="section-header">
+                    <h2 class="section-title">🚀 快速飙升</h2>
+                    <div class="time-filter">
+                        <span class="time-tab active">1小时</span>
+                        <span class="time-tab">24小时</span>
+                    </div>
+                </div>
+
+                <!-- 股票条目 -->
+                <div class="stock-item">
+                    <div class="stock-header">
+                        <div>
+                            <span class="stock-rank">1</span>
+                            <span class="stock-name">拓维信息</span>
+                            <span class="stock-change change-up">+10.01%</span>
+                        </div>
+                        <span class="heat">15.8万热度</span>
+                    </div>
+                    <div class="tag-group">
+                        <span class="tag">首板涨停</span>
+                        <span class="tag">DeepSeek概念</span>
+                        <span class="tag">华为欧拉</span>
+                    </div>
+                    <div class="hot-reason">
+                        🔥 华为昇腾+开源鸿蒙+一季报净利润增长。24半年报：公司依托AI、OpenHarmony...
+                    </div>
+                </div>
+
+                <div class="stock-item">
+                    <div class="stock-header">
+                        <div>
+                            <span class="stock-rank">2</span>
+                            <span class="stock-name">步步高</span>
+                            <span class="stock-change change-up">+10.01%</span>
+                        </div>
+                        <span class="heat">13.7万热度</span>
+                    </div>
+                    <div class="tag-group">
+                        <span class="tag">7天6板</span>
+                        <span class="tag">预制菜</span>
+                        <span class="tag">统一大市场</span>
+                    </div>
+                    <div class="hot-reason">
+                        🔥 零售+摘帽+一季报增长+年报扭亏。4月17日公司公告...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧快速飙升 -->
+<!--            <div class="surge-section">-->
+<!--                <div class="section-header">-->
+<!--                    <h2 class="section-title">🚀 快速飙升</h2>-->
+<!--                </div>-->
+
+<!--                <div class="surge-item">-->
+<!--                    <div>-->
+<!--                        <div class="stock-name">西昌电力</div>-->
+<!--                        <div class="heat">8.6万热度</div>-->
+<!--                    </div>-->
+<!--                    <span class="stock-change change-up">+9.99%</span>-->
+<!--                </div>-->
+
+<!--                <div class="surge-item">-->
+<!--                    <div>-->
+<!--                        <div class="stock-name">安记食品</div>-->
+<!--                        <div class="heat">7.2万热度</div>-->
+<!--                    </div>-->
+<!--                    <span class="stock-change change-up">+8.45%</span>-->
+<!--                </div>-->
+
+<!--                <div class="surge-item">-->
+<!--                    <div>-->
+<!--                        <div class="stock-name">国芳集团</div>-->
+<!--                        <div class="heat">6.8万热度</div>-->
+<!--                    </div>-->
+<!--                    <span class="stock-change change-up">+7.91%</span>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>
