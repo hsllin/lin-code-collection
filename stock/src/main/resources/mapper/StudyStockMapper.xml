@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lin.mapper.StockStudyMapper">
+    <select id="getStudyNum" resultType="java.util.Map">
+        select *
+        from (select sum(CASE WHEN study_status = '1' THEN 1 ELSE 0 END = '1') as learned,
+                     sum(CASE WHEN study_status = '0' THEN 1 ELSE 0 END = '1') as not_learned,
+                     sum(1)                                                    as total
+              from stock) a,
+
+             (select sum(code in (select code from stock where study_status = '1')) as today_learned,
+                     sum(1)                                                         as totay_total
+              from stock_today) b
+    </select>
+</mapper>

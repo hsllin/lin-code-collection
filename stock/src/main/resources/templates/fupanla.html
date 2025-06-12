@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!-- 引入Bootstrap -->
+<!--    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/fupanla.js"></script>
+    <script type="text/javascript" src="/js/chart.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            padding: 0 20px;
+        }
+
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #26B99A;
+            color: #26B99A;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .left-panel {
+            flex: 0 0 200px;
+            margin-right: 20px;
+        }
+
+        .right-panel {
+            flex: 1;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .topic-item {
+            padding: 10px;
+            border: 1px solid #eee;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .topic-name {
+            flex: 1;
+        }
+
+        .topic-count {
+            background-color: #f39c12;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .core-stocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stock-card {
+            border: 1px solid #eee;
+            padding: 10px;
+            position: relative;
+        }
+
+        .stock-board {
+            display: flex;
+            align-items: center;
+        }
+
+        .board-count {
+            background-color: #e74c3c;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .board-count.green {
+            background-color: #27ae60;
+        }
+
+        .stock-name {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .stock-code {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #000;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        element.style {
+        }
+        .layui-tab-item {
+            padding: 10px 20px;
+        }
+        .layui-tab-item {
+            display: none;
+        }
+        .layui-show {
+            display: block !important;
+        }
+        blockquote, body, button, dd, div, dl, dt, form, h1, h2, h3, h4, h5, h6, input, li, ol, p, pre, td, textarea, th, ul {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        user agent stylesheet
+        div {
+            display: block;
+            unicode-bidi: isolate;
+        }
+        .layui-tab {
+            margin: 10px 0;
+            text-align: left !important;
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container" id="mainData">
+
+    </div>
+</div>
+</body>
+
+
+</html>

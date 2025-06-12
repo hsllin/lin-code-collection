@@ -36,6 +36,7 @@ public enum EnumCacheType implements IRedisCacheType {
     INDUSTRY_BOARD_CACHE("INDUSTRY_BOARD"),
     CONCEPT_BOARD_CACHE("CONCEPT_BOARD"),
     INTRA_DAY_CACHE("INTRA_DAY"),
+    RPS_USER_INFO("RPS_USER_INFO"),
     ;
 
     private final String value;

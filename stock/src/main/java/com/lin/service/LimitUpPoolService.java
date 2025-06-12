@@ -32,11 +32,10 @@ public class LimitUpPoolService {
 //        logLianBan(yesterDay);
 //        logLianBan(today);
 //        getLimitUpPoolList("330324", "1");
-        downloadLimitUpData();
+        downloadLimitUpData(today);
     }
 
-    public static List<LimitUpPoolResultBean> getLimitUpPoolList(String orderFiled, String orderBy) {
-        String date = CommonUtils.getTradeDay(0);
+    public static List<LimitUpPoolResultBean> getLimitUpPoolList(String date, String orderFiled, String orderBy) {
         List<LimitUpPoolResultBean> resultList = new ArrayList<>();
         String url = "https://data.10jqka.com.cn/dataapi/limit_up/limit_up_pool";
         Map<String, Object> param = new HashMap<>();
@@ -85,16 +84,16 @@ public class LimitUpPoolService {
         return resultList;
     }
 
-    public static void downloadLimitUpData() {
+    public static void downloadLimitUpData(String date) {
         try {
             FileWriter fw = new FileWriter("D:\\1stock\\昨日涨停.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
-            List<LimitUpPoolResultBean> list = getLimitUpPoolList("330323", "1");
+            List<LimitUpPoolResultBean> list = getLimitUpPoolList(date, "330323", "1");
             for (LimitUpPoolResultBean dataBean : list) {
 
-                bw.write(dataBean.getCode() + " " + dataBean.getName() + " "+dataBean.getFirstTime());
+                bw.write(dataBean.getCode() + " " + dataBean.getName() + " " + dataBean.getFirstTime());
                 bw.newLine();
             }
 

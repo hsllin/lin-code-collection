@@ -28,11 +28,10 @@ public class LimitDownPoolService {
         String today = DateUtil.format(DateUtil.date(), DateFormatEnum.DATE_WITH_OUT_LINE.getValue());
         String beforeDay = DateUtils.getBeforeDay(DateFormatEnum.DATE_WITH_OUT_LINE);
         String yesterDay = DateUtils.getYesterday(DateFormatEnum.DATE_WITH_OUT_LINE);
-        getLimitDownPoolList("", "");
+        getLimitDownPoolList(today, "", "");
     }
 
-    public static List<LimitDownPoolResultBean> getLimitDownPoolList(String orderFiled, String orderBy) {
-        String date = CommonUtils.getTradeDay(0);
+    public static List<LimitDownPoolResultBean> getLimitDownPoolList(String date, String orderFiled, String orderBy) {
         List<LimitDownPoolResultBean> resultList = new ArrayList<>();
         String url = "https://data.10jqka.com.cn/dataapi/limit_up/lower_limit_pool";
         Map<String, Object> param = new HashMap<>();
@@ -82,13 +81,13 @@ public class LimitDownPoolService {
         return resultList;
     }
 
-    public static void downloadLimitDownData() {
+    public static void downloadLimitDownData(String date) {
         try {
             FileWriter fw = new FileWriter("D:\\1stock\\昨日跌停.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
-            List<LimitDownPoolResultBean> list = getLimitDownPoolList("330323", "1");
+            List<LimitDownPoolResultBean> list = getLimitDownPoolList(date, "330323", "1");
             for (LimitDownPoolResultBean dataBean : list) {
 
                 bw.write(dataBean.getCode() + " " + dataBean.getName() + " " + dataBean.getFirstTime());

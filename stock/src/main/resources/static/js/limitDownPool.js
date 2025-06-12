@@ -1,8 +1,9 @@
 let sortDirections = Array(9).fill(true); // 初始排序方向
 $(function () {
     document.getElementById('pool').innerHTML = '';
+    document.getElementById('pool').innerHTML = 'industry-item-up';
     getLimitPoolData('330324', '');
-
+    getOpenLimitDownData();
 })
 
 function downLoadData() {
@@ -59,6 +60,45 @@ function buildLimitPoolDataHtml(data) {
   `
     });
     document.getElementById('pool').innerHTML = htmlArray.join('');
+}
+
+function getOpenLimitDownData() {
+    $.ajax({
+
+        type: "get",
+
+        url: "openLimitDown",
+
+        data: {
+
+            type: "1"
+
+        },
+
+        success: function (data) {
+            buildOpenLimitDownHtml(data);
+        }
+
+    });
+}
+
+function buildOpenLimitDownHtml(data) {
+    const htmlArray = data.map(stock => {
+        const buyNum = stock.buyNum;
+        const code = buyNum >= 3 ? 'hight' : buyNum >= 1 ? 'code' : '';
+
+        // 判断条件
+        const icon = buyNum > 0.8 ? '🔥' : "";
+        return `
+    <div class="stock-item">
+   
+        <span>${stock.time}</span>
+        <span class="${code}">${icon} ${stock.n}(${stock.c})</span>
+        <span class="positive">${stock.percent}元</span>
+    </div>
+  `
+    });
+    document.getElementById('industry-item-up').innerHTML = htmlArray.join('');
 }
 
 

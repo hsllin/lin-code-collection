@@ -33,6 +33,17 @@ public class CommonUtils {
     }
 
     /**
+     * 签到率格式化
+     *
+     * @param totalPrice
+     * @return
+     */
+    public static double formatStringPrice(String totalPrice) {
+        BigDecimal bg = new BigDecimal(totalPrice).setScale(2, RoundingMode.UP);
+        return bg.doubleValue();
+    }
+
+    /**
      * 获取今天index为0
      *
      * @param index

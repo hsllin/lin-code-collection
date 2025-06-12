@@ -9,38 +9,45 @@
         .concept-card {
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             padding: 15px;
         }
+
         .concept-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
+
         .concept-title {
             font-size: 18px;
             color: #737070;
             font-weight: bold;
         }
+
         .change-rate {
             color: #737070;
             font-weight: bold;
         }
+
         .stock-table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .stock-table th {
             background: #f8f9fa;
             padding: 10px;
             text-align: left;
         }
+
         .stock-table td {
             padding: 10px;
             border-bottom: 1px solid #eee;
         }
+
         /*.reason-info {*/
         /*    max-width: 300px;*/
         /*    white-space: pre-wrap;*/
@@ -54,11 +61,13 @@
             border-color: #0c91f8;
             margin: 2px;
         }
+
         .limit-up {
             color: #737070;
             font-weight: bold;
         }
-         刷新按钮样式
+
+        刷新按钮样式
         .refresh-btn {
             padding: 10px 15px;
             background: #0c91f8; /* 主色调绿色 */
@@ -101,7 +110,7 @@
             transform: translateX(-50%);
             width: 300px;
             background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             border-radius: 6px;
             padding: 12px;
             font-size: 0.9em;
@@ -130,7 +139,7 @@
             max-width: 600px;
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             padding: 20px;
             z-index: 1000;
         }
@@ -159,6 +168,28 @@
             color: #666;
         }
 
+        .action-btn {
+            background: #4a6fa5;
+            color: #e5effa;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(74, 111, 165, 0.3);
+            margin: 10px 12px;
+        }
+
+        .action-btn:hover {
+            background: #3a5f8f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(74, 111, 165, 0.4);
+        }
+
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
@@ -167,17 +198,18 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-
+    <h2 id="time" style="text-align: center">一键复盘</h2>
     <div class="container">
-        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 class="date-header" id="time" style="margin: 0;">一键复盘</h2>
-            <div>
-                <a href="javascript:;" onclick="downloadAllData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
-                    <i class="fa fa-refresh"></i> 导出
-                </a>
-            </div>
-        </div>
+        <div class="header-toolbar">
 
+            <a href="javascript:;" onclick="downloadAllData()" class="action-btn" title="导出"
+               style="margin-left: 10px;">
+                <i class="fa fa-refresh"></i> 导出
+            </a>
+            <a href="javascript:;" onclick="sysStockData()" class="action-btn" title="导出" style="margin-left: 10px;">
+                <i class="fa fa-refresh"></i> 同步stock
+            </a>
+        </div>
 
 
     </div>

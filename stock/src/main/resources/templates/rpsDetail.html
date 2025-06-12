@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/rpsDetail.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+
+        .filter-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .filter-container label {
+            margin-right: 10px;
+        }
+
+        .filter-container input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .filter-container .active {
+            color: #1890ff;
+            font-weight: bold;
+        }
+
+        .stock-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .stock-tabs span {
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .stock-tabs .tab {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .stock-tabs .tab.active {
+            color: #1890ff;
+        }
+
+        .panel {
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .panel-actions button {
+            padding: 6px 12px;
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .panel-content {
+            padding: 0 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #fafafa;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            position: relative;
+        }
+
+        th:hover {
+            background-color: #f0f0f0;
+        }
+
+        th.active {
+            background-color: #e6f7ff;
+        }
+
+        th.active::after {
+            content: "";
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #1890ff;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        th.active.desc::after {
+            border-bottom: none;
+            border-top: 5px solid #1890ff;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #fafafa;
+        }
+
+        tr:hover {
+            background-color: #f0f5ff;
+        }
+
+        .stock-code {
+            font-family: monospace;
+        }
+
+        .positive {
+            color: #20c0f3;
+        }
+
+        .negative {
+            color: #52c41a;
+        }
+
+        .operation-btn {
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <!-- 如果需要在 JavaScript 中使用 -->
+    <input id="blockName" type="hidden" th:value="${blockName}"/>
+
+    <div class="clearfix"></div>
+    <div class="container">
+<!--        <div class="filter-container">-->
+<!--            <span>股票范围：</span>-->
+<!--            <label><input type="radio" name="stock-range"> 全部</label>-->
+<!--            <label><input type="radio" name="stock-range" class="active"> 基金+北向</label>-->
+<!--        </div>-->
+
+<!--        <div class="stock-tabs">-->
+<!--            <span>股票列表 总件数: 14</span>-->
+<!--            <div>-->
+<!--                <label><input type="checkbox" class="active"> 主板</label>-->
+<!--                <label><input type="checkbox" class="active"> 创业板</label>-->
+<!--                <label><input type="checkbox" class="active"> 科创板</label>-->
+<!--                <label><input type="checkbox" class="active"> 北交所</label>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="panel">
+<!--            <div class="panel-header">-->
+<!--                <div class="panel-title"></div>-->
+<!--                <div class="panel-actions">-->
+<!--                    <button>刷新页面</button>-->
+<!--                    <button>↑</button>-->
+<!--                    <button>↓</button>-->
+<!--                    <button>⚙</button>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="panel-content">
+                <div class="table-container">
+                    <table id="mainTable">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>代码</th>
+                            <th>名称</th>
+                            <th>收盘价</th>
+                            <th>涨跌幅</th>
+                            <th>成交额</th>
+                            <th>总市值</th>
+                            <th>行业</th>
+                            <th>RPS10</th>
+                            <th>RPS20</th>
+                            <th>RPS50</th>
+                            <th>RPS120</th>
+                            <th>RPS250</th>
+                        </tr>
+                        </thead>
+                        <tbody id="dataTable">
+                        <tr>
+                            <td>1</td>
+                            <td>833171</td>
+                            <td>国航远洋</td>
+                            <td>12.35</td>
+                            <td class="positive">30.00%</td>
+                            <td>13.6亿</td>
+                            <td>69亿</td>
+                            <td>水运</td>
+                            <td>99.83</td>
+                            <td>98.8</td>
+                            <td>99.49</td>
+                            <td>96.05</td>
+                            <td>98.26</td>
+                            <td>
+                                <button class="operation-btn">加自选</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>601866</td>
+                            <td>中远海发</td>
+                            <td>2.61</td>
+                            <td class="positive">10.13%</td>
+                            <td>8.5亿</td>
+                            <td>349亿</td>
+                            <td>水运</td>
+                            <td>89.9</td>
+                            <td>80</td>
+                            <td>82.58</td>
+                            <td>51.64</td>
+                            <td>43.64</td>
+                            <td>
+                                <button class="operation-btn">加自选</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>601083</td>
+                            <td>锦江航运</td>
+                            <td>12.99</td>
+                            <td class="positive">9.99%</td>
+                            <td>10.0亿</td>
+                            <td>168亿</td>
+                            <td>水运</td>
+                            <td>95.64</td>
+                            <td>90.65</td>
+                            <td>96.83</td>
+                            <td>88.56</td>
+                            <td>66.19</td>
+                            <td>
+                                <button class="operation-btn">加自选</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>600428</td>
+                            <td>中远海特</td>
+                            <td>6.88</td>
+                            <td class="positive">7.17%</td>
+                            <td>8.3亿</td>
+                            <td>189亿</td>
+                            <td>水运</td>
+                            <td>90.99</td>
+                            <td>78.59</td>
+                            <td>81.79</td>
+                            <td>38.15</td>
+                            <td>49.39</td>
+                            <td>
+                                <button class="operation-btn">加自选</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>001205</td>
+                            <td>盛航股份</td>
+                            <td>17.98</td>
+                            <td class="positive">5.76%</td>
+                            <td>2.3亿</td>
+                            <td>34亿</td>
+                            <td>水运</td>
+                            <td>60.03</td>
+                            <td>59.84</td>
+                            <td>60.33</td>
+                            <td>16.16</td>
+                            <td>40.78</td>
+                            <td>
+                                <button class="operation-btn">加自选</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+</body>
+
+
+</html>

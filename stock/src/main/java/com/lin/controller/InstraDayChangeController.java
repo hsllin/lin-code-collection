@@ -47,4 +47,24 @@ public class InstraDayChangeController {
         return ResponseEntity.ok(stockList);
     }
 
+    @RequestMapping("/sixtyChange")
+    public ResponseEntity<List<IntradayChange.DataBean.AllstockBean>> sixtyChange(HttpServletRequest request, Model model) {
+        String type = request.getParameter("type");
+        List<IntradayChange.DataBean.AllstockBean> stockList = new ArrayList<>();
+        if (type.equals("1")) {
+            stockList = intraDayChangeService.getSixtyDayList(IntraDayChangeService.SIXTY_DAY);
+        }
+        CollectionUtil.reverse(stockList);
+        return ResponseEntity.ok(stockList);
+    }
+
+    @RequestMapping("/openLimitDown")
+    public ResponseEntity<List<IntradayChange.DataBean.AllstockBean>> openLimitDown(HttpServletRequest request, Model model) {
+        String type = request.getParameter("type");
+        List<IntradayChange.DataBean.AllstockBean> stockList = new ArrayList<>();
+        stockList = intraDayChangeService.openLimitDown(IntraDayChangeService.OPEN_LIMIT_DOWN);
+        CollectionUtil.reverse(stockList);
+        return ResponseEntity.ok(stockList);
+    }
+
 }

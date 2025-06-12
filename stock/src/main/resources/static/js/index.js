@@ -14,6 +14,21 @@ function downloadAllData() {
     });
 }
 
+function sysStockData() {
+    $.ajax({
+
+        type: "get",
+
+        url: "sysStockData",
+
+        data: {},
+
+        success: function (data) {
+        }
+
+    });
+}
+
 
 
 

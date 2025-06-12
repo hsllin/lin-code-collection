@@ -46,6 +46,7 @@ public class VolumeTrendServiceImpl extends ServiceImpl<VolumeTrendMapper, Volum
         Integer aUp = Integer.valueOf(moneyBean.getAUp());
         Integer bUp = Integer.valueOf(moneyBean.getBDown());
         String today = CommonUtils.getTradeDay(0);
+        today="20250523";
         List<LianBanBean.DataBean> lianbanList = lianBanChiService.lianBan(today);
 
         bean.setVolume(moneyBean.getTotalOriginalMoney());
@@ -72,7 +73,7 @@ public class VolumeTrendServiceImpl extends ServiceImpl<VolumeTrendMapper, Volum
                 bean.setLimit4(lianban.getStockList().size());
             }
             if (lianban.getLimitNum() >= 5) {
-                bean.setLimit5(bean.getLimit5() + lianban.getStockList().size());
+                bean.setLimit5(bean.getLimit5() == null ? 0 : bean.getLimit5() + lianban.getStockList().size());
             }
         }
 

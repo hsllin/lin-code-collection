@@ -2,6 +2,7 @@ package com.lin.controller;
 
 import com.lin.bean.lianban.LimitDownPoolResultBean;
 import com.lin.service.LimitDownPoolService;
+import com.lin.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,8 @@ public class LimitDownPoolController {
     public ResponseEntity<List<LimitDownPoolResultBean>> list(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
-        List<LimitDownPoolResultBean> list = limitDownPoolService.getLimitDownPoolList(orderFiled, orderBy);
+        String date = CommonUtils.getTradeDay(0);
+        List<LimitDownPoolResultBean> list = limitDownPoolService.getLimitDownPoolList(date,orderFiled, orderBy);
 
 //        CollectionUtil.reverse(list);
         return ResponseEntity.ok(list);
@@ -33,7 +35,8 @@ public class LimitDownPoolController {
     public ResponseEntity<Boolean> downloadLimitUpData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
-        limitDownPoolService.downloadLimitDownData();
+        String date = CommonUtils.getTradeDay(0);
+        limitDownPoolService.downloadLimitDownData(date);
 
         return ResponseEntity.ok(true);
     }

@@ -1,7 +1,6 @@
 package com.lin.bean.stockknow;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,12 +14,13 @@ import java.util.Date;
  * @create 2025-04-21 16:28
  */
 @Data
-
+@TableName("stock_market")
 public class StockMarket {
-    private String id;
+    @TableId
+    private String code;
     private String name;
     private String description;
-    private String main_business;
+    private String mainBusiness;
     private String location;
     private String profitLoss;
     private String delistingRisk;

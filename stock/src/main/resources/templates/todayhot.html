@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!-- 引入Bootstrap -->
+<!--    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/dayhot.js"></script>
+    <script type="text/javascript" src="/js/chart.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            color: #333;
+        }
+
+        /*.container {*/
+        /*    max-width: 800px;*/
+        /*    margin: 0 auto;*/
+        /*    position: relative;*/
+        /*}*/
+
+        header {
+            background-color: rgba(71, 182, 226, 0.79);
+            color: #fff;
+            padding: 15px 20px 40px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .date {
+            /*position: absolute;*/
+            /*bottom: 20px;*/
+            /*left: 20px;*/
+            /*display: flex;*/
+            /*align-items: center;*/
+            /*font-size: 14px;*/
+            display: inline-block;
+            margin: 0 1.6rem;
+            padding: .5rem .6rem;
+            border-radius: .4rem;
+            position: relative;
+        }
+
+        .date-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin-right: 5px;
+            border-radius: 2px;
+        }
+
+        .theme-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .theme-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .theme-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3caee0;
+            margin-right: 10px;
+        }
+
+        .theme-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .zhangting {
+            background-color: #3caee0;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .hot-badge {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            background-color: #3caee0;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .theme-title {
+            font-size: 18px;
+            margin: 15px 0;
+            font-weight: normal;
+        }
+
+        .theme-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stock-list, .k-line {
+            flex: 1;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 5px;
+        }
+
+        .stock-list h3, .k-line h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .stock-list ul {
+            list-style: none;
+        }
+
+        .stock-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+
+        .stock-name {
+            font-size: 14px;
+        }
+
+        .stock-percent {
+            color: #3caee0;
+            font-size: 14px;
+        }
+
+        .k-line {
+            position: relative;
+        }
+
+        .chart-container {
+            height: 130px;
+            width: 100%;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .cumulate-percent {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #3caee0;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .arrow-icon {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            width: 120px;
+            height: 120px;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <header>
+        <h1>今天hot</h1>
+        <p>市场炒作事件逻辑梳理、热度发酵</p>
+<!--        <div class="date">-->
+<!--            <span class="date-icon"></span>-->
+<!--            <span id="date">2025-05-20</span>-->
+<!--        </div>-->
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjUsMTUgQzI1LDEwIDM1LDUgNTUsNSBDMzUsMTAgNDUsMTUgNDUsMjUgQzQ1LDM1IDM1LDQwIDM1LDUwIEMzNSw2MCA0NSw2NSA1NSw2NSBDMzUsNjUgMjUsNTAgMjUsMzUgQzI1LDIwIDIwLDE1IDI1LDE1IFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRjY2MiIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=" class="arrow-icon" alt="Arrow Icon">
+    </header>
+    <div class="container" id="mainData">
+        <section class="theme-item">
+            <div class="theme-header">
+                <span class="theme-number">1</span>
+                <span class="theme-name">并购重组</span>
+                <span class="zhangting">涨停4</span>
+            </div>
+            <span class="hot-badge">持续火爆</span>
+            <h2 class="theme-title">重磅利好！一图梳理并购重组概念</h2>
+            <div class="theme-content">
+                <div class="stock-list">
+                    <h3>相关个股</h3>
+                    <ul>
+                        <li>
+                            <span class="stock-name">五新隧装</span>
+                            <span class="stock-percent">20.45%</span>
+                        </li>
+                        <li>
+                            <span class="stock-name">旭杰科技</span>
+                            <span class="stock-percent">11.61%</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="k-line">
+                    <h3>近30日涨幅</h3>
+                    <div class="chart-container">
+                        <canvas id="chart1" width="300" height="130"></canvas>
+                        <div class="cumulate-percent">5.85%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+
+
+</html>

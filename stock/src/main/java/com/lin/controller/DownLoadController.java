@@ -27,18 +27,23 @@ public class DownLoadController {
     @Autowired
     ZhaBanChiService zhaBanChiService;
 
+    @Autowired
+    IncreaseAndDecreaseService increaseAndDecreaseService;
+
 
     @RequestMapping("/downloadAllData")
     public ResponseEntity<Boolean> downloadAllData(HttpServletRequest request, Model model) {
         String dateIndex = "0";
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));
-
+//        date="20250523";
         strongStockService.downloadStrongSrockData(date);
-        limitUpPoolService.downloadLimitUpData();
-        limitDownPoolService.downloadLimitDownData();
+        limitUpPoolService.downloadLimitUpData(date);
+        limitDownPoolService.downloadLimitDownData(date);
         lianBanChiService.downloadData(date);
         volumeTrendService.saveOrUpdateData();
         zhaBanChiService.downloadData(date);
+        increaseAndDecreaseService.downloadTrendData();
+        increaseAndDecreaseService.generateTrendDataPhoto();
         return ResponseEntity.ok(true);
     }
 }

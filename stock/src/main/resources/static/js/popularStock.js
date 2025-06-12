@@ -53,6 +53,8 @@ function buildPopularHotStockHtml(data) {
                 </div>`
 
     data.forEach((stock, stockIndex) => {
+            const showAnalyze = stock.analyse == null ? 'hidden' : '';
+            const showAnalyseTitle = stock.analyse_title == null ? 'hidden' : '';
             htmlArray += `  
            <!-- 股票条目 -->
                 <div class="stock-item">
@@ -72,11 +74,11 @@ function buildPopularHotStockHtml(data) {
                                 <span class="populartag">${tag}</span>`
             });
             htmlArray += `   </div>
-                    <div class="hot-reason">
+                    <div class="hot-reason ${showAnalyze}">
                         ${stock.analyse}
                     </div>
                     <div class="hot-reason">
-                    <span class="populartag"> ${stock.analyse_title}</span>
+                    <span class="populartag ${showAnalyseTitle}"> ${stock.analyse_title}</span>
                     </div>
                 </div>`;
         }
@@ -98,6 +100,7 @@ function buildPopularRiseStockHtml(data) {
                 </div>`
 
     data.forEach((stock, stockIndex) => {
+            const showPopularTag = stock.popularity_tag == null ? 'hidden' : '';
             htmlArray += `  
            <!-- 股票条目 -->
                 <div class="stock-item">
@@ -110,12 +113,14 @@ function buildPopularRiseStockHtml(data) {
                         <span class="heat">${safeToFixed(stock.rate / 10000)}万热度</span>
                     </div>
                     <div class="tag-group">
-                        <span class="populartag">${stock.tag.popularity_tag}</span>`;
-            tagList = stock.tag.concept_tag;
-            tagList.forEach((tag, tagIndex) => {
-                htmlArray += `
+                        <span class="populartag ${showPopularTag}">${stock.tag == null ? '' : stock.tag.popularity_tag}</span>`;
+            if (stock.tag != null && stock.tag.concept_tag != null) {
+                stock.tag.concept_tag.forEach((tag, tagIndex) => {
+                    htmlArray += `
                                 <span class="populartag">${tag}</span>`
-            });
+                });
+            }
+
             htmlArray += `   </div>
                 </div>`;
         }
@@ -218,6 +223,8 @@ function buildPopularIndustryHtml(data) {
                 </div>`
 
     data.forEach((stock, stockIndex) => {
+            const showHotTag = stock.hot_tag == null ? 'hidden' : '';
+            const showPopularTag = stock.tag == null ? 'hidden' : '';
             htmlArray += `  
            <!-- 股票条目 -->
                 <div class="stock-item">
@@ -225,13 +232,13 @@ function buildPopularIndustryHtml(data) {
                         <div>
                             <span class="stock-rank">${stock.order}</span>
                             <span class="stock-name">${stock.name}-${stock.code}</span>
-                            <span class="stock-change change-up">${safeToFixed(stock.etf_rise_and_fall)}%</span>
+                            <span class="stock-change change-up">${safeToFixed(stock.rise_and_fall)}%</span>
                         </div>
                         <span class="heat">${safeToFixed(stock.rate / 10000)}万热度</span>
                     </div>
                     <div class="tag-group">
-                        <span class="populartag">${stock.hot_tag}</span>
-                        <span class="populartag">${stock.tag}</span>
+                        <span class="populartag ${showHotTag}">${stock.hot_tag}</span>
+                        <span class="populartag ${showPopularTag}">${stock.tag}</span>
                     </div>
                 </div>`;
         }
@@ -253,6 +260,8 @@ function buildPopularHotConceptHtml(data) {
                 </div>`
 
     data.forEach((stock, stockIndex) => {
+            const showHotTag = stock.hot_tag == null ? 'hidden' : '';
+            const showPopularTag = stock.tag == null ? 'hidden' : '';
             htmlArray += `  
            <!-- 股票条目 -->
                 <div class="stock-item">
@@ -260,13 +269,13 @@ function buildPopularHotConceptHtml(data) {
                         <div>
                             <span class="stock-rank">${stock.order}</span>
                             <span class="stock-name">${stock.name}-${stock.code}</span>
-                            <span class="stock-change change-up">${safeToFixed(stock.etf_rise_and_fall)}%</span>
+                            <span class="stock-change change-up">${safeToFixed(stock.rise_and_fall)}%</span>
                         </div>
                         <span class="heat">${safeToFixed((stock.rate / 10000))}万热度</span>
                     </div>
                     <div class="tag-group">
-                        <span class="populartag">${stock.hot_tag}</span>
-                        <span class="populartag">${stock.tag}</span>
+                        <span class="populartag ${showHotTag}">${stock.hot_tag}</span>
+                        <span class="populartag ${showPopularTag}">${stock.tag}</span>
                     </div>
                 </div>`;
         }
@@ -281,8 +290,7 @@ function getPopularHotDongCaiData() {
 
         type: "get",
         url: "getDongCaiPopularStocktList",
-        data: {
-        },
+        data: {},
 
         success: function (data) {
             console.log(data)
@@ -309,7 +317,7 @@ function buildPopularDongCaiHtml(data) {
                 <div class="stock-item">
                     <div class="stock-header">
                         <div>
-                            <span class="stock-rank">${stockIndex+1}</span>
+                            <span class="stock-rank">${stockIndex + 1}</span>
                             <span class="stock-name">${stock.f14}-${stock.f12}</span>
                             <span class="stock-change change-up">${safeToFixed(stock.f3)}%</span>
                         </div>

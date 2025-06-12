@@ -42,17 +42,20 @@ function buildLianBanChiListHtml(data) {
             
 `
             group.stockList.forEach((stock, stockIndex) => {
-
+                console.log(stock.concept)
                 tagList = splitByPlus(stock.concept);
 
                 htmlArray += ` <tr>
                     <td>${stock.name}(${stock.code})</td>
                     <td class="price">${stock.price}</td>
                     <td>`
-                tagList.forEach((tag, tagIndex) => {
-                    htmlArray += `
+                if (tagList){
+                    tagList.forEach((tag, tagIndex) => {
+                        htmlArray += `
                         <span class="concept-tag">${tag}</span>`
-                });
+                    });
+                }
+
 
                 htmlArray += ` </td>
                         <td class="time">${stock.firstTime}</td>
@@ -100,5 +103,8 @@ function updateSortIndicator(column) {
 
 function splitByPlus(str) {
     // 使用 split 方法按 '+' 分隔字符串
+    if (null==str){
+        return '';
+    }
     return str.split('+');
 }

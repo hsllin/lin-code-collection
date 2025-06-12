@@ -58,7 +58,7 @@ public class ZhaBanChiService {
     public static void downloadData(String date) {
 
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\炸板池_" + DateUtils.transferFormatTime(date, DateFormatEnum.DATE_WITH_OUT_LINE, DateFormatEnum.DATE) + ".txt");
+            FileWriter fw = new FileWriter("D:\\1stock\\炸板池.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/stockStudy.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #1E3A7B;  /* 同花顺标志色 */
+            --border-radius: 4px;
+            --spacing: 0.8rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f5f6f8;
+            padding: 1rem;
+            color: #333;
+        }
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 0 auto;*/
+        /*}*/
+
+        /* 按钮样式 */
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary:hover {
+            background: #2c4d8b;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow-y: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 700px;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* 表单布局 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            padding: 0.6rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+        }
+
+        /* 可搜索多选组件 */
+        .search-select {
+            position: relative;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            background: white;
+        }
+
+        .search-input {
+            width: 100%;
+            border: none;
+            padding: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .options {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .option-item {
+            padding: 0.3rem 0.5rem;
+            cursor: pointer;
+        }
+
+        .option-item:hover {
+            background: #f0f0f0;
+        }
+
+        /* 数据表格 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85rem;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+        }
+
+        .delete-btn {
+            color: red;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        /* 分页控件 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .page-item {
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: background 0.3s;
+        }
+
+        .page-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .page-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid transparent;
+        }
+
+        .delete-btn {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .delete-btn:hover {
+            background-color: #ffcdd2;
+            border-color: #c62828;
+        }
+
+        .edit-btn {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .edit-btn:hover {
+            background-color: #bbdefb;
+            border-color: #1565c0;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .btn-action {
+                padding: 4px 8px;
+                font-size: 14px;
+            }
+
+            .action-buttons {
+                gap: 4px;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container">
+        <button class="btn-primary" onclick="openModal()">+ 新增股票</button>
+
+        <!-- 数据展示表格 -->
+        <div class="table-container" style="overflow-x:auto;">
+            <table class="data-table" id="dataTable">
+                <thead>
+                <tr>
+                    <th>代码</th>
+                    <th>名称</th>
+                    <th>主营业务</th>
+                    <th>所属板块</th>
+                    <th>概念</th>
+                    <th>金额(亿)</th>
+                    <th>所属地区</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- 分页控件 -->
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- 录入模态框 -->
+    <div class="modal" id="stockModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>股票信息录入</h2>
+            <form id="stockForm" novalidate>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="stockCode">股票代码</label>
+                        <input type="text" id="stockCode" list="codeSuggestions" required>
+                        <datalist id="codeSuggestions">
+                            <!-- 动态填充建议 -->
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stockName">股票名称</label>
+                        <input type="text" id="stockName" list="nameSuggestions" required>
+                        <datalist id="nameSuggestions">
+                            <!-- 动态填充建议 -->
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="business">主营业务（300字以上）</label>
+                    <textarea id="business" rows="5" required></textarea>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>所属板块（可多选）</label>
+                        <div class="search-select" onclick="toggleOptions('board')">
+                            <input type="text" class="search-input" placeholder="搜索板块..."
+                                   oninput="filterOptions('board', this.value)">
+                            <div class="options" id="boardOptions">
+                                <!-- 板块选项动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>包含概念（可多选）</label>
+                        <div class="search-select" onclick="toggleOptions('concept')">
+                            <input type="text" class="search-input" placeholder="搜索概念..."
+                                   oninput="filterOptions('concept', this.value)">
+                            <div class="options" id="conceptOptions">
+                                <!-- 概念选项动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="amount">股票金额(亿)</label>
+                        <input type="number" id="amount" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="region">所属地区</label>
+                        <input type="text" id="region" list="regionSuggestions" required>
+                        <datalist id="regionSuggestions">
+                            <option value="北京">
+                            <option value="上海">
+                            <option value="深圳">
+                            <option value="杭州">
+                        </datalist>
+                    </div>
+                </div>
+
+                <div style="margin-top:1.5rem;">
+                    <button type="submit" class="btn-primary">提交</button>
+                    <button type="reset" class="btn-primary" style="margin-left:1rem;background:#6c757d;">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--<script>-->
+<!--    // 模拟数据存储-->
+<!--    let stockData = [];-->
+<!--    const itemsPerPage = 10;-->
+<!--    let currentPage = 1;-->
+
+<!--    // 板块/概念数据（示例）-->
+<!--    const boardOptions = ['科技','金融','医疗','消费','新能源','半导体','人工智能','生物医药','新材料','军工','环保','房地产','传媒','教育','旅游','物流','农业','汽车','电力','通信'];-->
+<!--    const conceptOptions = ['AI','5G','区块链','元宇宙','碳中和','新能源车','光伏','芯片','大数据','云计算','物联网','机器人','智能驾驶','VR/AR','数字经济','生物医药','消费升级','乡村振兴','绿色能源','量子计算'];-->
+
+<!--    // 初始化多选组件-->
+<!--    function initMultiSelect() {-->
+<!--        const boardContainer = document.getElementById('boardOptions');-->
+<!--        const conceptContainer = document.getElementById('conceptOptions');-->
+
+<!--        boardOptions.forEach(option => {-->
+<!--            const div = document.createElement('div');-->
+<!--            div.className = 'option-item';-->
+<!--            div.innerHTML = `-->
+<!--                    <label>-->
+<!--                        <input type="checkbox" value="${option}">-->
+<!--                        ${option}-->
+<!--                    </label>-->
+<!--                `;-->
+<!--            boardContainer.appendChild(div);-->
+<!--        });-->
+
+<!--        conceptOptions.forEach(option => {-->
+<!--            const div = document.createElement('div');-->
+<!--            div.className = 'option-item';-->
+<!--            div.innerHTML = `-->
+<!--                    <label>-->
+<!--                        <input type="checkbox" value="${option}">-->
+<!--                        ${option}-->
+<!--                    </label>-->
+<!--                `;-->
+<!--            conceptContainer.appendChild(div);-->
+<!--        });-->
+<!--    }-->
+
+<!--    // 多选组件控制-->
+<!--    function toggleOptions(type) {-->
+<!--        document.querySelectorAll('.options').forEach(el => {-->
+<!--            if (el.id !== type + 'Options') el.style.display = 'none';-->
+<!--        });-->
+<!--        document.getElementById(type + 'Options').style.display =-->
+<!--            document.getElementById(type + 'Options').style.display === 'block' ? 'none' : 'block';-->
+<!--    }-->
+
+<!--    function filterOptions(type, query) {-->
+<!--        const container = document.getElementById(type + 'Options');-->
+<!--        const items = container.getElementsByClassName('option-item');-->
+
+<!--        Array.from(items).forEach(item => {-->
+<!--            const text = item.textContent.toLowerCase();-->
+<!--            item.style.display = text.includes(query.toLowerCase()) ? 'block' : 'none';-->
+<!--        });-->
+<!--    }-->
+
+<!--    // 关闭多选组件-->
+<!--    document.addEventListener('click', function(e) {-->
+<!--        if (!e.target.closest('.search-select')) {-->
+<!--            document.querySelectorAll('.options').forEach(el => {-->
+<!--                el.style.display = 'none';-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+
+<!--    // 表单验证-->
+<!--    document.getElementById('stockForm').addEventListener('submit', function(e) {-->
+<!--        e.preventDefault();-->
+
+<!--        // 验证金额格式-->
+<!--        const amount = document.getElementById('amount').value;-->
+<!--        if (amount && !/^\d+(\.\d{1,2})?$/.test(amount)) {-->
+<!--            alert('请输入有效的金额（最多两位小数）');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        // 收集数据-->
+<!--        const stock = {-->
+<!--            code: document.getElementById('stockCode').value,-->
+<!--            name: document.getElementById('stockName').value,-->
+<!--            business: document.getElementById('business').value,-->
+<!--            board: getSelectedValues('board'),-->
+<!--            concepts: getSelectedValues('concepts'),-->
+<!--            amount: amount,-->
+<!--            region: document.getElementById('region').value-->
+<!--        };-->
+
+<!--        // 添加数据-->
+<!--        stockData.push(stock);-->
+<!--        closeModal();-->
+<!--        updateTable();-->
+<!--        this.reset();-->
+<!--    });-->
+
+<!--    function getSelectedValues(type) {-->
+<!--        const container = document.getElementById(type + 'Options');-->
+<!--        const checked = container.querySelectorAll('input[type="checkbox"]:checked');-->
+<!--        return Array.from(checked).map(cb => cb.value);-->
+<!--    }-->
+
+<!--    // 更新表格-->
+<!--    function updateTable() {-->
+<!--        const tbody = document.querySelector('#dataTable tbody');-->
+<!--        tbody.innerHTML = '';-->
+
+<!--        const start = (currentPage - 1) * itemsPerPage;-->
+<!--        const end = start + itemsPerPage;-->
+<!--        const pageData = stockData.slice(start, end);-->
+
+<!--        pageData.forEach((stock, index) => {-->
+<!--            const row = document.createElement('tr');-->
+<!--            row.innerHTML = `-->
+<!--                    <td>${stock.code}</td>-->
+<!--                    <td>${stock.name}</td>-->
+<!--                    <td title="${stock.business}">${stock.business.substring(0, 30)}${stock.business.length>30?'...':''}</td>-->
+<!--                    <td>${stock.board.join(', ')}</td>-->
+<!--                    <td>${stock.concepts.join(', ')}</td>-->
+<!--                    <td>${stock.amount}</td>-->
+<!--                    <td>${stock.region}</td>-->
+<!--                    <td><span class="delete-btn" onclick="deleteItem(${start + index})">🗑️</span></td>-->
+<!--                `;-->
+<!--            tbody.appendChild(row);-->
+<!--        });-->
+
+<!--        renderPagination();-->
+<!--    }-->
+
+<!--    function deleteItem(index) {-->
+<!--        if (confirm('确定要删除这条记录吗？')) {-->
+<!--            stockData.splice(index, 1);-->
+<!--            updateTable();-->
+<!--        }-->
+<!--    }-->
+
+<!--    // 分页渲染-->
+<!--    function renderPagination() {-->
+<!--        const pagination = document.getElementById('pagination');-->
+<!--        pagination.innerHTML = '';-->
+<!--        const totalPages = Math.ceil(stockData.length / itemsPerPage);-->
+
+<!--        // 上一页-->
+<!--        const prev = document.createElement('div');-->
+<!--        prev.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');-->
+<!--        prev.innerHTML = '«';-->
+<!--        prev.onclick = () => {-->
+<!--            if (currentPage > 1) {-->
+<!--                currentPage&#45;&#45;;-->
+<!--                updateTable();-->
+<!--            }-->
+<!--        };-->
+<!--        pagination.appendChild(prev);-->
+
+<!--        // 页码-->
+<!--        for (let i = 1; i <= totalPages; i++) {-->
+<!--            const btn = document.createElement('div');-->
+<!--            btn.className = 'page-item' + (currentPage === i ? ' active' : '');-->
+<!--            btn.textContent = i;-->
+<!--            btn.onclick = () => {-->
+<!--                currentPage = i;-->
+<!--                updateTable();-->
+<!--            };-->
+<!--            pagination.appendChild(btn);-->
+<!--        }-->
+
+<!--        // 下一页-->
+<!--        const next = document.createElement('div');-->
+<!--        next.className = 'page-item' + (currentPage === totalPages || totalPages === 0 ? ' disabled' : '');-->
+<!--        next.innerHTML = '»';-->
+<!--        next.onclick = () => {-->
+<!--            if (currentPage < totalPages) {-->
+<!--                currentPage++;-->
+<!--                updateTable();-->
+<!--            }-->
+<!--        };-->
+<!--        pagination.appendChild(next);-->
+<!--    }-->
+
+<!--    // 模态框控制-->
+<!--    function openModal() {-->
+<!--        document.getElementById('stockModal').style.display = 'block';-->
+<!--    }-->
+
+<!--    function closeModal() {-->
+<!--        document.getElementById('stockModal').style.display = 'none';-->
+<!--        document.getElementById('stockForm').reset();-->
+<!--        document.querySelectorAll('.options').forEach(el => el.style.display = 'none');-->
+<!--    }-->
+
+<!--    // 页面加载初始化-->
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--        initMultiSelect();-->
+<!--        // 可选：加载示例数据-->
+<!--        // stockData.push(...);-->
+<!--        updateTable();-->
+<!--    });-->
+<!--</script>-->
+</body>
+
+
+</html>

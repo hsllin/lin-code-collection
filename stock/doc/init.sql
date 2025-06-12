@@ -111,3 +111,35 @@ CREATE TABLE `stock` (
                          UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE stock ADD COLUMN `concepts` VARCHAR(1000) DEFAULT '' COMMENT  '概念';
+
+ALTER TABLE stock ADD COLUMN `industry` VARCHAR(1000) DEFAULT '' COMMENT  '行业';
+
+ALTER TABLE stock ADD COLUMN `main_business` VARCHAR(1000) DEFAULT '' COMMENT  '主营业务';
+
+ALTER TABLE stock ADD COLUMN `company_introduce` VARCHAR(4000) DEFAULT '' COMMENT  '公司介绍';
+
+
+ALTER TABLE stock ADD COLUMN `study_time` date DEFAULT null COMMENT  '学习时间';
+
+
+ALTER TABLE stock ADD COLUMN `study_status` VARCHAR(1000) DEFAULT '0' COMMENT  '学习状态';
+
+ALTER TABLE stock ADD COLUMN `market_cap` VARCHAR(32) DEFAULT '0' COMMENT  '市值';
+ALTER TABLE stock ADD COLUMN `market_value` VARCHAR(32) DEFAULT '0' COMMENT  '流通市值';
+ALTER TABLE stock ADD COLUMN `profit_loss` VARCHAR(2) DEFAULT '0' COMMENT  '盈亏状况，1是盈利，2是亏损';
+ALTER TABLE stock ADD COLUMN `price` VARCHAR(12) DEFAULT '0' COMMENT  '股价';
+
+ALTER TABLE stock ADD COLUMN `company_location` VARCHAR(200) DEFAULT '' COMMENT  '公司地址';
+ALTER TABLE stock ADD COLUMN `pe` VARCHAR(200) DEFAULT '' COMMENT  'PE';
+ALTER TABLE stock ADD COLUMN `description` VARCHAR(2000) DEFAULT '' COMMENT  '备注';
+ALTER TABLE stock ADD COLUMN `rate` VARCHAR(10) DEFAULT '' COMMENT  '涨跌幅';
+
+CREATE TABLE `stock_today` (
+                               `code` VARCHAR(24) NOT NULL COMMENT '股票编码',
+                               `create_date` date DEFAULT NULL,
+                               `update_date` date DEFAULT NULL,
+                               PRIMARY KEY (`code`),
+                               UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+

@@ -107,8 +107,13 @@ public class StrongStockService {
     public static void downloadStrongSrockData(String date) {
         try {
             FileWriter fw = new FileWriter("D:\\1stock\\最强风口.txt");
+            FileWriter oneFw = new FileWriter("D:\\1stock\\一板.txt");
+            FileWriter twoFw = new FileWriter("D:\\1stock\\二板以上.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
+            BufferedWriter oneBw = new BufferedWriter(oneFw);
+            BufferedWriter twoBw = new BufferedWriter(twoFw);
+
             Set<String> codeSet = new HashSet<>();
 
             List<StrongStockBean.DataBean> list = getStrongStockList(date);
@@ -133,19 +138,35 @@ public class StrongStockService {
             }
             for (Map.Entry<Integer, List<StrongStockBean.DataBean.StockListBean>> entry : map.entrySet()) {
                 bw.write(entry.getKey() + "连板:");
+                oneBw.write(entry.getKey() + "连板:");
+                twoBw.write(entry.getKey() + "连板:");
+
                 bw.newLine();
+                oneBw.newLine();
+                twoBw.newLine();
                 List<StrongStockBean.DataBean.StockListBean> stockListBeanList = entry.getValue();
                 for (StrongStockBean.DataBean.StockListBean stockListBean : stockListBeanList) {
                     bw.write(stockListBean.getName() + "(" + stockListBean.getCode() + ") " + "价格：" + stockListBean.getLatest() + " 概念：" + stockListBean.getReason_type() + " 涨停时间：" + stockListBean.getFirstTime());
                     bw.newLine();
+                    if (entry.getKey() == 1) {
+                        oneBw.write(stockListBean.getName() + "(" + stockListBean.getCode() + ") " + "价格：" + stockListBean.getLatest() + " 概念：" + stockListBean.getReason_type() + " 涨停时间：" + stockListBean.getFirstTime());
+                        oneBw.newLine();
+                    } else {
+                        twoBw.write(stockListBean.getName() + "(" + stockListBean.getCode() + ") " + "价格：" + stockListBean.getLatest() + " 概念：" + stockListBean.getReason_type() + " 涨停时间：" + stockListBean.getFirstTime());
+                        twoBw.newLine();
+                    }
                 }
             }
             ConceptFrequencyAnalyzer.getWord(words.toString());
             AdvancedConceptCloudUtil.generate(words.toString());
 
             bw.close();
+            oneBw.close();
+            twoBw.close();
 
             fw.close();
+            oneFw.close();
+            twoFw.close();
         } catch (Exception e) {
             System.out.println(e);
         }

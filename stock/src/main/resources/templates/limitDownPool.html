@@ -11,6 +11,81 @@
         th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         th { background-color: #f2f2f2; cursor: pointer; }
         tr:nth-child(even) { background-color: #f9f9f9; }
+        新增布局样式
+        .stockcontainer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+        /* 确保容器宽度足够 */
+        /*.stockcontainer {*/
+        /*    max-width: 1400px;*/
+        /*    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); !* 加大卡片最小宽度 *!*/
+        /*}*/
+
+        /* 行业卡片布局优化 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+            margin-bottom: 24px;
+        }
+
+        /* 多列股票容器 */
+        .industry-item {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 强制3列 */
+            gap: 12px;
+            padding: 8px 0;
+        }
+        .card {
+            min-width: 600px; /* 确保3列布局空间 */
+        }
+        /* 新增数据装饰 */
+        .stock-item span:first-child {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .stock-item span:last-child {
+            font-weight: 600;
+            font-family: monospace;
+        }
+        /* 股票项优化 */
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.2s;
+            min-width: 200px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        /* 悬停效果增强 */
+        .stock-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+        }
+        /* 行业标题样式 */
+        .industry-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            grid-column: 1 / -1; /* 跨所有列 */
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
         .sort-indicator { margin-left: 5px; }
         /* 刷新按钮样式 */
         .refresh-btn {
@@ -50,6 +125,14 @@
                     <i class="fa fa-refresh"></i> 导出
                 </a>
             </div>
+        </div>
+        <div class="stockcontainer">
+            <div class="card">
+                <div class="header up">📈 打开跌停</div>
+                <div class="industry-item" id="industry-item-up">
+                </div>
+            </div>
+
         </div>
         <!-- 指数行情 -->
         <table id="stockTable">
