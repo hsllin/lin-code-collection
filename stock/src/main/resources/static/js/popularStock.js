@@ -23,6 +23,24 @@ function getPopularHotStockData() {
 
     });
 }
+function downLoadHotBoardAndConceptData() {
+    $.ajax({
+
+        type: "get",
+        url: "downLoadHotBoardAndConceptData",
+        data: {
+            type: 'normal',
+        },
+
+        success: function (data) {
+            console.log(data)
+            buildPopularHotStockHtml(data);
+        }
+
+    });
+}
+
+
 
 function getPopularRiseStockData() {
     $.ajax({

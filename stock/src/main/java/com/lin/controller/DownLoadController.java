@@ -29,6 +29,8 @@ public class DownLoadController {
 
     @Autowired
     IncreaseAndDecreaseService increaseAndDecreaseService;
+    @Autowired
+    PopularStockService popularStockService;
 
 
     @RequestMapping("/downloadAllData")
@@ -44,6 +46,7 @@ public class DownLoadController {
         zhaBanChiService.downloadData(date);
         increaseAndDecreaseService.downloadTrendData();
         increaseAndDecreaseService.generateTrendDataPhoto();
+        popularStockService.downLoadHotBoardAndConceptData();
         return ResponseEntity.ok(true);
     }
 }

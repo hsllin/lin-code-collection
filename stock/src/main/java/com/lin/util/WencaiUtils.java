@@ -45,7 +45,7 @@ public class WencaiUtils {
         System.out.println(result);
 //        System.out.println(generateHexinV());
 //        getData(url, param);
-        getDataList(param);
+//        getDataList(param);
     }
 
     public static Map<String, Object> getDataList(Map<String, Object> param) throws IOException, InterruptedException, ScriptException {
@@ -112,52 +112,7 @@ public class WencaiUtils {
         return temp;
     }
 
-    public static void getStrongStockList() throws IOException, InterruptedException, ScriptException {
 
-        String url = "https://www.iwencai.com/unifiedwap/unified-wap/v2/result/get-robot-data";
-        Map<String, Object> param = new HashMap<>();
-        param.put("filter", "HS,GEM2STAR");
-        param.put("_", System.currentTimeMillis());
-        param.put("question", "涨幅榜");
-        param.put("source", "ths_mobile_iwencai");
-        param.put("user_id", "721659935");
-        param.put("user_name", "mx_721659935");
-        param.put("version", "2.0");
-        param.put("secondary_intent", "stock");
-        param.put("add_info", "{\"urp\":{\"scene\":3,\"company\":1,\"business\":1,\"is_lowcode\":1},\"contentType\":\"json\"}");
-        param.put("log_info", "{\"input_type\":\"click\"}");
-        param.put("rsh", "721659935");
-
-        String userAgent = USER_AGENTS.get(RandomUtil.randomInt(USER_AGENTS.size()));
-        String hexinV = generateHexinV();
-
-        String result = HttpRequest.post(url)
-                .header("hexin-v", hexinV)// token鉴权
-                .header("content-type", "application/x-www-form-urlencoded")// token鉴权
-                .header("User-Agent", userAgent)
-                .header("Accept", "application/json, text/plain, */*")
-                .header("Accept-Language", "zh-CN,zh;q=0.9")
-                .header("Connection", "keep-alive")
-                .header("host", "www.iwencai.com")
-                .header("origin", "https://www.iwencai.com")
-                .header("pragma", "no-cache")
-                .header("referer", "https://www.iwencai.com/unifiedmobile/?q=%E6%B6%A8%E5%B9%85%E6%A6%9C&queryType=stock")
-                .form(param)
-                .execute().body();
-        String output = StringEscapeUtils.unescapeJava(result);
-        List<DayRiseBean> temp = JSONUtil.toList(JSONUtil.parseArray(result), DayRiseBean.class);
-
-        List<Map> listBeanList = new ArrayList<>();
-        listBeanList = JSONUtil.toList(JSONUtil.parseArray(result), Map.class);
-        for (Map map : listBeanList) {
-            map.put("name", StringEscapeUtils.unescapeJava(map.get("55") + ""));
-            map.put("code", map.get("5") + "");
-            map.put("riseRate", map.get("199112") + "");
-            map.put("changeRate", map.get("1968584") + "");
-            map.put("money", CommonUtils.formatPrice(Double.parseDouble(map.get("13") + "")));
-            map.put("industry", StockInfoFetcherService.parseStockSector(map.get("5") + "").getIndustry());
-        }
-    }
 
     public static Map<String, Object> getData(String targetUrl, Map<String, Object> params) throws IOException, ScriptException {
         if (StringUtils.isBlank(targetUrl)) {

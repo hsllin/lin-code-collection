@@ -46,9 +46,9 @@ public class StrongStockService {
         StrongStockBean bean = JSONUtil.toBean(JSONUtil.toJsonStr(result), StrongStockBean.class);
         List<StrongStockBean.DataBean> infoList = bean.getData();
         for (StrongStockBean.DataBean dataBean : infoList) {
-            dataBean.setChange(CommonUtils.formatPrice(dataBean.getChange()));
+            dataBean.setChange(CommonUtils.formatPrice(dataBean.getChange()==null?0:dataBean.getChange()));
             for (StrongStockBean.DataBean.StockListBean stockListBean : dataBean.getStock_list()) {
-                stockListBean.setChange_rate(CommonUtils.formatPrice(stockListBean.getChange_rate()));
+                stockListBean.setChange_rate(CommonUtils.formatPrice(stockListBean.getChange_rate()==null?0:stockListBean.getChange_rate()));
                 stockListBean.setFirstTime(DateUtils.changeTime(stockListBean.getFirst_limit_up_time(), DateFormatEnum.DEFAULT));
             }
 

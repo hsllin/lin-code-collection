@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 0 auto;*/
+        /*    padding: 20px;*/
+        /*}*/
+
+        .header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .top-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            flex: 1;
+            background-color: #3a5167;
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title h3 {
+            font-size: 18px;
+        }
+
+        .percentage {
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .card-description {
+            font-size: 12px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .stock-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stock-row {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #f5f7fa;
+            transition: background-color 0.3s;
+        }
+
+        .tab.active {
+            background-color: white;
+            font-weight: bold;
+            border-bottom: 2px solid #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .rank {
+            color: #999;
+            font-weight: bold;
+        }
+
+        .percentage-value {
+            color: #446391;
+            font-weight: bold;
+        }
+
+        .link {
+            color: #3366ff;
+            text-decoration: none;
+        }
+
+        .graph {
+            width: 100%;
+            height: 30px;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: #2a5298;
+        }
+        .description {
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .show-description {
+            color: #2a5298;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/boardandconcepts.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <h2 class="header">风口板块</h2>
+
+        <div class="top-cards" id="hotCard">
+<!--            <div class="card">-->
+<!--                <div class="card-title">-->
+<!--                    <h6>区块链</h6>-->
+<!--                    <span class="percentage">+3.71%</span>-->
+<!--                </div>-->
+<!--                <p class="card-description">香港财政司司长陈茂波：金管局将加快稳定币牌照申请</p>-->
+<!--                <div class="stock-rows">-->
+<!--                    <div class="stock-row">元数雅图 +9.99%</div>-->
+<!--                    <div class="stock-row">金时科技 +10.03%</div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="card">-->
+<!--                <div class="card-title">-->
+<!--                    <h6>油服</h6>-->
+<!--                    <span class="percentage">+2.77%</span>-->
+<!--                </div>-->
+<!--                <p class="card-description">以色列袭击伊朗，国际油价大涨</p>-->
+<!--                <div class="stock-rows">-->
+<!--                    <div class="stock-row">山东墨龙 +10.11%</div>-->
+<!--                    <div class="stock-row">泰山石油 +10.07%</div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="card">-->
+<!--                <div class="card-title">-->
+<!--                    <h6>IP经济/谷子经济</h6>-->
+<!--                    <span class="percentage">+2.30%</span>-->
+<!--                </div>-->
+<!--                <p class="card-description">光线称《哪吒2》衍生品销售额已达数百亿；混润玛特股价连续创历史新高</p>-->
+<!--                <div class="stock-rows">-->
+<!--                    <div class="stock-row">元数雅图 +9.99%</div>-->
+<!--                    <div class="stock-row">绿盟生态 +10.01%</div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+
+        <div class="tabs">
+            <div class="tab active">全部板块</div>
+            <div class="tab">行业板块</div>
+            <div class="tab">概念板块</div>
+            <div class="tab">风格板块</div>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>排序</th>
+                <th>板块名</th>
+                <th>涨跌幅</th>
+                <th>涨跌家数</th>
+                <th>涨停家数</th>
+                <th>领涨/领跌股</th>
+                <th>资金流向</th>
+                <th>分时图</th>
+            </tr>
+            </thead>
+            <tbody id="dataTable">
+            <tr>
+                <td>01</td>
+                <td>跨境支付</td>
+                <td class="percentage-value">+5.55%</td>
+                <td>32/0</td>
+                <td>3</td>
+                <td>
+                    <div>天阳科技 +20.00%</div>
+                    <div>四方精创 +19.99%</div>
+                </td>
+                <td>+19.91亿</td>
+                <td>
+                    <div class="graph" style="background: linear-gradient(to right, #3caee0, rgba(71,182,226,0.79));"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>07</td>
+                <td>web3.0</td>
+                <td class="percentage-value">+3.87%</td>
+                <td>35/0</td>
+                <td>3</td>
+                <td>
+                    <div>四方精创 +19.99%</div>
+                    <div>中科金财 +10.02%</div>
+                </td>
+                <td>+14.09亿</td>
+                <td>
+                    <div class="graph"
+                         style="background: linear-gradient(to right, #3caee0, rgba(71,182,226,0.79));"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <!--            <div class="detail-title" id="modal-title"></div>-->
+            <div id="modal-body"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

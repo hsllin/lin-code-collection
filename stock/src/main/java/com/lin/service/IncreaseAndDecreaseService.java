@@ -468,6 +468,23 @@ public class IncreaseAndDecreaseService {
             bean.setIncreaseReason("");
             bean.setIndustry("");
         }
+        try {
+            FileWriter fw = new FileWriter("D:\\1stock\\今日热门.txt");
+
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (IncreaseRankData dataBean : list) {
+
+                bw.write(dataBean.getCode() + " " + dataBean.getName() + " " + dataBean.getPrice());
+                bw.newLine();
+            }
+
+            bw.close();
+
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         List<IncreaseRankData> list1 = list.subList(0, 20);
         List<IncreaseRankData> list2 = list.subList(20, 40);
         List<IncreaseRankData> list3 = list.subList(40, 60);

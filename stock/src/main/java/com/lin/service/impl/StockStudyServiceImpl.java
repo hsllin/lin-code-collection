@@ -130,7 +130,7 @@ public class StockStudyServiceImpl extends ServiceImpl<StockStudyMapper, StockSt
         for (int i = 0; i < txtMap.size(); i++) {
             Map<String, Object> txt = txtMap.get(i);
             StockStudy bean = new StockStudy();
-            pe = null == txt.get("市盈率(pe)" + date) ? 0 : Double.valueOf(txt.get("市盈率(pe)" + date) + "");
+            pe = null == txt.get("市盈率(pe)" ) ? 0 : Double.valueOf(txt.get("市盈率(pe)") + "");
             bean.setCode(code);
             bean.setName(txt.get("股票简称") + "");
             bean.setPrice(txt.get("最新价") + "");
@@ -138,11 +138,13 @@ public class StockStudyServiceImpl extends ServiceImpl<StockStudyMapper, StockSt
             bean.setConcepts(txt.get("所属概念") + "");
             bean.setIndustry(txt.get("所属同花顺行业") + "");
             bean.setCompanyIntroduce(txt.get("公司简介") + "");
-            bean.setMarketCap(txt.get("总市值" + date) + "");
-            bean.setMarketValue(txt.get("a股市值(不含限售股)" + date) + "");
-            bean.setPe(txt.get("市盈率(pe)" + date) + "");
+            bean.setMarketCap(txt.get("总市值" ) + "");
+            bean.setMarketValue(txt.get("a股市值(不含限售股)" ) + "");
+            bean.setPe(txt.get("市盈率(pe)" ) + "");
             bean.setProfitLoss(pe > 0 ? "1" : "0");
             bean.setCompanyLocation(txt.get("办公地址") + "");
+            bean.setRate(CommonUtils.formatPrice(Double.valueOf(txt.get("最新涨跌幅") + "")));
+
             saveOrUpdate(bean);
         }
         return true;

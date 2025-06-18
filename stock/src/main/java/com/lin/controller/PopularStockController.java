@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 public class PopularStockController {
     @Autowired
-    PopularStockService PopularStockService;
+    PopularStockService popularStockService;
 
     /**获取同花顺热门股票和飙升
      * @param request
@@ -59,5 +59,17 @@ public class PopularStockController {
         List<DongCaiPopularStock.DataDTO.DiffDTO> list = PopularStockService.getDongCaiPopularStocktList(type);
         return ResponseEntity.ok(list);
     }
+
+    @RequestMapping("/downLoadHotBoardAndConceptData")
+    public ResponseEntity<Boolean> downLoadHotBoardAndConceptData(HttpServletRequest request, Model model) {
+        String orderFiled = request.getParameter("orderFiled");
+        String orderBy = request.getParameter("orderBy");
+        String date = CommonUtils.getTradeDay(0);
+        popularStockService.downLoadHotBoardAndConceptData();
+
+        return ResponseEntity.ok(true);
+    }
+
+
 
 }
