@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /*margin: 20px;*/
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            color: #3a5167;
+        }
+
+        th, td {
+            border: none;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            display: table-cell;
+            vertical-align: inherit;
+            color: var(--dark);
+            padding: 16px 12px;
+            text-align: center;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            cursor: pointer;
+            border-bottom: 1px solid rgb(145, 152, 161);
+        }
+        /*th {*/
+        /*    background-color: #f2f2f2;*/
+        /*    cursor: pointer;*/
+        /*}*/
+
+        /*tr:nth-child(even) {*/
+        /*    background-color: #f9f9f9;*/
+        /*}*/
+
+        .sort-indicator {
+            margin-left: 5px;
+        }
+
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 10px 15px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 8px 15px 0 0;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+        }
+
+        /* 时钟样式 */
+        .clock {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            /*background: linear-gradient(45deg, #f0f8ff, #e6f3ff);*/
+            padding: 10px 15px;
+            border-radius: 8px;
+            /*border: 2px solid #0c91f8;*/
+            /*box-shadow: 0 2px 8px rgba(12, 145, 248, 0.2);*/
+            display: inline-block;
+            min-width: 280px;
+            text-align: center;
+        }
+
+        .clock .time {
+            color: #3a5167;
+            font-size: 20px;
+        }
+
+        .clock .date {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .board_container {
+            /*max-width: 800px;*/
+            margin: 6px auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            /*background: linear-gradient(45deg, #f0f8ff, #e6f3ff);*/
+        }
+
+        .container {
+            /*max-width: 800px;*/
+            margin: 6px auto;
+            background-color: white;
+            border-radius: 8px;
+            /*padding: 20px;*/
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /*.header-toolbar {*/
+        /*    display: flex;*/
+        /*    justify-content: space-between;*/
+        /*    align-items: center;*/
+        /*    margin-bottom: 20px;*/
+        /*    padding-bottom: 15px;*/
+        /*    border-bottom: 1px solid var(--border-color);*/
+        /*}*/
+
+        /* 头部工具栏 */
+        .header-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .clock {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--dark);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid #d0e7ff;
+            /*background: #f8fcff;*/
+            box-shadow: 0 2px 6px rgba(12, 145, 248, 0.12);
+            min-width: 280px;
+            text-align: center;
+        }
+
+        .clock .time {
+            color: var(--primary-dark);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .clock .date {
+            color: var(--dark-gray);
+            font-size: 15px;
+            margin-top: 6px;
+        }
+
+        .btn-group1 {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            /*border: none;*/
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .mood {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .median {
+            font-size: 14px;
+        }
+
+        .positive {
+            color: #3a5167;
+        }
+
+        .negative {
+            color: rgb(60, 174, 224);
+        }
+
+        .board-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .board-cell {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .board-cell h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .board-cell p {
+            margin: 5px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .board-cell .rate {
+            font-size: 14px;
+        }
+
+        .炸板 {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .炸板-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            margin: 0 5px;
+        }
+
+        .炸板-item h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .炸板-item p {
+            margin: 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .metric-card:nth-child(1):before { background: var(--dark); }
+        .metric-card:nth-child(2):before { background: #673ab7; }
+        .metric-card:nth-child(3):before { background: #009688; }
+        .metric-card:nth-child(4):before { background: var(--warning); }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .metric-card h3 {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .metric-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric-card .change {
+            font-size: 14px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/autionTrading1.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="board_container" id="board">
+        <!--        <div class="header">-->
+        <!--            <div class="mood">短线情绪：<span>21℃</span></div>-->
+        <!--            <div class="median">中位数：<span>-1.03%</span></div>-->
+        <!--        </div>-->
+
+        <!--        <div class="board-stats">-->
+        <!--            <div class="board-cell">-->
+        <!--                <h3>一板</h3>-->
+        <!--                <p>29</p>-->
+        <!--                <div class="rate">连板率</div>-->
+        <!--            </div>-->
+        <!--            <div class="board-cell">-->
+        <!--                <h3>二板</h3>-->
+        <!--                <p>7</p>-->
+        <!--                <div class="rate">11%</div>-->
+        <!--            </div>-->
+        <!--            <div class="board-cell">-->
+        <!--                <h3>三板</h3>-->
+        <!--                <p>1</p>-->
+        <!--                <div class="rate">7%</div>-->
+        <!--            </div>-->
+        <!--            <div class="board-cell">-->
+        <!--                <h3>高度板</h3>-->
+        <!--                <p>2</p>-->
+        <!--                <div class="rate">33%</div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <!--        <div class="炸板">-->
+        <!--            <div class="炸板-item">-->
+        <!--                <h3>今日炸板率</h3>-->
+        <!--                <p>39%</p>-->
+        <!--            </div>-->
+        <!--            <div class="炸板-item">-->
+        <!--                <h3>昨涨停表现</h3>-->
+        <!--                <p class="negative">0.63%</p>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <!--        <div class="炸板">-->
+        <!--            <div class="炸板-item">-->
+        <!--                <h3>昨炸板表现</h3>-->
+        <!--                <p class="positive">-1.35%</p>-->
+        <!--            </div>-->
+        <!--            <div class="炸板-item">-->
+        <!--                <h3>昨连板表现</h3>-->
+        <!--                <p class="positive">-2.84%</p>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+    <div class="board_container">
+        <!--        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">-->
+        <!--            <div class="clock">-->
+        <!--                <div class="time" id="time">&#45;&#45;:&#45;&#45;:&#45;&#45;</div>-->
+        <!--                <div class="date" id="date">&#45;&#45;&#45;&#45;年&#45;&#45;月&#45;&#45;日 星期-</div>-->
+        <!--            </div>-->
+        <!--            <div>-->
+        <!--                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">-->
+        <!--                    <i class="fa fa-refresh"></i> 刷新-->
+        <!--                </a>-->
+        <!--                <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="导出" style="margin-left: 10px;">-->
+        <!--                    <i class="fa fa-refresh"></i> 导出-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!-- 顶部工具栏 -->
+<!--        <div class="board_container">-->
+            <div class="header-toolbar">
+                <div class="clock">
+                    <div class="time" id="time">09:30:45</div>
+                    <div class="date" id="date">2025年7月5日 星期六</div>
+                </div>
+                <div class="btn-group1">
+                    <button class="btn btn-primary" onclick="refreshData()">
+                        <i class="fa fa-sync-alt"></i> 刷新
+                    </button>
+                    <button class="btn btn-secondary" onclick="downLoadData()">
+                        <i class="fa fa-download"></i> 导出
+                    </button>
+                </div>
+            </div>
+<!--        </div>-->
+
+        <!-- 指数行情 -->
+        <table id="stockTable">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th onclick="sortTable(0)">名称 <span class="sort-indicator"></span></th>
+                <th onclick="sortTable(1)">代码</th>
+                <th onclick="sortTable(2)">涨幅 <span onclick="sortTable('199112','1')">▲</span><span
+                        onclick="sortTable('199112','0')">▼</span></th>
+                <th onclick="sortTable(3)">价格 <span onclick="sortTable('10','1')">▲</span><span
+                        onclick="sortTable('10','0')">▼</span></th>
+                <th onclick="sortTable(4)">行业</th>
+                <th onclick="sortTable(4)">涨停原因</th>
+                <th onclick="sortTable(5)">竞价金额 <span onclick="sortTable('330323','1')">▲</span><span
+                        onclick="sortTable('330323','0')">▼</span></th>
+                <th onclick="sortTable(6)">竞价手数 <span onclick="sortTable('1968584','1')">▲</span><span
+                        onclick="sortTable('1968584','0')">▼</span></th>
+                <th>流通市值(亿)<span onclick="sortTable('3475914','1')">▲</span><span
+                        onclick="sortTable('3475914','0')">▼</span></th>
+                <th onclick="sortTable(8)">未匹配金额<span onclick="sortTable('133970','1')">▲</span><span
+                        onclick="sortTable('133970','0')">▼</span></th>
+                <th onclick="sortTable(8)">未匹配手数<span onclick="sortTable('133970','1')">▲</span><span
+                        onclick="sortTable('133970','0')">▼</span></th>
+                <th onclick="sortTable(8)">异动说明<span onclick="sortTable('133970','1')">▲</span><span
+                        onclick="sortTable('133970','0')">▼</span></th>
+                <th onclick="sortTable(8)">竞价评级<span onclick="sortTable('133970','1')">▲</span><span
+                        onclick="sortTable('133970','0')">▼</span></th>
+            </tr>
+            </thead>
+            <tbody id="pool">
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+</body>
+</html>

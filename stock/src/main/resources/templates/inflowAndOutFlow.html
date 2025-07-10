@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>最强风口</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 0 auto;*/
+        /*    padding: 20px;*/
+        /*}*/
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: normal;
+        }
+
+        .more-link {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .more-link:hover {
+            color: #333;
+        }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-tab.active {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #e74c3c;
+        }
+
+        .nav-tab:not(.active) {
+            color: #999;
+        }
+
+        .dropdown {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .dropdown-select {
+            padding: 8px 30px 8px 10px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            appearance: none;
+            font-size: 14px;
+        }
+
+        .dropdown-select::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+        }
+
+        .chart-container {
+            background-color: #fff;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .chart {
+            height: 300px;
+            width: 100%;
+        }
+
+        .table-container {
+            background-color: #fff;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 600;
+            color: #666;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        .up {
+            color: #e74c3c;
+        }
+
+        .down {
+            color: #2ecc71;
+        }
+
+        .red {
+            color: #e74c3c;
+        }
+
+        .green {
+            color: #2ecc71;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/inflowAndOutFlow.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>板块资金流向</h1>
+            <a href="#" class="more-link">更多 &gt;</a>
+        </div>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" id="tab1">行业板块</div>
+            <div class="nav-tab" id="tab2">概念板块</div>
+            <div class="nav-tab" id="tab3">地区板块</div>
+        </div>
+
+        <div class="dropdown">
+            <select class="dropdown-select">
+                <option value="inflow">主力净流入</option>
+                <option value="outflow">主力净流出</option>
+            </select>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="fundsChart"></canvas>
+        </div>
+
+        <div class="header">
+            <h1>个股资金流向</h1>
+            <a href="#" class="more-link">更多 &gt;</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>股票名称</th>
+                    <th>股票代码</th>
+                    <th>最新价</th>
+                    <th>涨跌幅</th>
+                    <th>主力净流入</th>
+                    <th>特大单净流入</th>
+                    <th>大单净流入</th>
+                    <th>中单净流入</th>
+                    <th>小单净流入</th>
+                </tr>
+                </thead>
+                <tbody id="dataTable">
+                <tr>
+                    <td>1</td>
+                    <td>海南华铁</td>
+                    <td>603300</td>
+                    <td>10.97</td>
+                    <td class="up">+7.13%</td>
+                    <td class="red">8.76亿</td>
+                    <td class="red">11.7亿</td>
+                    <td class="green">-2.90亿</td>
+                    <td class="green">-4.30亿</td>
+                    <td class="green">-4.46亿</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>中科曙光</td>
+                    <td>603019</td>
+                    <td>70.89</td>
+                    <td class="up">+3.66%</td>
+                    <td class="red">7.71亿</td>
+                    <td class="red">5.63亿</td>
+                    <td class="red">2.09亿</td>
+                    <td class="green">-4.61亿</td>
+                    <td class="green">-3.10亿</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>楚天龙</td>
+                    <td>003040</td>
+                    <td>24.34</td>
+                    <td class="up">+9.99%</td>
+                    <td class="red">6.30亿</td>
+                    <td class="red">7.89亿</td>
+                    <td class="green">-1.59亿</td>
+                    <td class="green">-3.54亿</td>
+                    <td class="green">-2.76亿</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>寒武纪-U</td>
+                    <td>688256</td>
+                    <td>610.50</td>
+                    <td class="down">-0.10%</td>
+                    <td class="red">6.16亿</td>
+                    <td class="red">4.49亿</td>
+                    <td class="red">1.48亿</td>
+                    <td class="green">-6.13亿</td>
+                    <td class="green">-309万</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>中际旭创</td>
+                    <td>300308</td>
+                    <td>129.70</td>
+                    <td class="up">+3.16%</td>
+                    <td class="red">5.49亿</td>
+                    <td class="red">4.18亿</td>
+                    <td class="red">1.36亿</td>
+                    <td class="green">-1.30亿</td>
+                    <td class="green">-4.18亿</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>新易盛</td>
+                    <td>300502</td>
+                    <td>116.80</td>
+                    <td class="up">+5.80%</td>
+                    <td class="red">5.32亿</td>
+                    <td class="red">2.37亿</td>
+                    <td class="red">2.96亿</td>
+                    <td class="green">-1.30亿</td>
+                    <td class="green">-4.02亿</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>景旺电子</td>
+                    <td>603228</td>
+                    <td>35.12</td>
+                    <td class="up">+9.99%</td>
+                    <td class="red">4.18亿</td>
+                    <td class="red">5.18亿</td>
+                    <td class="green">-9936万</td>
+                    <td class="green">-2.19亿</td>
+                    <td class="green">-1.99亿</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>诺德股份</td>
+                    <td>600110</td>
+                    <td>7.20</td>
+                    <td class="up">+4.96%</td>
+                    <td class="red">3.75亿</td>
+                    <td class="red">4.12亿</td>
+                    <td class="green">-3669万</td>
+                    <td class="green">-2.14亿</td>
+                    <td class="green">-1.61亿</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>中京电子</td>
+                    <td>002579</td>
+                    <td>12.52</td>
+                    <td class="up">+5.03%</td>
+                    <td class="red">3.34亿</td>
+                    <td class="red">3.97亿</td>
+                    <td class="green">-2670万</td>
+                    <td class="green">-2.28亿</td>
+                    <td class="green">-1.07亿</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            发财
+        </div>
+
+    </div>
+</div>

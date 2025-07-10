@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!-- 引入Bootstrap -->
+    <!--    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/timeStock.js"></script>
+    <script type="text/javascript" src="/js/chart.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #e5effa;
+        }
+
+        .market-info {
+            display: flex;
+            gap: 30px;
+            background: rgba(96, 139, 203, 0.28);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .index-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .index-change {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .positive {
+            color: rgba(71, 182, 226, 0.79);
+        }
+
+        .negative {
+            color: #446391;
+        }
+
+        .index-volume {
+            font-size: 16px;
+            color: #f0f3f3;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            background: #d2d2d2;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background: #9198a1;
+            color: #e2e8f0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #475569;
+        }
+
+        .btn.active {
+            background: rgba(74, 111, 165, 0.63);
+        }
+
+        #chart {
+            height: 450px;
+            width: 100%;
+        }
+
+        .sector-list {
+            background: #d2d2d2;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .sector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sector-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .sector-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sector-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(74, 111, 165, 0.63);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .sector-item:hover {
+            background: #d2d2d2;
+            transform: translateY(-2px);
+        }
+
+        .sector-name {
+            font-weight: 500;
+        }
+
+        .sector-change {
+            font-weight: 600;
+        }
+
+        .hot-concepts {
+            grid-column: 1 / -1;
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .hot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .hot-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .concept-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .concept-tag {
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.63), #f0f3f3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .concept-tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .tag-highlight {
+            background: linear-gradient(135deg, #3a5167, #446391);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .annotation {
+            position: absolute;
+            background: rgba(74, 111, 165, 0.63);
+            color: #e5effa;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 2px 10px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            pointer-events: auto;
+            cursor: pointer;
+            border: 1px solid rgba(74, 111, 165, 0.63);
+        }
+        .annotation-line {
+            position: absolute;
+            width: 1px;
+            background: rgba(74, 111, 165, 0.63);
+            z-index: 5;
+        }
+        .annotation-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(74, 111, 165, 0.63);
+            border-radius: 50%;
+            border: 2px solid #fff;
+            z-index: 15;
+            box-sizing: border-box;
+        }
+
+        /*.annotation {*/
+        /*    position: absolute;*/
+        /*    background: rgba(74, 111, 165, 0.63);*/
+        /*    color: #9198a1;*/
+        /*    padding: 8px 15px;*/
+        /*    border-radius: 6px;*/
+        /*    font-size: 12px;*/
+        /*    font-weight: 500;*/
+        /*    z-index: 100;*/
+        /*    pointer-events: none;*/
+        /*    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);*/
+        /*    transform: translate(-50%, -100%);*/
+        /*    white-space: nowrap;*/
+        /*}*/
+
+        /*.annotation::after {*/
+        /*    content: '';*/
+        /*    position: absolute;*/
+        /*    bottom: -10px;*/
+        /*    left: 50%;*/
+        /*    transform: translateX(-50%);*/
+        /*    border-width: 5px;*/
+        /*    border-style: solid;*/
+        /*    border-color: rgba(59, 130, 246, 0.9) transparent transparent transparent;*/
+        /*}*/
+
+        .time-indicator {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(239, 68, 68, 0.7);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .time-label {
+            position: absolute;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 50;
+            pointer-events: none;
+            transform: translateX(-50%);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            color: #94a3b8;
+            font-size: 14px;
+            margin-top: 30px;
+            border-top: 1px solid #334155;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .market-info {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-chart-line fa-2x" style="color: #3b82f6;"></i>
+            </div>
+            <div class="datetime">
+                <div id="current-date"></div>
+                <div id="current-time"></div>
+            </div>
+        </header>
+
+        <div class="market-info">
+            <div class="index-value">
+<!--                <div>上证指数</div>-->
+                <div>3,245.67</div>
+            </div>
+            <div class="index-change positive">
+                <i class="fas fa-caret-up"></i>
+                <span>+15.83 (+0.49%)</span>
+            </div>
+            <div class="index-volume">
+                <div>成交量</div>
+                <div>3.42亿手</div>
+            </div>
+            <div class="index-volume">
+                <div>成交额</div>
+                <div>4,258亿元</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chart-container">
+                <div class="chart-header">
+<!--                    <div class="chart-actions">-->
+<!--                        <button class="btn active">分时</button>-->
+<!--                        <button class="btn">5日</button>-->
+<!--                        <button class="btn">日K</button>-->
+<!--                        <button class="btn">周K</button>-->
+<!--                    </div>-->
+                </div>
+                <div id="chart-wrapper">
+                    <canvas id="chart"></canvas>
+                </div>
+            </div>
+
+            <div class="sector-list">
+                <div class="sector-header">
+                    <div class="sector-title">领涨板块</div>
+                    <div class="index-change positive">
+                        <i class="fas fa-caret-up"></i>
+                        <span>TOP 5</span>
+                    </div>
+                </div>
+                <div class="sector-items">
+                    <div class="sector-item">
+                        <div class="sector-name">算力工程</div>
+                        <div class="sector-change positive">+3.72%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">创新药</div>
+                        <div class="sector-change positive">+2.85%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">芯片产业链</div>
+                        <div class="sector-change positive">+2.63%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">PCB</div>
+                        <div class="sector-change positive">+2.15%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">固态电池</div>
+                        <div class="sector-change positive">+1.98%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hot-concepts">
+                <div class="hot-header">
+                    <div class="hot-title">今日热点概念</div>
+                    <div class="index-change positive">
+                        <i class="fas fa-fire"></i>
+                        <span>概念热度</span>
+                    </div>
+                </div>
+                <div class="concept-tags">
+                    <div class="concept-tag">PCB</div>
+                    <div class="concept-tag">数字货币</div>
+                    <div class="concept-tag tag-highlight">创新药</div>
+                    <div class="concept-tag">医疗美容</div>
+                    <div class="concept-tag">芯片产业链</div>
+                    <div class="concept-tag">游戏</div>
+                    <div class="concept-tag">3D打印</div>
+                    <div class="concept-tag">稀土永磁</div>
+                    <div class="concept-tag">光伏</div>
+                    <div class="concept-tag tag-highlight">固态电池</div>
+                    <div class="concept-tag">亚玛顿</div>
+                    <div class="concept-tag">大金融</div>
+                    <div class="concept-tag">有机硅</div>
+                    <div class="concept-tag">机器人</div>
+                    <div class="concept-tag">钢铁</div>
+                    <div class="concept-tag tag-highlight">算力工程</div>
+                </div>
+            </div>
+            <footer>
+                <p>数据更新时间: <span id="update-time"></span> | 免责声明：本页面数据仅供参考</p>
+            </footer>
+        </div>
+    </div>
+</div>
+</body>
+</html>

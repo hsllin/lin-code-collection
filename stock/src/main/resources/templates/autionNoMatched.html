@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; cursor: pointer; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .sort-indicator { margin-left: 5px; }
+        /* 刷新按钮样式 */
+        .refresh-btn {
+            padding: 10px 15px;
+            background: #0c91f8; /* 主色调绿色 */
+            color: white !important;
+            border-radius: 6px;
+            margin: 8px 15px 0 0;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #63b7ee; /* 悬停深绿色 */
+            cursor: pointer;
+        }
+
+        .refresh-btn .fa-refresh {
+            margin-right: 5px;
+        }
+        
+        /* 时钟样式 */
+        .clock {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            /*background: linear-gradient(45deg, #f0f8ff, #e6f3ff);*/
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 2px solid #4a6fa5;
+            box-shadow: 0 2px 8px rgba(12, 145, 248, 0.2);
+            display: inline-block;
+            min-width: 280px;
+            text-align: center;
+        }
+        
+        .clock .time {
+            color: #4a6fa5;
+            font-size: 20px;
+        }
+        
+        .clock .date {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/autionNoMatched.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div class="clock">
+                <div class="time" id="time">--:--:--</div>
+                <div class="date" id="date">----年--月--日 星期-</div>
+            </div>
+            <div>
+                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+                    <i class="fa fa-refresh"></i> 刷新
+                </a>
+                <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
+                    <i class="fa fa-refresh"></i> 导出
+                </a>
+            </div>
+        </div>
+        <!-- 指数行情 -->
+        <table id="stockTable">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th onclick="sortTable(0)">名称 <span class="sort-indicator"></span></th>
+                <th onclick="sortTable(1)">代码</th>
+                <th onclick="sortTable(2)">涨幅 <span onclick="sortTable('199112','1')">▲</span><span onclick="sortTable('199112','0')">▼</span></th>
+                <th onclick="sortTable(3)">价格 <span onclick="sortTable('10','1')">▲</span><span onclick="sortTable('10','0')">▼</span></th>
+                <th onclick="sortTable(4)">行业</th>
+                <th onclick="sortTable(4)">涨停原因</th>
+                <th onclick="sortTable(5)">竞价金额 <span onclick="sortTable('330323','1')">▲</span><span onclick="sortTable('330323','0')">▼</span></th>
+                <th onclick="sortTable(6)">竞价手数 <span onclick="sortTable('1968584','1')">▲</span><span onclick="sortTable('1968584','0')">▼</span></th>
+                <th >流通市值(亿)<span onclick="sortTable('3475914','1')">▲</span><span onclick="sortTable('3475914','0')">▼</span></th>
+                <th onclick="sortTable(8)">未匹配金额<span onclick="sortTable('133970','1')">▲</span><span onclick="sortTable('133970','0')">▼</span></th>
+                <th onclick="sortTable(8)">未匹配手数<span onclick="sortTable('133970','1')">▲</span><span onclick="sortTable('133970','0')">▼</span></th>
+                <th onclick="sortTable(8)">异动说明<span onclick="sortTable('133970','1')">▲</span><span onclick="sortTable('133970','0')">▼</span></th>
+                <th onclick="sortTable(8)">竞价评级<span onclick="sortTable('133970','1')">▲</span><span onclick="sortTable('133970','0')">▼</span></th>
+            </tr>
+            </thead>
+            <tbody id="pool">
+            <!-- 数据行示例 -->
+            <!-- 其他数据行... -->
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>
+</body>
+</html>

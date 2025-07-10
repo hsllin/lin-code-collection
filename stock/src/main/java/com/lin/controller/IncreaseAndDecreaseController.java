@@ -1,7 +1,9 @@
 package com.lin.controller;
 
+import com.lin.bean.tonghuashun.AutionTradingBean;
 import com.lin.bean.tonghuashun.BigOrderBean;
 import com.lin.bean.tonghuashun.IncreaseRankData;
+import com.lin.bean.tonghuashun.LimitUpData;
 import com.lin.service.BigOrderService;
 import com.lin.service.IncreaseAndDecreaseService;
 import com.lin.util.CommonUtils;
@@ -119,4 +121,70 @@ public class IncreaseAndDecreaseController {
         List<IncreaseRankData> list = increaseAndDecreaseService.getTop100Data();
         return ResponseEntity.ok(list);
     }
+
+    /**
+     * 获取同花顺昨日涨停数据
+     * 热点个股前100；所属行业概念；所属行业;大单净量
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getYesterdayLimitUpData")
+    public ResponseEntity<List<LimitUpData>> getLimitUpYesterDayData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        List<LimitUpData> list = increaseAndDecreaseService.getYesterdayLimitUpData();
+        return ResponseEntity.ok(list);
+    }
+    /**
+     * 获取同花顺昨日涨停数据
+     * 热点个股前100；所属行业概念；所属行业;大单净量
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getTodayLimitUpData")
+    public ResponseEntity<List<LimitUpData>> getTodayLimitUpData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        List<LimitUpData> list = increaseAndDecreaseService.getTodayLimitUpData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺早盘集合竞价
+     *
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getAutionTradingData")
+    public ResponseEntity<List<AutionTradingBean>> getAutionTradingData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        List<AutionTradingBean> list = increaseAndDecreaseService.getAutionTradingData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺早盘集合竞价未匹配大于1万手
+     *
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getAutionNoMatchedData")
+    public ResponseEntity<List<AutionTradingBean>> getAutionNoMatchedData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        List<AutionTradingBean> list = increaseAndDecreaseService.getAutionNoMatchedData();
+        return ResponseEntity.ok(list);
+    }
+
+
+
 }

@@ -37,7 +37,7 @@ public class DownLoadController {
     public ResponseEntity<Boolean> downloadAllData(HttpServletRequest request, Model model) {
         String dateIndex = "0";
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));
-//        date="20250523";
+//        date="20250707";
         strongStockService.downloadStrongSrockData(date);
         limitUpPoolService.downloadLimitUpData(date);
         limitDownPoolService.downloadLimitDownData(date);
@@ -46,6 +46,7 @@ public class DownLoadController {
         zhaBanChiService.downloadData(date);
         increaseAndDecreaseService.downloadTrendData();
         increaseAndDecreaseService.generateTrendDataPhoto();
+        increaseAndDecreaseService.downloadOneWordData();
         popularStockService.downLoadHotBoardAndConceptData();
         return ResponseEntity.ok(true);
     }

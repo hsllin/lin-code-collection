@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-bg: #446391;
+            --card-bg: #ffffff;
+            --header-bg: #ffffff;
+            --up-color: #20c0f3;
+            --down-color: #22c55e;
+            --neutral-color: #eab308;
+            --highlight-color: rgb(68, 99, 145);
+            --text-light: #f1f5f9;
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            /*padding: 20px;*/
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgb(229, 239, 250);
+        }
+
+        .header {
+            background: var(--header-bg);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            text-align: center;
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgb(255, 255, 255);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--highlight-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: var(--highlight-color);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .refresh-btn {
+            color: #f0f3f3;
+            background: #446391;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(14, 165, 233, 0.4);
+        }
+
+        .last-update {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .last-update strong {
+            color: var(--highlight-color);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 0 20px 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 900px;
+        }
+
+        th, td {
+            padding: 16px 18px;
+            text-align: left;
+            color: #9198a1;
+            font-size: 12px;
+        }
+
+        thead th {
+            background-color: #ffffff;
+            color: #4a6fa5;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        tbody tr {
+            background-color: rgba(255,255,255,0.05);
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.08);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(14, 165, 233, 0.1);
+            transform: translateX(5px);
+        }
+
+        .stock-code {
+            /*font-weight: bold;*/
+        }
+
+        .stock-name {
+            font-weight: bold;
+        }
+
+        .up {
+            color: #446391;
+            font-weight: 700;
+        }
+
+        .down {
+            color: var(--down-color);
+            font-weight: 700;
+        }
+
+        .neutral {
+            color: var(--neutral-color);
+            font-weight: 700;
+        }
+
+        .concept {
+            max-width: 250px;
+        }
+
+        .concept-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .concept-tag {
+            background: rgba(74, 111, 165, 0.73);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--highlight-color);
+            font-size: 12px;
+        }
+
+        .seal-amount {
+            /*font-weight: 700;*/
+        }
+
+        .stock-limit-time {
+            font-size: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .switch-btn {
+            padding: 6px 18px;
+            margin-right: 8px;
+            border: 1px solid #409eff;
+            background: #fff;
+            color: #409eff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        .switch-btn.active, .switch-btn:hover {
+            background: #409eff;
+            color: #fff;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/limitUpYesterday.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="header">
+                <div class="header-content">
+                    <!-- 切换按钮区 -->
+                    <div id="data-switcher" style="margin-bottom: 16px; text-align:center;">
+                        <button id="btn-today" class="switch-btn active">今日数据</button>
+                        <button id="btn-yesterday" class="switch-btn">昨日数据</button>
+                    </div>
+<!--                    <h1>股票行情看板</h1>-->
+                    <p class="subtitle">实时涨停股票监控与分析</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="limitUpNum">42</div>
+                            <div class="stat-label">涨停总数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="limitUpBoardNum">18</div>
+                            <div class="stat-label">连板数量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mostLimitUpNum">6</div>
+                            <div class="stat-label">最高连板</div>
+                        </div>
+<!--                        <div class="stat-item">-->
+<!--                            <div class="stat-value">35.7%</div>-->
+<!--                            <div class="stat-label">连板成功率</div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="refresh-btn" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+                <div class="last-update">
+                    最后更新: <strong>2023-11-15 14:38:22</strong>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>股票代码</th>
+                        <th>股票名称</th>
+                        <th>当前价格</th>
+                        <th>涨跌幅</th>
+                        <th>涨停类别</th>
+                        <th>流通市值</th>
+                        <th>封单金额</th>
+                        <th>封单数量(万手)</th>
+                        <th>封单强度</th>
+                        <th>相关概念</th>
+                        <th>涨停时间</th>
+                        <th>连板数</th>
+                    </tr>
+                    </thead>
+                    <tbody id="dataTable">
+                    <tr>
+                        <td class="stock-code">600000</td>
+                        <td class="stock-name">浦发银行</td>
+                        <td>12.34</td>
+                        <td class="up">+9.99%</td>
+                        <td class="seal-amount">12547</td>
+                        <td class="seal-amount">1023</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">银行</span>
+                                <span class="concept-tag">金融科技</span>
+                                <span class="concept-tag">互联网金融</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">09:35:23</td>
+                        <td class="highlight">3</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">000001</td>
+                        <td class="stock-name">平安银行</td>
+                        <td>17.89</td>
+                        <td class="up">+8.76%</td>
+                        <td class="seal-amount">8921</td>
+                        <td class="seal-amount">765</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">银行</span>
+                                <span class="concept-tag">保险</span>
+                                <span class="concept-tag">金融科技</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">10:15:47</td>
+                        <td class="highlight">2</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">601318</td>
+                        <td class="stock-name">中国平安</td>
+                        <td>56.78</td>
+                        <td class="up">+9.99%</td>
+                        <td class="seal-amount">23456</td>
+                        <td class="seal-amount">2098</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">保险</span>
+                                <span class="concept-tag">金融科技</span>
+                                <span class="concept-tag">独角兽</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">09:42:15</td>
+                        <td class="highlight">4</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">000858</td>
+                        <td class="stock-name">五粮液</td>
+                        <td>189.50</td>
+                        <td class="down">-2.34%</td>
+                        <td class="seal-amount">5432</td>
+                        <td class="seal-amount">287</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">白酒</span>
+                                <span class="concept-tag">消费</span>
+                                <span class="concept-tag">高端白酒</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">-</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">600519</td>
+                        <td class="stock-name">贵州茅台</td>
+                        <td>1789.00</td>
+                        <td class="neutral">+0.25%</td>
+                        <td class="seal-amount">12345</td>
+                        <td class="seal-amount">695</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">白酒</span>
+                                <span class="concept-tag">高端酒</span>
+                                <span class="concept-tag">消费升级</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">-</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">601888</td>
+                        <td class="stock-name">中国中免</td>
+                        <td>234.78</td>
+                        <td class="up">+7.65%</td>
+                        <td class="seal-amount">8765</td>
+                        <td class="seal-amount">382</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">旅游</span>
+                                <span class="concept-tag">免税</span>
+                                <span class="concept-tag">消费升级</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">11:05:32</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">000333</td>
+                        <td class="stock-name">美的集团</td>
+                        <td>56.78</td>
+                        <td class="up">+3.45%</td>
+                        <td class="seal-amount">4567</td>
+                        <td class="seal-amount">254</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">家电</span>
+                                <span class="concept-tag">智能制造</span>
+                                <span class="concept-tag">智能家居</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">-</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">600276</td>
+                        <td class="stock-name">恒瑞医药</td>
+                        <td>45.67</td>
+                        <td class="down">-4.56%</td>
+                        <td class="seal-amount">2345</td>
+                        <td class="seal-amount">189</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">医药</span>
+                                <span class="concept-tag">创新药</span>
+                                <span class="concept-tag">生物医药</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">-</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-code">601988</td>
+                        <td class="stock-name">中国银行</td>
+                        <td>4.56</td>
+                        <td class="up">+5.67%</td>
+                        <td class="seal-amount">3456</td>
+                        <td class="seal-amount">765</td>
+                        <td class="concept">
+                            <div class="concept-tags">
+                                <span class="concept-tag">银行</span>
+                                <span class="concept-tag">金融</span>
+                                <span class="concept-tag">港股</span>
+                            </div>
+                        </td>
+                        <td class="stock-limit-time">13:25:17</td>
+                        <td>1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+</body>
+</html>

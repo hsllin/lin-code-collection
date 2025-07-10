@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!-- 引入Bootstrap -->
+    <!--    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/hongkongStock.js"></script>
+    <script type="text/javascript" src="/js/chart.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        .market-info {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 10px 20px;
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+        }
+
+        .info-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .up {
+            color: #00e676; /* 港股上涨为绿色 */
+        }
+
+        .down {
+            color: #ff5252; /* 港股下跌为红色 */
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+            gap: 15px;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.5);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            border-color: transparent;
+        }
+
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stock-table th {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 16px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #4facfe;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stock-table td {
+            padding: 14px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stock-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .stock-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .symbol {
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .name {
+            color: #ccc;
+        }
+
+        .change, .percent {
+            font-weight: bold;
+        }
+
+        .volume {
+            color: #aaa;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover, .page-btn.active {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .update-time {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .filters {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .market-info {
+                flex-wrap: wrap;
+            }
+
+            .stock-table {
+                font-size: 0.9rem;
+            }
+
+            .stock-table th, .stock-table td {
+                padding: 12px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-chart-line"></i> 港股实时行情</h1>
+            <p class="subtitle">监控港股市场涨跌幅情况，获取最新股票数据</p>
+        </header>
+
+        <div class="market-info">
+            <div class="info-card">
+                <h3>恒生指数</h3>
+                <div class="value">18,426.78 <span class="up"><i class="fas fa-caret-up"></i> 1.24%</span></div>
+            </div>
+            <div class="info-card">
+                <h3>国企指数</h3>
+                <div class="value">6,545.32 <span class="up"><i class="fas fa-caret-up"></i> 0.87%</span></div>
+            </div>
+            <div class="info-card">
+                <h3>红筹指数</h3>
+                <div class="value">3,678.91 <span class="down"><i class="fas fa-caret-down"></i> 0.32%</span></div>
+            </div>
+            <div class="info-card">
+                <h3>总成交额</h3>
+                <div class="value">1,245亿</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索股票代码或名称...">
+            </div>
+            <div class="filters">
+                <button class="filter-btn active">全部</button>
+                <button class="filter-btn">涨幅榜</button>
+                <button class="filter-btn">跌幅榜</button>
+                <button class="filter-btn">成交量</button>
+            </div>
+        </div>
+
+        <table class="stock-table">
+            <thead>
+            <tr>
+                <th>代码</th>
+                <th>名称</th>
+                <th>最新价</th>
+                <th>涨跌额</th>
+                <th>涨跌幅</th>
+                <th>成交量(万)</th>
+            </tr>
+            </thead>
+            <tbody id="stockData">
+            <tr>
+                <td class="symbol">00700</td>
+                <td class="name">腾讯控股</td>
+                <td>345.60</td>
+                <td class="change up">+8.40</td>
+                <td class="percent up">+2.49%</td>
+                <td class="volume">2,345</td>
+            </tr>
+            <tr>
+                <td class="symbol">01299</td>
+                <td class="name">友邦保险</td>
+                <td>78.25</td>
+                <td class="change up">+1.05</td>
+                <td class="percent up">+1.36%</td>
+                <td class="volume">1,876</td>
+            </tr>
+            <tr>
+                <td class="symbol">00941</td>
+                <td class="name">中国移动</td>
+                <td>67.80</td>
+                <td class="change down">-0.90</td>
+                <td class="percent down">-1.31%</td>
+                <td class="volume">3,210</td>
+            </tr>
+            <tr>
+                <td class="symbol">00005</td>
+                <td class="name">汇丰控股</td>
+                <td>60.45</td>
+                <td class="change up">+0.75</td>
+                <td class="percent up">+1.26%</td>
+                <td class="volume">4,532</td>
+            </tr>
+            <tr>
+                <td class="symbol">03690</td>
+                <td class="name">美团-W</td>
+                <td>132.50</td>
+                <td class="change down">-3.20</td>
+                <td class="percent down">-2.36%</td>
+                <td class="volume">5,678</td>
+            </tr>
+            <tr>
+                <td class="symbol">02269</td>
+                <td class="name">药明生物</td>
+                <td>48.30</td>
+                <td class="change up">+2.10</td>
+                <td class="percent up">+4.55%</td>
+                <td class="volume">1,987</td>
+            </tr>
+            <tr>
+                <td class="symbol">00883</td>
+                <td class="name">中国海洋石油</td>
+                <td>19.06</td>
+                <td class="change up">+0.24</td>
+                <td class="percent up">+1.27%</td>
+                <td class="volume">3,456</td>
+            </tr>
+            <tr>
+                <td class="symbol">02318</td>
+                <td class="name">中国平安</td>
+                <td>51.25</td>
+                <td class="change down">-0.55</td>
+                <td class="percent down">-1.06%</td>
+                <td class="volume">2,789</td>
+            </tr>
+            <tr>
+                <td class="symbol">01024</td>
+                <td class="name">快手-W</td>
+                <td>68.90</td>
+                <td class="change up">+3.20</td>
+                <td class="percent up">+4.87%</td>
+                <td class="volume">4,321</td>
+            </tr>
+            <tr>
+                <td class="symbol">00388</td>
+                <td class="name">香港交易所</td>
+                <td>310.40</td>
+                <td class="change down">-4.60</td>
+                <td class="percent down">-1.46%</td>
+                <td class="volume">1,234</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="update-time">
+            最后更新: 2023年12月15日 15:00:28
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <footer>
+            <p>数据仅供参考，实际交易请以交易所实时数据为准</p>
+            <p>© 2023 港股行情监控系统 | 免责声明</p>
+        </footer>
+    </div>
+</div>
+</body>
+
+
+</html>
