@@ -3,6 +3,9 @@ $(function () {
     getTimeStockList();
     setInterval(updateDateTime, 1000);
     updateDateTime();
+    document.getElementById('concepts').innerHTML = '';
+    document.getElementById('industry').innerHTML = '';
+    getHotConceptAndIndustryData();
 });
 
 let timeLineData = [];
@@ -36,6 +39,45 @@ function getTimeStockList() {
             tryRenderTimeLineChart();
         }
     });
+}
+
+function getHotConceptAndIndustryData() {
+    $.ajax({
+        type: "GET",
+        url: "getHotConceptAndIndustry",
+        contentType: 'application/json',
+        data: {},
+        success: function (data) {
+            timeLineData = data;
+            timeLineLoaded = true;
+            console.log(data)
+            renderIndustryAndConcept(data);
+        }
+    });
+}
+function renderIndustryAndConcept(data) {
+    var conceptHtmlArray = '';
+    var industryHtmlArray = '';
+    data.concepts.forEach((item, index) => {
+
+        conceptHtmlArray += `
+        <div class="sector-item">
+                        <div class="sector-name">${item.concepts}(${item.code})</div>
+                        <div class="sector-change positive">${item.rate}%</div>
+                    </div>
+  `
+    });
+    data.industry.forEach((item, index) => {
+
+        industryHtmlArray += `
+        <div class="sector-item">
+                       <div class="sector-name">${item.concepts}(${item.code})</div>
+                        <div class="sector-change positive">${item.rate}%</div>
+                    </div>
+  `
+    });
+    document.getElementById('concepts').innerHTML = conceptHtmlArray;
+    document.getElementById('industry').innerHTML = industryHtmlArray;
 }
 
 function tryRenderTimeLineChart() {

@@ -100,7 +100,7 @@ function renderChart(data) {
                     display: true,
                     text: '大单净量对比图表',
                     font: {
-                        size: 16
+                        size: 8px
                     }
                 },
                 tooltip: {

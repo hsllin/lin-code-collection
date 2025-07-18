@@ -86,7 +86,7 @@
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 12px;
             color: #333;
         }
 
@@ -111,6 +111,7 @@
             padding: 15px;
             border-radius: 8px;
             background: #fafafa;
+            font-size: 12px;
         }
 
         .stock-header {
@@ -121,13 +122,13 @@
         }
 
         .stock-rank {
-            font-size: 18px;
-            color: #1890ff;
+            font-size: 12px;
+            color: #3a5167;
             margin-right: 10px;
         }
 
         .stock-name {
-            font-size: 16px;
+            font-size: 12px;
             font-weight: 600;
         }
 
@@ -158,9 +159,10 @@
 
         .tag {
             padding: 4px 8px;
-            background: #3caee0;
+            background: #3a5167;
             border-radius: 4px;
-            font-size: 12px;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
         }
 
         .populartag {
@@ -169,19 +171,21 @@
             float: left;
             padding: 5px 9px;
             text-decoration: none;
-            background: #3caee0;
+            background: #3a5167;
             color: #F1F6F7;
             margin-right: 5px;
             font-weight: 500;
             margin-bottom: 5px;
             font-family: helvetica;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
         }
 
         /* 热点原因 */
         .hot-reason {
             color: #666;
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.8;
             margin-top: 10px;
         }
 
@@ -218,7 +222,7 @@
     <div class="container">
         <!-- 头部 -->
         <div class="header">
-            <h2>同花顺热榜</h2>
+            <h6>热榜</h6>
         </div>
         <div>
             <a href="javascript:;" onclick="downLoadHotBoardAndConceptData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
@@ -238,7 +242,7 @@
             <!-- 左侧大家在看 -->
             <div class="watch-section" id="hot_content">
                 <div class="section-header">
-                    <h2 class="section-title">👀 大家在看</h2>
+                    <h6 class="section-title">👀 大家在看</h6>
                     <div class="time-filter">
                         <span class="time-tab active">1小时</span>
                         <span class="time-tab">24小时</span>
@@ -287,7 +291,7 @@
 
             <div class="watch-section" id="rise_content">
                 <div class="section-header">
-                    <h2 class="section-title">🚀 快速飙升</h2>
+                    <h6 class="section-title">🚀 快速飙升</h6>
                     <div class="time-filter">
                         <span class="time-tab active">1小时</span>
                         <span class="time-tab">24小时</span>

@@ -10,21 +10,59 @@
     <script type="text/javascript" src="/js/chart.min.js"></script>
 
     <style>
-        /*body {*/
-        /*    font-family: "Microsoft YaHei", sans-serif;*/
-        /*    margin: 0;*/
-        /*    padding: 20px;*/
-        /*    background-color: #f5f5f5;*/
-        /*}*/
+        .container {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
+        .header p {
+            margin: 8px 0 0;
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
 
-        /*.container {*/
-        /*    max-width: 1200px;*/
-        /*    margin: 0 auto;*/
-        /*    background: #fff;*/
-        /*    border-radius: 8px;*/
-        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
-        /*    padding: 20px;*/
-        /*}*/
+        .date-info {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* 工具栏样式 */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background: #f8f9fc;
+            border-bottom: 1px solid #eaeff5;
+        }
+
+        .export-btn {
+            background: #3a5167;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s;
+            margin: 8px;
+        }
+
+        .export-btn:hover {
+            background: #1a68d1;
+        }
+
+        .export-btn i {
+            margin-right: 6px;
+        }
+
 
         h1 {
             text-align: center;
@@ -32,39 +70,50 @@
             margin-bottom: 20px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
+        /* 表格样式 */
+        .table-container {
+            overflow-x: auto;
+            padding: 0 15px 15px;
         }
 
-        th, td {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
+        table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
         }
 
         th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            color: #333;
+            background: #f8f9fc;
+            color: #3b506c;
+            font-weight: 600;
+            font-size: 12px;
+            text-align: center;
+            padding: 14px 10px;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid #e1e5eb;
+        }
+
+        td {
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 12px;
+            border-bottom: 1px solid #edf2f9;
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f9fbfd;
         }
 
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: #f0f7ff !important;
+            transition: background 0.2s;
         }
 
         .price-up {
-            color: #3caee0;
-            font-weight: bold;
-        }
-
-        .heat{
-            color: #ee5d03;
+            color: #446391;
             font-weight: bold;
         }
 
@@ -80,7 +129,7 @@
             text-overflow: ellipsis;
             cursor: pointer;
             position: relative;
-            color: #1e88e5;
+            color: #446391;
             text-decoration: underline;
         }
 
@@ -124,24 +173,6 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #eee;
         }
-        /*!* 刷新按钮样式 *!*/
-        /*.refresh-btn {*/
-        /*    padding: 10px 15px;*/
-        /*    background: #0c91f8; !* 主色调绿色 *!*/
-        /*    color: white !important;*/
-        /*    border-radius: 6px;*/
-        /*    margin: 8px 15px 0 0;*/
-        /*    transition: background 0.3s;*/
-        /*}*/
-
-        /*.refresh-btn:hover {*/
-        /*    background: #63b7ee; !* 悬停深绿色 *!*/
-        /*    cursor: pointer;*/
-        /*}*/
-
-        /*.refresh-btn .fa-refresh {*/
-        /*    margin-right: 5px;*/
-        /*}*/
     </style>
 </head>
 
@@ -149,15 +180,13 @@
 <div class="right_col" role="main" data-layout-fragment="content">
 
     <div class="container">
-        <h6>同花顺趋势榜</h6>
+        <h6 style="text-align: center">top100</h6>
         <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <div>
-                <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="刷新数据">
+            <div style="display: flex;padding: 10px;">
+                <a href="javascript:;" onclick="downLoadData()" class="export-btn" title="刷新数据">
                     <i class="fa fa-refresh"></i> 导出
                 </a>
-            </div>
-            <div>
-                <a href="javascript:;" onclick="generatePhoto()" class="refresh-btn" title="刷新数据">
+                <a href="javascript:;" onclick="generatePhoto()" class="export-btn" title="刷新数据">
                     <i class="fa fa-refresh"></i> 生成照片
                 </a>
             </div>

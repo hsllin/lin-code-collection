@@ -6,30 +6,253 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        th { background-color: #f2f2f2; cursor: pointer; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        .sort-indicator { margin-left: 5px; }
-        /* 刷新按钮样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: white;
+            min-height: 100vh;
+            /*padding: 20px;*/
+        }
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgb(229, 239, 250);
+        }
+
+        .header {
+            background: var(--header-bg);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            text-align: center;
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgb(255, 255, 255);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--highlight-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: var(--highlight-color);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
         .refresh-btn {
-            padding: 10px 15px;
-            background: #0c91f8; /* 主色调绿色 */
-            color: white !important;
-            border-radius: 6px;
-            margin: 8px 15px 0 0;
-            transition: background 0.3s;
+            color: #f0f3f3;
+            background: #446391;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            /*display: flex;*/
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
         }
 
         .refresh-btn:hover {
-            background: #63b7ee; /* 悬停深绿色 */
-            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(14, 165, 233, 0.4);
         }
 
-        .refresh-btn .fa-refresh {
-            margin-right: 5px;
+        .last-update {
+            font-size: 14px;
+            color: #94a3b8;
         }
+
+        .last-update strong {
+            color: var(--highlight-color);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 0 20px 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 900px;
+        }
+
+        th, td {
+            padding: 16px 18px;
+            text-align: left;
+            color: #3a5167;
+            font-size: 12px;
+        }
+
+        thead th {
+            background-color: #ffffff;
+            color: #4a6fa5;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        tbody tr {
+            background-color: rgba(255,255,255,0.05);
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.08);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(14, 165, 233, 0.1);
+            transform: translateX(5px);
+        }
+
+        .stock-code {
+            /*font-weight: bold;*/
+        }
+
+        .stock-name {
+            font-weight: bold;
+        }
+
+        .up {
+            color: #446391;
+            font-weight: 700;
+        }
+
+        .down {
+            color: var(--down-color);
+            font-weight: 700;
+        }
+
+        .neutral {
+            color: var(--neutral-color);
+            font-weight: 700;
+        }
+
+        .concept {
+            max-width: 250px;
+        }
+
+        .concept-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .concept-tag {
+            background: rgba(74, 111, 165, 0.73);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--highlight-color);
+            font-size: 12px;
+        }
+
+        .seal-amount {
+            /*font-weight: 700;*/
+        }
+
+        .stock-limit-time {
+            font-size: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .switch-btn {
+            padding: 6px 18px;
+            margin-right: 8px;
+            border: 1px solid #409eff;
+            background: #fff;
+            color: #409eff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        .switch-btn.active, .switch-btn:hover {
+            background: #409eff;
+            color: #fff;
+        }
+
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/limitUpPool.js"></script>
@@ -43,7 +266,7 @@
         <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <h2 class="date-header" id="time" style="margin: 0;">2025年1月27日 星期一</h2>
             <div>
-                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
+                <a href="javascript:;" onclick="refreshData()" class="" title="刷新数据">
                     <i class="fa fa-refresh"></i> 刷新
                 </a>
                 <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="导出" style="margin-left: 10px;">

@@ -17,6 +17,7 @@ import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 佛祖保佑此代码没有bug，即使有也一眼看出
@@ -137,6 +138,7 @@ public class IncreaseAndDecreaseController {
         List<LimitUpData> list = increaseAndDecreaseService.getYesterdayLimitUpData();
         return ResponseEntity.ok(list);
     }
+
     /**
      * 获取同花顺昨日涨停数据
      * 热点个股前100；所属行业概念；所属行业;大单净量
@@ -156,7 +158,6 @@ public class IncreaseAndDecreaseController {
     /**
      * 获取同花顺早盘集合竞价
      *
-     *
      * @param request
      * @param model
      * @return
@@ -172,7 +173,6 @@ public class IncreaseAndDecreaseController {
     /**
      * 获取同花顺早盘集合竞价未匹配大于1万手
      *
-     *
      * @param request
      * @param model
      * @return
@@ -185,6 +185,68 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
+    /**
+     * 获取同花顺板块和概念前排
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getHotConceptAndIndustry")
+    public ResponseEntity<Map<String, List<IncreaseRankData>>> getHotConceptAndIndustry(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        Map<String, List<IncreaseRankData>> list = increaseAndDecreaseService.getHotConcept();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺成交额超10亿以上的数据
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getTradeData")
+    public ResponseEntity<List<IncreaseRankData>> getTradeData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        List<IncreaseRankData> list = increaseAndDecreaseService.getTradeData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺弱转强
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getWeakToStrongData")
+    public ResponseEntity<List<IncreaseRankData>> getWeakToStrongData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        List<IncreaseRankData> list = increaseAndDecreaseService.getWeakToStrongData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺龙头首阴
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getDragonToGreenData")
+    public ResponseEntity<List<IncreaseRankData>> getDragonToGreenData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        List<IncreaseRankData> list = increaseAndDecreaseService.getDragonToGreenData();
+        return ResponseEntity.ok(list);
+    }
 
 
 }

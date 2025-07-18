@@ -24,8 +24,10 @@
         }
 
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
         }
 
         header {
@@ -52,7 +54,7 @@
         .market-info {
             display: flex;
             gap: 30px;
-            background: rgba(96, 139, 203, 0.28);
+            background: rgb(255, 255, 255);
             padding: 15px 25px;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -66,12 +68,12 @@
         .index-change {
             display: flex;
             align-items: center;
-            font-size: 18px;
+            font-size: 12px;
             font-weight: 600;
         }
 
         .positive {
-            color: rgba(71, 182, 226, 0.79);
+            color: rgba(74, 111, 165, 0.73);
         }
 
         .negative {
@@ -84,14 +86,16 @@
         }
 
         .main-content {
-            display: grid;
-            grid-template-columns: 3fr 1fr;
+            display: flex;
+            /*grid-template-columns: 3fr 1fr;*/
             gap: 25px;
             margin-top: 20px;
         }
 
         .chart-container {
-            background: #d2d2d2;
+            flex: 4;
+            /*grid-column: 1 / -1;*/
+            /*background: #d2d2d2;*/
             border-radius: 16px;
             padding: 25px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -141,7 +145,9 @@
         }
 
         .sector-list {
-            background: #d2d2d2;
+            /*grid-column: 1 / 1;*/
+            flex: 1;
+            /*background: #d2d2d2;*/
             border-radius: 16px;
             padding: 25px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -155,8 +161,9 @@
         }
 
         .sector-title {
-            font-size: 20px;
+            font-size: 12px;
             font-weight: 600;
+            color: #666666;
         }
 
         .sector-items {
@@ -170,9 +177,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 15px;
-            background: rgba(74, 111, 165, 0.63);
+            background: rgb(255, 255, 255);
             border-radius: 10px;
             transition: all 0.3s;
+            color: rgba(74, 111, 165, 0.73);
         }
 
         .sector-item:hover {
@@ -190,7 +198,7 @@
 
         .hot-concepts {
             grid-column: 1 / -1;
-            background: #1e293b;
+            background: #ffffff;
             border-radius: 16px;
             padding: 25px;
             margin-top: 25px;
@@ -216,7 +224,7 @@
         }
 
         .concept-tag {
-            background: linear-gradient(135deg, rgba(74, 111, 165, 0.63), #f0f3f3);
+            background: linear-gradient(135deg, rgb(68, 99, 145), rgba(74, 111, 165, 0.73));
             padding: 10px 20px;
             border-radius: 50px;
             font-weight: 500;
@@ -230,7 +238,7 @@
         }
 
         .tag-highlight {
-            background: linear-gradient(135deg, #3a5167, #446391);
+            background: linear-gradient(135deg, #ffffff, #446391);
             animation: pulse 1.5s infinite;
         }
 
@@ -397,13 +405,44 @@
 
             <div class="sector-list">
                 <div class="sector-header">
-                    <div class="sector-title">领涨板块</div>
+                    <div class="sector-title">领涨概念</div>
                     <div class="index-change positive">
-                        <i class="fas fa-caret-up"></i>
+                        <i class="fa fa-caret-up"></i>
                         <span>TOP 5</span>
                     </div>
                 </div>
-                <div class="sector-items">
+                <div class="sector-items" id="concepts">
+                    <div class="sector-item">
+                        <div class="sector-name">算力工程</div>
+                        <div class="sector-change positive">+3.72%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">创新药</div>
+                        <div class="sector-change positive">+2.85%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">芯片产业链</div>
+                        <div class="sector-change positive">+2.63%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">PCB</div>
+                        <div class="sector-change positive">+2.15%</div>
+                    </div>
+                    <div class="sector-item">
+                        <div class="sector-name">固态电池</div>
+                        <div class="sector-change positive">+1.98%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="sector-list">
+                <div class="sector-header">
+                    <div class="sector-title">领涨板块</div>
+                    <div class="index-change positive">
+                        <i class="fa fa-caret-up"></i>
+                        <span>TOP 5</span>
+                    </div>
+                </div>
+                <div class="sector-items" id="industry">
                     <div class="sector-item">
                         <div class="sector-name">算力工程</div>
                         <div class="sector-change positive">+3.72%</div>
@@ -427,37 +466,39 @@
                 </div>
             </div>
 
-            <div class="hot-concepts">
-                <div class="hot-header">
-                    <div class="hot-title">今日热点概念</div>
-                    <div class="index-change positive">
-                        <i class="fas fa-fire"></i>
-                        <span>概念热度</span>
-                    </div>
-                </div>
-                <div class="concept-tags">
-                    <div class="concept-tag">PCB</div>
-                    <div class="concept-tag">数字货币</div>
-                    <div class="concept-tag tag-highlight">创新药</div>
-                    <div class="concept-tag">医疗美容</div>
-                    <div class="concept-tag">芯片产业链</div>
-                    <div class="concept-tag">游戏</div>
-                    <div class="concept-tag">3D打印</div>
-                    <div class="concept-tag">稀土永磁</div>
-                    <div class="concept-tag">光伏</div>
-                    <div class="concept-tag tag-highlight">固态电池</div>
-                    <div class="concept-tag">亚玛顿</div>
-                    <div class="concept-tag">大金融</div>
-                    <div class="concept-tag">有机硅</div>
-                    <div class="concept-tag">机器人</div>
-                    <div class="concept-tag">钢铁</div>
-                    <div class="concept-tag tag-highlight">算力工程</div>
+
+
+        </div>
+        <div class="hot-concepts">
+            <div class="hot-header">
+                <div class="hot-title">今日热点概念</div>
+                <div class="index-change positive">
+                    <i class="fas fa-fire"></i>
+                    <span>概念热度</span>
                 </div>
             </div>
-            <footer>
-                <p>数据更新时间: <span id="update-time"></span> | 免责声明：本页面数据仅供参考</p>
-            </footer>
+            <div class="concept-tags">
+                <div class="concept-tag">PCB</div>
+                <div class="concept-tag">数字货币</div>
+                <div class="concept-tag tag-highlight">创新药</div>
+                <div class="concept-tag">医疗美容</div>
+                <div class="concept-tag">芯片产业链</div>
+                <div class="concept-tag">游戏</div>
+                <div class="concept-tag">3D打印</div>
+                <div class="concept-tag">稀土永磁</div>
+                <div class="concept-tag">光伏</div>
+                <div class="concept-tag tag-highlight">固态电池</div>
+                <div class="concept-tag">亚玛顿</div>
+                <div class="concept-tag">大金融</div>
+                <div class="concept-tag">有机硅</div>
+                <div class="concept-tag">机器人</div>
+                <div class="concept-tag">钢铁</div>
+                <div class="concept-tag tag-highlight">算力工程</div>
+            </div>
         </div>
+        <footer>
+            <p>数据更新时间: <span id="update-time"></span> | 免责声明：本页面数据仅供参考</p>
+        </footer>
     </div>
 </div>
 </body>

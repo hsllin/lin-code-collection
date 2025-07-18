@@ -185,6 +185,40 @@ public class WencaiUtils {
         return temp;
     }
 
+    public static Map<String, Object> getConceptRootData(String targetUrl, Map<String, Object> params) throws IOException, ScriptException {
+        if (StringUtils.isBlank(targetUrl)) {
+            targetUrl = url;
+        }
+        String userAgent = USER_AGENTS.get(RandomUtil.randomInt(USER_AGENTS.size()));
+        String hexinV = generateHexinV();
+        params.put("hexin-v", hexinV);
+        params.put("source", "ths_mobile_iwencai");
+        params.put("user_id", "721659935");
+        params.put("user_name", "mx_721659935");
+        params.put("version", "2.0");
+        params.put("secondary_intent", "zhishu");
+        params.put("add_info", "{\"urp\":{\"scene\":1,\"company\":1,\"business\":1},\"contentType\":\"json\",\"searchInfo\":true}");
+        params.put("log_info", "{\"input_type\":\"typewrite\"}");
+        params.put("rsh", "721659935");
+        params.put("", "");
+        String result = HttpRequest.post(targetUrl)
+                .header("hexin-v", hexinV)// token鉴权
+                .header("content-type", "application/json")// token鉴权
+                .header("User-Agent", userAgent)
+                .header("Accept", "application/json, text/plain, */*")
+                .header("Accept-Language", "zh-CN,zh;q=0.9")
+                .header("Connection", "keep-alive")
+                .header("host", "www.iwencai.com")
+                .header("origin", "https://www.iwencai.com")
+                .header("pragma", "no-cache")
+                .header("referer", "https://www.iwencai.com/unifiedmobile/?q=%E6%B6%A8%E5%B9%85%E6%A6%9C&queryType=stock")
+                .body(JSONUtil.toJsonStr(params))
+                .execute().body();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> temp = objectMapper.readValue(result, Map.class);
+        return temp;
+    }
+
     public static String generateHexinV() throws ScriptException {
         // 创建ScriptEngineManager
         ScriptEngineManager manager = new ScriptEngineManager();

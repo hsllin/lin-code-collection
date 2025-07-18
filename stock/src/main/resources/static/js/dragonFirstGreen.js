@@ -2,7 +2,7 @@ $(function () {
     // 初始化渲染
     // window.addEventListener('DOMContentLoaded', renderTable);
     document.getElementById('stock-table').innerHTML = '';
-    getDecreaseData();
+    getDragonToGreenData();
 // 点击模态框外部关闭
     window.onclick = function (event) {
         const modal = document.getElementById("modal");
@@ -14,12 +14,12 @@ $(function () {
 // 模拟数据
 let stockData = [];
 
-function getDecreaseData() {
+function getDragonToGreenData() {
     $.ajax({
 
         type: "get",
 
-        url: "getTrendData",
+        url: "getDragonToGreenData",
 
         data: {},
 
@@ -103,15 +103,13 @@ function renderTable(data) {
                 <td>${index + 1}</td>
                 <td>${item.code}</td>
                 <td>${item.name}</td>
+                <td>${item.price}</td>
                 <td class="price-up">${item.rate}</td>
+                <td>${formatToYi(item.netInFlow)}</td>
+                 <td>${formatToYi(item.volality)}</td>
                 <td><span class="collapse-text"
                           onclick="showDetail('${item.concepts}')">${item.concepts}</span></td>
                 <td>${item.industry}</td>
-                <td>${item.minPrice}</td>
-                <td>${item.mostPrice}</td>
-                <td>${item.fivePrice}</td>
-                <td>${item.tenPrice}</td>
-                <td>${item.twentyPrice}</td>
             </tr>
   `
     });
@@ -154,5 +152,30 @@ function downLoadData() {
     });
 }
 
+/**
+ * 格式化数字：超过1亿显示亿单位，不足1亿但超过1万显示万单位，不足1万显示原数字
+ * @param {number|string} num - 待格式化的数字或数字字符串
+ * @returns {string} 格式化后的字符串（自动去除小数点后无效的零）
+ */
+function formatToYi(num) {
+    // 转换为数字类型并验证有效性
+    const number = parseFloat(num);
+    if (isNaN(number)) return '0';
+
+    const absNum = Math.abs(number);
+
+    // 超过1亿：转换为亿单位
+    if (absNum >= 100000000) {
+        const result = (number / 100000000).toFixed(2).replace(/\.?0+$/, '');
+        return result + '亿';
+    }
+    // 超过1万但不足1亿：转换为万单位
+    else if (absNum >= 10000) {
+        const result = (number / 10000).toFixed(2).replace(/\.?0+$/, '');
+        return result + '万';
+    }
+    // 不足1万：直接返回整数
+    return Math.round(number).toString();
+}
 
 

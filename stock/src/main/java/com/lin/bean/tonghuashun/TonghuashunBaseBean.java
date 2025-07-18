@@ -25,4 +25,10 @@ public class TonghuashunBaseBean {
     private String netInFlow;
     private String cicuration;
     private double heat;
+    private String mostPrice;
+    private String minPrice;
+    private double rangeRate;
+    private String fivePrice;
+    private String tenPrice;
+    private String twentyPrice;
 }

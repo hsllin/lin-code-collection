@@ -25,16 +25,17 @@
         }
 
         .table-light th {
-            background: linear-gradient(145deg, #2c3e50, #34495e); /* 渐变表头背景 */
-            color: white;
+            background: white;
+            color: #3a5167;
             font-weight: 500;
             padding: 16px;
             border-bottom: 2px solid #2980b9;
         }
         .container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
         }
 
         .stock-table {
@@ -80,7 +81,6 @@
     <div class="clearfix"></div>
     <div class="container">
         <div class="">
-            <h2 class="mb-4">炸板实时监控</h2>
 
             <div class="table-responsive stock-table">
                 <table class="table table-hover align-middle">

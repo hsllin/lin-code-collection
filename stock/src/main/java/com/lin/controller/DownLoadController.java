@@ -48,6 +48,8 @@ public class DownLoadController {
         increaseAndDecreaseService.generateTrendDataPhoto();
         increaseAndDecreaseService.downloadOneWordData();
         popularStockService.downLoadHotBoardAndConceptData();
+        increaseAndDecreaseService.downloadWeakToStrongData();
+        increaseAndDecreaseService.downDragonFirstGreenData();
         return ResponseEntity.ok(true);
     }
 }
