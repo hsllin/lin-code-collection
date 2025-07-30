@@ -5,6 +5,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.lianban.TradeDay;
+import jodd.util.StringUtil;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -39,6 +40,9 @@ public class CommonUtils {
      * @return
      */
     public static double formatStringPrice(String totalPrice) {
+        if (totalPrice == null|| StringUtil.isEmpty(totalPrice)||"null".equals(totalPrice)) {
+            return 0;
+        }
         BigDecimal bg = new BigDecimal(totalPrice).setScale(2, RoundingMode.UP);
         return bg.doubleValue();
     }

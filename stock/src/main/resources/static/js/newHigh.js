@@ -2,12 +2,7 @@ $(function () {
     // 初始化渲染
     // window.addEventListener('DOMContentLoaded', renderTable);
     document.getElementById('stock-table').innerHTML = '';
-    document.getElementById('increase-table').innerHTML = '';
-    document.getElementById('tlimit-table').innerHTML = '';
-
-    getIncreaseData();
-    getOneWordData();
-    getTLimitupData();
+    getNewHighData();
 // 点击模态框外部关闭
     window.onclick = function (event) {
         const modal = document.getElementById("modal");
@@ -19,50 +14,18 @@ $(function () {
 // 模拟数据
 let stockData = [];
 
-function getIncreaseData() {
+function getNewHighData() {
     $.ajax({
 
         type: "get",
 
-        url: "getIncreaseData",
+        url: "getNewHighData",
 
         data: {},
 
         success: function (data) {
             stockData = data;
             renderTable(data);
-        }
-
-    });
-}
-function getOneWordData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getOneWordData",
-
-        data: {},
-
-        success: function (data) {
-            // stockData = data;
-            renderOneWordTable(data);
-        }
-
-    });
-}
-function getTLimitupData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getTLimitupData",
-
-        data: {},
-
-        success: function (data) {
-            // stockData = data;
-            renderTLimitUpTable(data);
         }
 
     });
@@ -131,52 +94,6 @@ function renderChart(data) {
     });
 }
 
-function renderOneWordTable(data) {
-    var htmlArray = '';
-    data.forEach((item, index) => {
-
-        htmlArray += `
-        <tr>
-                <td>${index + 1}</td>
-                <td>${item.code}</td>
-                <td>${item.name}</td>
-                <td>${item.price}</td>
-                <td class="price-up">${item.rate}</td>
-                <td><span class="collapse-text"
-                          onclick="showDetail('${item.concepts}')">${item.concepts}</span></td>
-                <td>${item.industry}</td>
-                <td>${item.increaseReason}</td>
-                <td>${item.increaseType}</td>
-            </tr>
-  `
-    });
-    console.log(htmlArray)
-    document.getElementById('increase-table').innerHTML = htmlArray;
-}
-
-function renderTLimitUpTable(data) {
-    var htmlArray = '';
-    data.forEach((item, index) => {
-
-        htmlArray += `
-        <tr>
-                <td>${index + 1}</td>
-                <td>${item.code}</td>
-                <td>${item.name}</td>
-                <td>${item.price}</td>
-                <td class="price-up">${item.rate}</td>
-                <td><span class="collapse-text"
-                          onclick="showDetail('${item.concepts}')">${item.concepts}</span></td>
-                <td>${item.industry}</td>
-                <td>${item.increaseReason}</td>
-                <td>${item.increaseType}</td>
-            </tr>
-  `
-    });
-    console.log(htmlArray)
-    document.getElementById('tlimit-table').innerHTML = htmlArray;
-}
-
 function renderTable(data) {
     var htmlArray = '';
     data.forEach((item, index) => {
@@ -188,10 +105,11 @@ function renderTable(data) {
                 <td>${item.name}</td>
                 <td>${item.price}</td>
                 <td class="price-up">${item.rate}</td>
+                <td>${formatToYi(item.netInFlow)}</td>
+                 <td>${formatToYi(item.volality)}</td>
                 <td><span class="collapse-text"
                           onclick="showDetail('${item.concepts}')">${item.concepts}</span></td>
                 <td>${item.industry}</td>
-                <td>${item.increaseReason}</td>
             </tr>
   `
     });
@@ -205,9 +123,10 @@ function showDetail(stockName) {
     const modalTitle = document.getElementById("modal-title");
     const modalBody = document.getElementById("modal-body");
 
-    modalTitle.textContent = `详情`;
+    modalTitle.textContent = `${stockName} - 涨停类别详情`;
 
     // 根据股票名设置不同的详细内容
+    // modalBody.innerHTML = "<p>注册制次新股: 属于注册制改革后上市的股票</p><p>次股与次新股: 此类股票具有较高波动性</p><p>融资融券: 可参与融资融券交易</p>";
     modalBody.innerHTML = stockName;
 
     modal.style.display = "block";
@@ -218,5 +137,45 @@ function closeModal() {
     document.getElementById("modal").style.display = "none";
 }
 
+function downLoadData() {
+    $.ajax({
+
+        type: "get",
+
+        url: "downloadTrendData",
+
+        data: {},
+
+        success: function (data) {
+        }
+
+    });
+}
+
+/**
+ * 格式化数字：超过1亿显示亿单位，不足1亿但超过1万显示万单位，不足1万显示原数字
+ * @param {number|string} num - 待格式化的数字或数字字符串
+ * @returns {string} 格式化后的字符串（自动去除小数点后无效的零）
+ */
+function formatToYi(num) {
+    // 转换为数字类型并验证有效性
+    const number = parseFloat(num);
+    if (isNaN(number)) return '0';
+
+    const absNum = Math.abs(number);
+
+    // 超过1亿：转换为亿单位
+    if (absNum >= 100000000) {
+        const result = (number / 100000000).toFixed(2).replace(/\.?0+$/, '');
+        return result + '亿';
+    }
+    // 超过1万但不足1亿：转换为万单位
+    else if (absNum >= 10000) {
+        const result = (number / 10000).toFixed(2).replace(/\.?0+$/, '');
+        return result + '万';
+    }
+    // 不足1万：直接返回整数
+    return Math.round(number).toString();
+}
 
 

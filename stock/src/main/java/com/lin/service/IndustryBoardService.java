@@ -13,10 +13,11 @@ public class IndustryBoardService {
 
     public static void main(String[] args) {
 //
-        System.out.println("涨幅行业-----------------------------------------------------");
-        logLianBan("1");
-        System.out.println("跌幅行业-----------------------------------------------------");
-        logLianBan("0");
+//        System.out.println("涨幅行业-----------------------------------------------------");
+//        logLianBan("1");
+//        System.out.println("跌幅行业-----------------------------------------------------");
+//        logLianBan("0");
+//        testBobao();
     }
 
     public static void logLianBan(String order) {
@@ -46,10 +47,10 @@ public class IndustryBoardService {
 
         List<IndustryBoard.DataBean.DiffBean> allList = bean.getData().getDiff();
         Integer total = bean.getData().getTotal();
-        String increase="";
-        String decrease="";
+        String increase = "";
+        String decrease = "";
         StringBuilder message = new StringBuilder(128);
-        String type="";
+        String type = "";
         if ("1".equals(order)) {
             type = "\033[31;4m" + "快速上涨";
         } else if ("0".equals(order)) {
@@ -58,16 +59,16 @@ public class IndustryBoardService {
         for (IndustryBoard.DataBean.DiffBean diffBean : allList) {
             double percent = (double) diffBean.getF3() / 100;
             double faucetPercent = (double) diffBean.getF136() / 100;
-            double decreasePercent=(double) diffBean.getF222() / 100;
-             increase= " 领涨龙头：" + diffBean.getF14() + "(" + diffBean.getF128() + ")" + " 涨幅：" + CommonUtils.formatPrice(faucetPercent) +" ";
-             decrease=" 最大跌幅：" + diffBean.getF207() + "(" + diffBean.getF208() + ")" + " 涨幅：" + CommonUtils.formatPrice(decreasePercent);
-            message.append(type + "行业：" + diffBean.getF14() + " 涨幅：" + CommonUtils.formatPrice(percent) + "%" +increase+decrease+ "%\n" + "\033[0m");
+            double decreasePercent = (double) diffBean.getF222() / 100;
+            increase = " 领涨龙头：" + diffBean.getF14() + "(" + diffBean.getF128() + ")" + " 涨幅：" + CommonUtils.formatPrice(faucetPercent) + " ";
+            decrease = " 最大跌幅：" + diffBean.getF207() + "(" + diffBean.getF208() + ")" + " 涨幅：" + CommonUtils.formatPrice(decreasePercent);
+            message.append(type + "行业：" + diffBean.getF14() + " 涨幅：" + CommonUtils.formatPrice(percent) + "%" + increase + decrease + "%\n" + "\033[0m");
             System.out.println(message.toString());
             message.setLength(0);
         }
 
 
-
     }
+
 
 }

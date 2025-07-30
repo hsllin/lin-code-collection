@@ -62,6 +62,22 @@ public class IncreaseAndDecreaseController {
     }
 
     /**
+     * T字涨停
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getTLimitupData")
+    public ResponseEntity<List<IncreaseRankData>> getTLimitupData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        List<IncreaseRankData> list = increaseAndDecreaseService.getTLimitupData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
      * 一字涨停
      *
      * @param request
@@ -247,6 +263,58 @@ public class IncreaseAndDecreaseController {
         List<IncreaseRankData> list = increaseAndDecreaseService.getDragonToGreenData();
         return ResponseEntity.ok(list);
     }
+    /**
+     * 获取同花顺60日新高
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getNewHighData")
+    public ResponseEntity<List<IncreaseRankData>> getNewHighData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        List<IncreaseRankData> list = increaseAndDecreaseService.getNewHighData();
+        return ResponseEntity.ok(list);
+    }
+
+
+
+    /**
+     * 获取同花顺今日超昨日前高个股
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getIncreaseYesterdayData")
+    public ResponseEntity<List<IncreaseRankData>> getIncreaseYesterdayData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        List<IncreaseRankData> list = increaseAndDecreaseService.getIncreaseYesterdayData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺涨幅板块
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getIncreaseConcept")
+    public ResponseEntity<List<IncreaseRankData>> getIncreaseConcept(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getIncreaseConcept(sort);
+        return ResponseEntity.ok(list);
+    }
+
+
 
 
 }

@@ -184,6 +184,43 @@ public class WencaiUtils {
         Map<String, Object> temp = objectMapper.readValue(result, Map.class);
         return temp;
     }
+    public static Map<String, Object> getConceptData(String targetUrl, Map<String, Object> params) throws IOException, ScriptException {
+        if (StringUtils.isBlank(targetUrl)) {
+            targetUrl = url;
+        }
+        String userAgent = USER_AGENTS.get(RandomUtil.randomInt(USER_AGENTS.size()));
+        String hexinV = generateHexinV();
+        params.put("hexin-v", hexinV);
+        params.put("source", "Ths_iwencai_Xuangu");
+        params.put("user_id", "721659935");
+        params.put("logid", "43bcfbe2d630f81bb18106650a4647a5");
+        params.put("ret", "json_all");
+        params.put("sessionid", "Ths_iwencai_Xuangu_ta7wv6968l1v5l2l8orrl4ohcg77279g");
+        params.put("uuids[0]", "24089");
+        params.put("query_type", "zhishu");
+        params.put("comp_id", "6829723");
+        params.put("uuid", "24089");
+        String result = HttpRequest.post(targetUrl)
+                .header("hexin-v", hexinV)// token鉴权
+                .header("content-type", "application/x-www-form-urlencoded")// token鉴权
+                .header("User-Agent", userAgent)
+                .header("Accept", "application/json, text/plain, */*")
+                .header("Accept-Language", "zh-CN,zh;q=0.9")
+                .header("Connection", "keep-alive")
+                .header("host", "www.iwencai.com")
+                .header("origin", "https://www.iwencai.com")
+                .header("pragma", "no-cache")
+                .header("referer", "https://www.iwencai.com/unifiedwap/result?w=%E6%B6%A8%E5%81%9C%E5%AE%B6%E6%95%B0%E5%8D%A0%E6%AF%94%E5%89%8D100%E7%9A%84%E6%8C%87%E6%95%B0%EF%BC%8C%E9%A2%86%E6%B6%A8%E8%82%A1%E7%AE%80%E7%A7%B0&querytype=zhishu&addSign=1753348880868")
+                .form(params)
+                .execute().body();
+//        result = JSONUtil.toJsonStr(result);
+        ObjectMapper objectMapper = new ObjectMapper();
+//        String output = StringEscapeUtils.unescapeJava(result);
+        Map<String, Object> temp = objectMapper.readValue(result, Map.class);
+//        result = result.replace("\\\\u", "\\u");
+//        String output = StringEscapeUtils.unescapeJava(result);
+        return temp;
+    }
 
     public static Map<String, Object> getConceptRootData(String targetUrl, Map<String, Object> params) throws IOException, ScriptException {
         if (StringUtils.isBlank(targetUrl)) {
