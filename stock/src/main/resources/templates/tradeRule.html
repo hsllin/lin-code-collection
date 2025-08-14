@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/tradeRule.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .main {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        /** {*/
+        /*    margin: 0;*/
+        /*    padding: 0;*/
+        /*    box-sizing: border-box;*/
+        /*}*/
+
+        /*body {*/
+        /*    font-family: "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;*/
+        /*    background-color: #f8f9fa;*/
+        /*    color: #2c3e50;*/
+        /*    line-height: 1.8;*/
+        /*    padding: 20px;*/
+        /*}*/
+
+        .container1 {
+            /*max-width: 800px;*/
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container1::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #409eff, #673ab7);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        ol {
+            counter-reset: section;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 25px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+        }
+
+        .my::before {
+            content: counter(section);
+            counter-increment: section;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #409eff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        strong {
+            color: #f39c12;
+            font-weight: 700;
+        }
+
+        .highlight {
+            background-color: rgba(255, 249, 195, 0.3);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .rule-description {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 3px solid #e0e0e0;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            li {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="main">
+        <div class="container1">
+            <h2 style="font-weight: 600;text-align: center">操作原则</h2>
+            <ol id="content">
+                <li>
+                    <p>看到不懂的票，<strong>特别是涨了6-9.5%的那种票，如果不是涨停的话不能买</strong>，因为其有可能是庄家诱多出货，要买只能等涨停了，封单慢慢增多的时候再买。
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        不要怕卖飞，条件单尽量设置低一点，不要抱有幻想，<strong>强势的票不会一直在均价下面运行的</strong>，<strong>卖掉了就再找强势的股</strong>。
+                    </p>
+                </li>
+                <li>
+                    <p><strong>业绩预增的票，如果开盘不是强势，不要买</strong>，先观察竞价的价格，比如4.22号入了妙可蓝多，结果买入直接一直跌，亏6%，这种就是典型的借业绩出货，迫不及待了。
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>如果是搞地天板模式的，只能翘跌停买，比如上涨0.01%买入，千万不要赌地天板，比如跌停开，一直拉到5%，肯定有很多获利盘忍不住砸盘的，只能等涨停封住了再挂单买入</strong>，半路接的话性价比不高的，因为大部分第二天可能跌停开。
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        开<strong>盘跌-4%的拉升先不要急着追，看看后续走势如何，大概率是骗炮的，拉升骗你接盘，如果是强势得话为啥会开-4%，肯定是主力跑路了，懒得维护了</strong>。
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        对于那种人气票，如果一直维护高开在5-7%以上，可耐心留到两点50分，最后有可能有大资金封盘的，对标2025.04.25的步步高。</p>
+                </li>
+                <li>
+                    <p><strong>缩量涨停的票不能去追，买到了就是大面一碗</strong>。</p>
+                </li>
+                <li>
+                    <p><strong>跌停数量贼多的时候不要硬打板，容易大面一碗</strong>。</p>
+                </li>
+                <li>
+                    <p>翘地板的时候要等上穿开盘点才跟随买进，能避免骗炮的，自己手上有票的，应该先卖而不是先买。</p>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+</html>

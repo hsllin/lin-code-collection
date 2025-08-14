@@ -31,6 +31,8 @@ public class DownLoadController {
     IncreaseAndDecreaseService increaseAndDecreaseService;
     @Autowired
     PopularStockService popularStockService;
+    @Autowired
+    PluginKingService pluginKingService;
 
 
     @RequestMapping("/downloadAllData")
@@ -50,6 +52,9 @@ public class DownLoadController {
         popularStockService.downLoadHotBoardAndConceptData();
         increaseAndDecreaseService.downloadWeakToStrongData();
         increaseAndDecreaseService.downDragonFirstGreenData();
+        pluginKingService.downLoadRangeIncreaseStockData("3", "1");
+        pluginKingService.downLoadRangeIncreaseStockData("5", "1");
+        pluginKingService.downLoadRangeIncreaseStockData("10", "1");
         return ResponseEntity.ok(true);
     }
 }

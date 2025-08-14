@@ -1,0 +1,63 @@
+package com.lin.controller;
+
+import com.lin.bean.TradeRule;
+import com.lin.service.TradeRuleService;
+import com.lin.service.TradeRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * 股票板块
+ */
+@Controller
+public class TradeRuleManageController {
+    @Autowired
+    TradeRuleService tradeRuleService;
+
+    @Autowired
+    private com.lin.mapper.TradeRuleMapper TradeRuleMapper;
+
+    @RequestMapping("/getTradeRuleList")
+    public ResponseEntity<List<TradeRule>> getTradeRuleList(HttpServletRequest request, Model model) {
+        String keyword = request.getParameter("keyword");
+        List<TradeRule> list = tradeRuleService.getTradeRuleList(keyword);
+        return ResponseEntity.ok(list);
+    }
+
+    @PostMapping("/addOrEditTradeRuleData")
+    @ResponseBody
+    public ResponseEntity<Boolean> addOrEditTradeKnownData(HttpServletRequest request, @RequestBody TradeRule TradeRule) {
+        boolean result = tradeRuleService.addOrEditTradeRule(TradeRule);
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping("/deleteTradeRule")
+    public ResponseEntity<Boolean> deleteTradeRule(HttpServletRequest request, @RequestParam("id") Integer id) {
+        boolean result = tradeRuleService.deleteTradeRule(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping("/deleteTradeRuleByContent")
+    public ResponseEntity<Boolean> deleteTradeRuleByContent(HttpServletRequest request, @RequestParam("content") String content) {
+        boolean result = tradeRuleService.deleteTradeRuleByContent(content);
+        return ResponseEntity.ok(result);
+    }
+
+    // 测试方法，用于调试参数类型问题
+    @RequestMapping("/testDeleteTradeRule")
+    public ResponseEntity<String> testDeleteTradeRule(HttpServletRequest request, @RequestParam("id") String id) {
+        try {
+            Integer intId = Integer.parseInt(id);
+            boolean result = tradeRuleService.deleteTradeRule(intId);
+            return ResponseEntity.ok("删除结果: " + result);
+        } catch (Exception e) {
+            return ResponseEntity.ok("错误: " + e.getMessage());
+        }
+    }
+}

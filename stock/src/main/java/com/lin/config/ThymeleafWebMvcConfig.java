@@ -87,6 +87,16 @@ public class ThymeleafWebMvcConfig extends WebMvcConfigurerAdapter implements Ap
         registry.addViewController("/conceptRank").setViewName("conceptRank");
         registry.addViewController("/newHigh").setViewName("newHigh");
         registry.addViewController("/liveStream").setViewName("liveStream");
+        registry.addViewController("/featuredBoard").setViewName("featuredBoard");
+        registry.addViewController("/rankIncreaseData").setViewName("rankIncreaseData");
+        registry.addViewController("/stockRuleManage").setViewName("stockRuleManage");
+        registry.addViewController("/tradeRuleManage").setViewName("tradeRuleManage");
+        registry.addViewController("/stockRule").setViewName("stockRule");
+        registry.addViewController("/tradeRule").setViewName("tradeRule");
+        registry.addViewController("/morningStrongStock").setViewName("morningStrongStock");
+        registry.addViewController("/stockThemeChance").setViewName("stockThemeChance");
+        registry.addViewController("/myStock").setViewName("myStock");
+
     }
 
     @Bean

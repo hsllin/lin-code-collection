@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /*.container {*/
+        /*    max-width: 1200px;*/
+        /*    margin: 0 auto;*/
+        /*    padding: 15px;*/
+        /*}*/
+
+        /* 顶部导航栏 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #fff;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            color: #215fba;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            margin-left: 8px;
+            padding: 8px 16px;
+            background-color: #215fba;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .user-actions button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* 股票表格 */
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stock-table th {
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: normal;
+            color: #666;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stock-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stock-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .stock-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stock-code {
+            color: #999;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .price-up {
+            color: #446391;
+        }
+        .price-rate {
+            color: #3caee0;
+        }
+
+        .price-down {
+            color: #d2d2d2;
+        }
+
+        .price-unchanged {
+            color: #446391;
+        }
+
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-buttons button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .action-buttons button:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* 底部控制栏 */
+        .footer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .refresh-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .refresh-controls button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .refresh-rate {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 5px;
+        }
+
+        .pagination button {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background-color: #215fba;
+            color: white;
+            border-color: #215fba;
+        }
+
+        /* 添加股票模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-header button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-body {
+            padding: 15px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .modal-footer button {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal-footer button.cancel {
+            border: 1px solid #ddd;
+            background-color: white;
+        }
+
+        .modal-footer button.submit {
+            background-color: #215fba;
+            color: white;
+            border: none;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/myStock.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container" id="main">
+        <!-- 顶部导航栏 -->
+        <div class="header">
+            <div class="logo">自选看板</div>
+            <div class="search-box">
+                <input type="text" placeholder="输入股票代码或名称搜索">
+                <button>搜索</button>
+            </div>
+            <div class="user-actions">
+                <button style=" padding: 10px 20px; background-color: #215fba; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="refreshStocks()">
+                    刷新
+                </button>
+                <!-- 添加股票按钮 -->
+                <button style="padding: 10px 20px; background-color: #215fba; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                        onclick="openAddStockModal()">+ 添加自选
+                </button>
+
+                <!--                <button>注册</button>-->
+                <!--                <button>更多</button>-->
+            </div>
+        </div>
+
+        <!-- 股票表格 -->
+        <table class="stock-table">
+            <thead>
+            <tr>
+                <th>股票代码</th>
+                <th>股票名称</th>
+                <th>最新价</th>
+                <th>最高</th>
+                <th>最低</th>
+                <th>涨跌幅</th>
+                <th>pe</th>
+                <th>成交额</th>
+                <th>市值</th>
+                <th>量比</th>
+                <th>换手率</th>
+                <th>行业</th>
+
+
+
+
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="myStock">
+            <tr>
+                <td>
+                    <div class="stock-name">贵州茅台</div>
+                    <div class="stock-code">600519</div>
+                </td>
+                <td>600519</td>
+                <td class="price-up">1623.00</td>
+                <td class="price-up">+2.34%</td>
+                <td class="price-up">+37.50</td>
+                <td>8,543</td>
+                <td>138,543</td>
+                <td>1598.00</td>
+                <td>1585.00</td>
+                <td>1625.00</td>
+                <td>1595.00</td>
+                <td>
+                    <div class="action-buttons">
+                        <button onclick="buyStock('600519')">买入</button>
+                        <button onclick="sellStock('600519')">卖出</button>
+                        <button onclick="deleteStock('600519')">删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="stock-name">腾讯控股</div>
+                    <div class="stock-code">00700</div>
+                </td>
+                <td>00700</td>
+                <td class="price-down">345.60</td>
+                <td class="price-down">-1.23%</td>
+                <td class="price-down">-4.30</td>
+                <td>12,456</td>
+                <td>43,789</td>
+                <td>348.00</td>
+                <td>350.00</td>
+                <td>349.20</td>
+                <td>344.80</td>
+                <td>
+                    <div class="action-buttons">
+                        <button onclick="buyStock('00700')">买入</button>
+                        <button onclick="sellStock('00700')">卖出</button>
+                        <button onclick="deleteStock('00700')">删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="stock-name">阿里巴巴</div>
+                    <div class="stock-code">9988</div>
+                </td>
+                <td>9988</td>
+                <td class="price-up">89.75</td>
+                <td class="price-up">+3.42%</td>
+                <td class="price-up">+3.00</td>
+                <td>25,678</td>
+                <td>233,456</td>
+                <td>87.50</td>
+                <td>86.75</td>
+                <td>90.12</td>
+                <td>86.50</td>
+                <td>
+                    <div class="action-buttons">
+                        <button onclick="buyStock('9988')">买入</button>
+                        <button onclick="sellStock('9988')">卖出</button>
+                        <button onclick="deleteStock('9988')">删除</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 底部控制栏 -->
+<!--        <div class="footer-controls">-->
+            <!--            <div class="refresh-controls">-->
+            <!--                <button onclick="refreshStocks()">刷新</button>-->
+            <!--                <span class="refresh-rate">自动刷新：5秒</span>-->
+            <!--                <button onclick="toggleAutoRefresh()">暂停</button>-->
+            <!--            </div>-->
+            <!--            <div class="pagination">-->
+            <!--                <button>1</button>-->
+            <!--                <button class="active">2</button>-->
+            <!--                <button>3</button>-->
+            <!--                <button>下一页 &gt;</button>-->
+            <!--            </div>-->
+<!--        </div>-->
+
+        <!-- 添加股票按钮 -->
+<!--        <button style="margin-top: 20px; padding: 10px 20px; background-color: #215fba; color: white; border: none; border-radius: 4px; cursor: pointer;"-->
+<!--                onclick="openAddStockModal()">+ 添加自选股-->
+<!--        </button>-->
+
+        <!-- 添加股票模态框 -->
+        <div class="modal" id="addStockModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>添加自选股</h3>
+                    <button onclick="closeAddStockModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>股票代码</label>
+                        <input type="text" id="stockCodeInput" placeholder="输入股票代码">
+                    </div>
+                    <div class="form-group">
+                        <label>股票名称</label>
+                        <input type="text" id="stockNameInput" placeholder="输入股票名称（可选）">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="cancel" onclick="closeAddStockModal()">取消</button>
+                    <button class="submit" onclick="addStock()">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

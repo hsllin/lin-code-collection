@@ -39,7 +39,7 @@ function renderChart(ctx, data) {
             labels: data.map((_, i) => i),
             datasets: [{
                 data: data,
-                borderColor: 'rgb(255,255,255)',
+                borderColor: 'rgb(210,210,210)',
                 borderWidth: 1,
                 tension: 0.4,
                 pointRadius: 0

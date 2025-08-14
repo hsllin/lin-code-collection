@@ -15,5 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class IncreaseRankData extends TonghuashunBaseBean {
     private String tradeMoney;
+    private double morningRate;
 
 }

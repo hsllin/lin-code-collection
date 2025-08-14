@@ -29,9 +29,54 @@ public class PluginKingController {
     PluginKingService pluginKingService;
 
     @RequestMapping("/getLiveStreamingData")
-    public ResponseEntity<String> list(HttpServletRequest request, Model model) throws ScriptException, IOException {
+    public ResponseEntity<String> getLiveStreamingData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String data = pluginKingService.getLiveStreamingData();
         return ResponseEntity.ok(data);
     }
+
+    @RequestMapping("/getFeaturedBoards")
+    public ResponseEntity<String> getFeaturedBoards(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String data = pluginKingService.getFeaturedBoards();
+        return ResponseEntity.ok(data);
+    }
+
+    @RequestMapping("/getFeaturedBoardsData")
+    public ResponseEntity<String> getFeaturedBoardsData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String boardId = request.getParameter("boardId");
+        String data = pluginKingService.getFeaturedBoardsData(boardId);
+        return ResponseEntity.ok(data);
+    }
+
+    @RequestMapping("/getRangeIncreaseBoardData")
+    public ResponseEntity<String> getRangeIncreaseBoardData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String days = request.getParameter("days");
+        String sort = request.getParameter("sort");
+        String data = pluginKingService.getRangeIncreaseBoardData(days,sort);
+        return ResponseEntity.ok(data);
+    }
+
+    @RequestMapping("/getRangeIncreaseStockData")
+    public ResponseEntity<String> getRangeIncreaseStockData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String days = request.getParameter("days");
+        String sort = request.getParameter("sort");
+        String data = pluginKingService.getRangeIncreaseStockData(days,sort);
+        return ResponseEntity.ok(data);
+    }
+
+    @RequestMapping("/getStockThemeChance")
+    public ResponseEntity<String> getStockThemeChance(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String days = request.getParameter("days");
+        String sort = request.getParameter("sort");
+        String data = pluginKingService.getStockThemeChance();
+        return ResponseEntity.ok(data);
+    }
+
+
+
 }

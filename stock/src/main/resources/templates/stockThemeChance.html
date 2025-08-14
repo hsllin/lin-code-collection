@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 500;
+            color: #212529;
+        }
+
+        .sub-header {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .top-tag {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 15px;
+            color: #6c757d;
+        }
+
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #212529;
+        }
+
+        .section-date {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        /*.stock-list {*/
+        /*    list-style-type: none;*/
+        /*    background-color: white;*/
+        /*    border-radius: 10px;*/
+        /*    overflow: hidden;*/
+        /*    border: 1px solid #e9ecef;*/
+        /*}*/
+
+        /*.stock-item {*/
+        /*    display: flex;*/
+        /*    justify-content: space-between;*/
+        /*    padding: 14px 16px;*/
+        /*}*/
+
+        .stock-list {
+            list-style-type: none;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 16px;
+            width: 50%; /* 设置50%宽度实现双列布局 */
+            border-bottom: 1px solid #e9ecef;
+            border-right: 1px solid #e9ecef;
+            box-sizing: border-box;
+        }
+
+
+        .stock-item:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .stock-info {
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .stock-code {
+            color: #868e96;
+            width: 60px;
+            font-family: monospace;
+        }
+
+        .stock-name {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .stock-change {
+            font-size: 14px;
+            font-weight: 500;
+            font-feature-settings: "tnum";
+        }
+
+        .positive {
+            color: #9198a1;
+        }
+
+        .negative {
+            color: #40c057;
+        }
+
+        .neutral {
+            color: #868e96;
+        }
+
+        .news-section {
+            background-color: white;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .news-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #212529;
+        }
+
+        .news-content {
+            font-size: 14px;
+            color: #495057;
+            line-height: 1.45;
+        }
+
+        .footer {
+            text-align: center;
+            color: #868e96;
+            font-size: 13px;
+            padding-top: 20px;
+            margin-top: 10px;
+            border-top: 1px solid #e9ecef;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/stockThemeChance.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container">
+        <h4>主题机会</h4>
+        <div class="sub-header">最新主题</div>
+        <div class="top-tag">Top</div>
+    </div>
+    <div class="container" id="main">
+
+
+        <!-- 新型工业化主题 -->
+        <div class="section">
+            <div class="section-title">新型工业化</div>
+            <div class="section-date">2025-08-05 央行等七部门联合发文，事关金融支持新型工业化</div>
+            <ul class="stock-list">
+                <li class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">300486</span>
+                        <span class="stock-name">东杰智能</span>
+                    </div>
+                    <div class="stock-change positive">+20.01%</div>
+                </li>
+                <li class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">002046</span>
+                        <span class="stock-name">国机精工</span>
+                    </div>
+                    <div class="stock-change positive">+10.00%</div>
+                </li>
+                <li class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">000837</span>
+                        <span class="stock-name">秦川机床</span>
+                    </div>
+                    <div class="stock-change neutral">+0.32%</div>
+                </li>
+                <li class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">002097</span>
+                        <span class="stock-name">山河智能</span>
+                    </div>
+                    <div class="stock-change positive">+9.99%</div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

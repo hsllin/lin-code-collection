@@ -263,6 +263,7 @@ public class IncreaseAndDecreaseController {
         List<IncreaseRankData> list = increaseAndDecreaseService.getDragonToGreenData();
         return ResponseEntity.ok(list);
     }
+
     /**
      * 获取同花顺60日新高
      *
@@ -278,7 +279,6 @@ public class IncreaseAndDecreaseController {
         List<IncreaseRankData> list = increaseAndDecreaseService.getNewHighData();
         return ResponseEntity.ok(list);
     }
-
 
 
     /**
@@ -314,7 +314,21 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
-
-
+    /**
+     * 获取同花顺最近有过涨停高开1.5%的票
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getStrongMorningData")
+    public ResponseEntity<List<IncreaseRankData>> getStrongMorningData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getStrongMorningData();
+        return ResponseEntity.ok(list);
+    }
 
 }

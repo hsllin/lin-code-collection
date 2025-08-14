@@ -226,6 +226,7 @@ public class IncreaseAndDecreaseService {
         }
         return list;
     }
+
     /**
      * 获取同花顺一字涨停
      *
@@ -276,7 +277,6 @@ public class IncreaseAndDecreaseService {
         }
         return list;
     }
-
 
 
     /**
@@ -379,12 +379,12 @@ public class IncreaseAndDecreaseService {
             bean.setNetInFlow(txt.get("dde大单净量" + date) + "");
             bean.setConcepts(txt.get("所属概念") + "");
             bean.setIndustry(txt.get("所属同花顺行业") + "");
-            bean.setMinPrice(txt.get("最低价:不复权"+date) + "");
-            bean.setMostPrice(txt.get("最高价:不复权"+date) + "");
+            bean.setMinPrice(txt.get("最低价:不复权" + date) + "");
+            bean.setMostPrice(txt.get("最高价:不复权" + date) + "");
             bean.setRangeRate(CommonUtils.formatStringPrice(txt.get("最新涨跌幅") + ""));
-            bean.setFivePrice(txt.get("5日均线"+date) + "");
-            bean.setTenPrice(txt.get("10日均线"+date) + "");
-            bean.setTwentyPrice(txt.get("20日均线"+date) + "");
+            bean.setFivePrice(txt.get("5日均线" + date) + "");
+            bean.setTenPrice(txt.get("10日均线" + date) + "");
+            bean.setTwentyPrice(txt.get("20日均线" + date) + "");
             list.add(bean);
         }
         Iterator<IncreaseRankData> allstockBeanIterator = list.iterator();
@@ -1143,7 +1143,7 @@ public class IncreaseAndDecreaseService {
             IncreaseRankData bean = new IncreaseRankData();
             bean.setCode(txt.get("code") + "");
             bean.setName(txt.get("股票简称") + "");
-            bean.setPrice(txt.get("收盘价:不复权"+date) + "");
+            bean.setPrice(txt.get("收盘价:不复权" + date) + "");
             bean.setRate(CommonUtils.formatStringPrice(txt.get("最新涨跌幅") + ""));
             bean.setMoneyInNum(txt.get("dde大单净流入量" + date) + "");
             bean.setCicuration(txt.get("流通a股" + date) + "");
@@ -1152,6 +1152,68 @@ public class IncreaseAndDecreaseService {
             bean.setIndustry(txt.get("所属同花顺行业") + "");
             bean.setVolality(txt.get("a股市值(不含限售股)" + date) + "");
             bean.setTradeMoney(txt.get("成交额" + date) + "");
+            list.add(bean);
+        }
+        return list;
+    }
+
+    /**
+     * 获取最近有过涨停高开1.5%的票
+     *
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    public static List<IncreaseRankData> getStrongMorningData() throws ScriptException, IOException {
+        String date = "[" + CommonUtils.getTradeDay(0) + "]";
+        String morningDate = "[" + CommonUtils.getTradeDay(0) + " 09:25]";
+        String url = "https://www.iwencai.com/gateway/urp/v7/landing/getDataList";
+        Map<String, Object> param = new HashMap<>();
+        String tradeDay = CommonUtils.getTradeDay(0);
+        String condition = "[{\"score\":0,\"node_type\":\"op\",\"chunkedResult\":\"早上开盘涨幅大于等于1.5%_&_近10日有过涨停_&_非st_&_市值大于等于35亿_&_行业和概念_&_成交额\",\"children\":[],\"opName\":\"and\",\"ci\":false,\"opPropertiesMap\":{},\"opProperty\":\"\",\"sonSize\":8,\"source\":\"text2sql\"},{\"dateText\":\"9点25分\",\"ci\":false,\"indexName\":\"分时涨跌幅:前复权\",\"indexProperties\":[\"(=0.015\",\"交易日期 {{date}}\",\"交易时间 09:25\",\"区间偏移 [0,0]\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"区间偏移\":\"[0,0]\",\"(=\":\"0.015\",\"交易时间\":\"09:25\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"早上开盘涨幅大于等于1.5%\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"uiText\":\"开盘的涨跌幅大于等于1.5%\",\"valueType\":\"_浮点型数值(%)\",\"sonSize\":0},{\"dateText\":\"近10日\",\"ci\":true,\"indexName\":\"涨停次数\",\"indexProperties\":[\"起始交易日期 20250722\",\"截止交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"起始交易日期\":\"20250722\",\"截止交易日期\":\"{{date}}\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"近10日有过涨停\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"dateType\":\"+区间\",\"domain\":\"abs_股票领域\",\"uiText\":\"近10日的涨停次数\",\"valueType\":\"_整型数值(次|个)\",\"sonSize\":0},{\"dateText\":\"近10日\",\"ci\":true,\"indexName\":\"股票简称\",\"indexProperties\":[\"不包含st\"],\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"不包含\":\"st\"},\"reportType\":\"null\",\"score\":0,\"ciChunk\":\"非st\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"domain\":\"abs_股票领域\",\"uiText\":\"股票简称不包含st\",\"valueType\":\"_股票简称\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":false,\"indexName\":\"总市值\",\"indexProperties\":[\"(=3500000000\",\"nodate 1\",\"交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"(=\":\"3500000000\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"市值大于等于35亿\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"uiText\":\"总市值大于等于35亿\",\"valueType\":\"_浮点型数值(元|港元|美元|英镑)\",\"sonSize\":0},{\"score\":0,\"ciChunk\":\"行业和概念\",\"createBy\":\"preCache\",\"node_type\":\"op\",\"children\":[],\"opName\":\"and\",\"ci\":true,\"opPropertiesMap\":{},\"opProperty\":\"\",\"uiText\":\"所属同花顺行业并且所属概念\",\"sonSize\":2,\"source\":\"text2sql\"},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"所属同花顺行业\",\"indexProperties\":[],\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{},\"reportType\":\"null\",\"score\":0,\"ciChunk\":\"行业和概念\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"domain\":\"abs_股票领域\",\"uiText\":\"所属同花顺行业\",\"valueType\":\"_所属同花顺行业\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"所属概念\",\"indexProperties\":[],\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{},\"reportType\":\"null\",\"score\":0,\"ciChunk\":\"行业和概念\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"domain\":\"abs_股票领域\",\"uiText\":\"所属概念\",\"valueType\":\"_所属概念\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"成交额\",\"indexProperties\":[\"nodate 1\",\"交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"成交额\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"uiText\":\"成交额\",\"valueType\":\"_浮点型数值(元|港元|美元|英镑)\",\"sonSize\":0}]";
+        condition = condition.replace("{{date}}", tradeDay);
+        param.put("query", "早上开盘涨幅大于等于1.5%，且近10日有过涨停，非st，市值大于等于35亿,行业和概念，成交额");
+        param.put("question", "早上开盘涨幅大于等于1.5%，且近10日有过涨停，非st，市值大于等于35亿,行业和概念，成交额");
+        param.put("urp_sort_index", "最新涨跌幅");
+        param.put("page", "1");
+        param.put("perpage", "100");
+        param.put("condition", condition);
+        param.put("logid", "0f22ab71785c210b94f61de3b8267d9c");
+        param.put("ret", "json_all");
+        param.put("sessionid", "0f22ab71785c210b94f61de3b8267d9c");
+        param.put("iwc_token", "0ac9f00417490487071945389");
+        param.put("uuids[0]", "24087");
+        param.put("comp_id", "6836372");
+        param.put("user_id", "Ths_iwencai_Xuangu_ta7wv6968l1v5l2l8orrl4ohcg77279g");
+        param.put("comp_id", "6836372");
+        param.put("business_cat", "soniu");
+        param.put("uuid", "24087");
+
+
+        Map<String, Object> result = WencaiUtils.getData("", param);
+        // Convert Map to JsonNode
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.convertValue(result, JsonNode.class);
+//        JsonNode txtNode = jsonNode.at("/answer/components").get(0).at("/data/datas");
+//        List<Map<String, Object>> txtMap = mapper.convertValue(txtNode, List.class);
+        JsonNode txtNode = jsonNode.at("/data/answer").get(0).at("/txt").get(0).at("/content/components").get(0).at("/data/datas");
+        List<Map<String, Object>> txtMap = mapper.convertValue(txtNode, List.class);
+        List<IncreaseRankData> list = new ArrayList<>();
+        for (int i = 0; i < txtMap.size(); i++) {
+            Map<String, Object> txt = txtMap.get(i);
+            IncreaseRankData bean = new IncreaseRankData();
+            bean.setCode(txt.get("code") + "");
+            bean.setName(txt.get("股票简称") + "");
+            bean.setPrice(txt.get("最新价") + "");
+            bean.setRate(CommonUtils.formatStringPrice(txt.get("最新涨跌幅") + ""));
+            bean.setMoneyInNum(txt.get("dde大单净流入量" + date) + "");
+            bean.setCicuration(txt.get("流通a股" + date) + "");
+            bean.setNetInFlow(txt.get("最新dde大单净额") + "");
+            bean.setConcepts(txt.get("所属概念") + "");
+            bean.setIndustry(txt.get("所属同花顺行业") + "");
+            bean.setVolality(txt.get("a股市值(不含限售股)" + date) + "");
+            bean.setTradeMoney(txt.get("成交额" + date) + "");
+            bean.setMorningRate(CommonUtils.formatStringPrice(txt.get("分时涨跌幅:前复权"+morningDate) + ""));
             list.add(bean);
         }
         return list;
@@ -1222,16 +1284,16 @@ public class IncreaseAndDecreaseService {
         String url = "https://www.iwencai.com/gateway/urp/v7/landing/getDataList";
         Map<String, Object> param = new HashMap<>();
         param.put("question", "涨停家数占比前100的指数，领涨股简称");
-        param.put("query","涨停家数占比前100的指数，领涨股简称");
+        param.put("query", "涨停家数占比前100的指数，领涨股简称");
         param.put("urp_sort_way", sort);
         param.put("page", "1");
         param.put("perpage", "50");
-        param.put("urp_sort_index", "指数@涨跌幅:前复权"+date);
+        param.put("urp_sort_index", "指数@涨跌幅:前复权" + date);
 
         String tradeDay = CommonUtils.getTradeDay(0);
         String condition = "[{\"score\":0,\"node_type\":\"op\",\"chunkedResult\":\"涨停家数占比前100的指数,_&_领涨股简称\",\"children\":[],\"opName\":\"and\",\"ci\":false,\"opPropertiesMap\":{},\"opProperty\":\"\",\"sonSize\":5,\"opPropertyMap\":{},\"source\":\"new_parser\"},{\"score\":0,\"node_type\":\"op\",\"children\":[],\"opName\":\"sort\",\"ci\":false,\"opPropertiesMap\":{},\"opProperty\":\"从大到小排名前100\",\"uiText\":\"2025年07月24日指数涨停家数占比从大到小排名前100\",\"sonSize\":1,\"opPropertyMap\":{},\"source\":\"new_parser\"},{\"dateText\":\"\",\"ci\":false,\"indexName\":\"指数@涨停家数占比\",\"indexProperties\":[\"nodate 1\",\"交易日期 {{date}}\"],\"source\":\"new_parser\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_a指领域\",\"valueType\":\"_浮点型数值(%)\",\"sonSize\":0},{\"score\":0,\"node_type\":\"op\",\"children\":[],\"opName\":\"and\",\"ci\":false,\"opPropertiesMap\":{},\"opProperty\":\"\",\"sonSize\":2,\"opPropertyMap\":{},\"source\":\"new_parser\"},{\"dateText\":\"\",\"ci\":false,\"indexName\":\"指数@领涨股简称\",\"indexProperties\":[\"nodate 1\",\"交易日期 {{date}}\"],\"source\":\"new_parser\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_a指领域\",\"uiText\":\"领涨股简称\",\"valueType\":\"_领涨股简称\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":false,\"indexName\":\"指数简称\",\"indexProperties\":[],\"source\":\"new_parser\",\"type\":\"index\",\"indexPropertiesMap\":{},\"reportType\":\"null\",\"score\":0,\"node_type\":\"index\",\"domain\":\"abs_a指领域\",\"uiText\":\"指数简称\",\"valueType\":\"_指数简称\",\"sonSize\":0}]";
         condition = condition.replace("{{date}}", tradeDay);
-        param.put("condition",condition);
+        param.put("condition", condition);
 //        param.put("query", "一字涨停；涨停原因；所属行业和概念");
 //        param.put("urp_use_sort", "涨跌幅:前复权" + date);
 //        param.put("page", "1");
@@ -1252,9 +1314,9 @@ public class IncreaseAndDecreaseService {
             Map<String, Object> txt = industryMap.get(i);
             IncreaseRankData bean = new IncreaseRankData();
             bean.setCode(txt.get("code") + "");
-            bean.setName(txt.get("指数@领涨股简称"+date) + "");
-            System.out.println(CommonUtils.formatStringPrice(txt.get("指数@涨跌幅:前复权"+date) + ""));
-            bean.setRate(CommonUtils.formatStringPrice(txt.get("指数@涨跌幅:前复权"+date) + ""));
+            bean.setName(txt.get("指数@领涨股简称" + date) + "");
+            System.out.println(CommonUtils.formatStringPrice(txt.get("指数@涨跌幅:前复权" + date) + ""));
+            bean.setRate(CommonUtils.formatStringPrice(txt.get("指数@涨跌幅:前复权" + date) + ""));
             bean.setConcepts(txt.get("指数简称") + "");
             industryList.add(bean);
         }

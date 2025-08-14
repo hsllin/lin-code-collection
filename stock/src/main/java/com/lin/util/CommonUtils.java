@@ -13,13 +13,14 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class CommonUtils {
     public static void main(String[] args) {
-        System.out.println(getTradeDay(0));
-        System.out.println(getTradeDay(1));
-        System.out.println(getTradeDay(2));
-
+//        System.out.println(getTradeDay(0));
+//        System.out.println(getTradeDay(1));
+//        System.out.println(getTradeDay(2));
+        System.out.println(getTradeDay(14));
     }
 
     /**
@@ -121,5 +122,26 @@ public class CommonUtils {
         BigDecimal result = num.divide(new BigDecimal("100000000"));
         System.out.println(new DecimalFormat("#0.00").format(result) + "亿"); // 输出：1.50亿
         return new DecimalFormat("#0.00").format(result) + "亿";
+    }
+
+    /**
+     * 生成一个不以0开头的6位随机数字
+     *
+     * @return 6位随机整数，范围在100000-999999之间
+     */
+    public static int generateRandomSixDigit() {
+        Random random = new Random();
+        // 确保第一位不是0（范围1-9）
+        int firstDigit = random.nextInt(9) + 1;
+
+        // 生成剩余的5位数字（范围0-9）
+        int number = firstDigit * 100000; // 设置首位数字在正确位置
+
+        for (int i = 4; i >= 0; i--) {
+            int digit = random.nextInt(10); // 0-9
+            number += digit * (int)Math.pow(10, i);
+        }
+
+        return number;
     }
 }

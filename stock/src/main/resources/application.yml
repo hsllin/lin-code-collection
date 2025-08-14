@@ -43,9 +43,9 @@ spring:
     mode: HTML
 
 mybatis-plus:
-  .configuration:
+  configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  .mapper-locations: classpath:mapper/*Mapper.xml
+  mapper-locations: classpath:mapper/*Mapper.xml
 
 

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/rankIncreaseData.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f5f7;
+            color: #333;
+            padding: 15px;
+        }
+
+        .container {
+            /*max-width: 800px;*/
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            /*background: #fff;*/
+            /*border-radius: 4px;*/
+            /*box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);*/
+            /*margin-top: 10px;*/
+            /*display: flex;*/
+        }
+
+        .my {
+            display: flex;
+        }
+
+        /*.container {*/
+        /*    max-width: 800px;*/
+        /*    margin: 0 auto;*/
+        /*    background-color: white;*/
+        /*    border-radius: 10px;*/
+        /*    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);*/
+        /*    padding: 15px;*/
+        /*}*/
+        body {
+            background-color: #f4f5f7;
+            color: #333;
+            padding: 15px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .clear-cache {
+            font-size: 14px;
+            color: #0077cc;
+            cursor: pointer;
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .tab.active {
+            color: #0077cc;
+            border-bottom: 2px solid #0077cc;
+            font-weight: 500;
+        }
+
+        .interval-slider {
+            margin: 15px 0;
+        }
+
+        .slider-container {
+
+            width: 100%;
+            position: relative;
+        }
+
+        .slider-label {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .slider-value {
+            position: absolute;
+            right: 0;
+            font-size: 12px;
+            color: #999;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 5px;
+            background: #ddd;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #0077cc;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .date-range {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f8f8;
+            font-weight: 500;
+        }
+
+        th:first-child, td:first-child {
+            text-align: left;
+        }
+
+        .up {
+            color: rgba(71, 182, 226, 0.79);
+            font-weight: 600;
+        }
+
+        .down {
+            color: #34c759;
+        }
+
+        .myTag {
+            color: #3a5167;
+            font-size: 12px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container">
+        <div class="header">
+            <h1>区间涨幅</h1>
+            <div class="clear-cache" onclick="downloadRankIncreaseData()">导出数据</div>
+        </div>
+
+        <div class="tab-container">
+            <div class="tab active" onclick="switchTab('stock')">按个股</div>
+            <div class="tab" onclick="switchTab('sector')">按板块</div>
+        </div>
+
+        <div class="interval-slider">
+            <div class="slider-container">
+                <span class="slider-label">区间</span>
+                <input type="range" min="1" max="100" value="5" id="dayRange">
+                <span class="slider-value">100</span>
+            </div>
+            <div class="date-range">5日 2025-07-28--2025-08-01</div>
+        </div>
+
+        <table id="stockTable">
+            <thead>
+            <tr>
+                <th>代码</th>
+                <th>名称</th>
+                <th onclick="changeSort()">涨幅%</th>
+                <th>净额</th>
+                <th>换手%</th>
+                <th>净流入天数</th>
+                <th>板块</th>
+            </tr>
+            </thead>
+            <tbody id="stockBody">
+            <tr>
+                <td>南方路机</td>
+                <td class="up">53.38</td>
+                <td>-2085万</td>
+                <td>215.81</td>
+                <td>3</td>
+                <td class="myTag">工程机械、ERP</td>
+            </tr>
+            <tr>
+                <td>思泉新材</td>
+                <td class="up">50.75</td>
+                <td>5449万</td>
+                <td>85.48</td>
+                <td>4</td>
+                <td class="tag">液冷服务器、汽车零部件</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="hidden" id="sectorTable">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th onclick="changeSort()">涨幅%</th>
+                <th>净额</th>
+                <th>净流入天数</th>
+            </tr>
+            </thead>
+            <tbody id="boardBody">
+            <tr>
+                <td>扁线</td>
+                <td class="up">1.86</td>
+                <td>3600万</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>止咳药</td>
+                <td class="up">1.81</td>
+                <td>1.00亿</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>幽门螺杆菌</td>
+                <td class="up">1.81</td>
+                <td>1.07亿</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>光伏设备</td>
+                <td class="up">1.77</td>
+                <td>6.21亿</td>
+                <td>1</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+</div>
+</body>
+
+
+</html>
