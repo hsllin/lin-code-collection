@@ -331,4 +331,55 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
+    /**
+     * 获取同花顺反包大阳线
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getStockPackagingData")
+    public ResponseEntity<List<IncreaseRankData>> getStockPackagingData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getStockPackagingData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺低吸上涨趋势中正常回调的个股
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getStockBuyLowNormal")
+    public ResponseEntity<List<IncreaseRankData>> getStockBuyLowNormal(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getStockBuyLowNormal();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺低吸热门强势妖股
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getStockBuyLowStrong")
+    public ResponseEntity<List<IncreaseRankData>> getStockBuyLowStrong(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getStockBuyLowStrong();
+        return ResponseEntity.ok(list);
+    }
+
 }

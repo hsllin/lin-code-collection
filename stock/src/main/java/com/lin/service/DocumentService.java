@@ -176,7 +176,7 @@ public class DocumentService {
 
     public static boolean containsAny(String text) {
 //        String[] keywords = {"停牌", "复牌", "重组", "购买", "重大资产", "出售", "转让", "收购", "风险", "退市", "扭亏", "盈利", "受让", "业绩预增", "预盈", "名称变更"};
-        String[] keywords={"摘帽","重组","复牌","资产注入","收购","st风险","退市风险","控股权变更","资产注入","风险警示","实控人变更",};
+        String[] keywords={"摘帽","重组","复牌","资产注入","收购","st风险","退市风险","控股权变更","资产注入","风险警示","实控人变更"};
         for (String keyword : keywords) {
             if (text.contains(keyword)) {
                 text = "[" + keyword + "]" + text;

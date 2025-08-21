@@ -21,7 +21,8 @@ function getLianBanChiListData() {
 }
 
 function buildLianBanChiListHtml(data) {
-    console.log(data)
+    // console.log(data)
+    console.log(22222222222222);
     var htmlArray = '';
     var tagList = '';
 
@@ -66,10 +67,12 @@ function buildLianBanChiListHtml(data) {
             htmlArray += '  </tbody>\n' +
                 '    </table>';
 
-            console.log(data);
-            document.getElementById('main').innerHTML = htmlArray;
+
         }
     );
+    console.log(1111111111111);
+    console.log(htmlArray);
+    document.getElementById('main').innerHTML = htmlArray;
 }
 
 // 简单的XSS转义函数

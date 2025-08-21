@@ -52,6 +52,9 @@ public class DownLoadController {
         popularStockService.downLoadHotBoardAndConceptData();
         increaseAndDecreaseService.downloadWeakToStrongData();
         increaseAndDecreaseService.downDragonFirstGreenData();
+        increaseAndDecreaseService.downStockPackagingData();
+        increaseAndDecreaseService.downloadStockBuyLowStrong();
+        increaseAndDecreaseService.downStockBuyLowNormalData();
         pluginKingService.downLoadRangeIncreaseStockData("3", "1");
         pluginKingService.downLoadRangeIncreaseStockData("5", "1");
         pluginKingService.downLoadRangeIncreaseStockData("10", "1");
