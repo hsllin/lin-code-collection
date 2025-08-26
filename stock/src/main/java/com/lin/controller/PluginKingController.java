@@ -77,6 +77,14 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @RequestMapping("/getLimitUpAnalyze")
+    public ResponseEntity<String> getLimitUpAnalyze(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String days = request.getParameter("days");
+        String sort = request.getParameter("sort");
+        String data = pluginKingService.getLimitUpAnalyze(date);
+        return ResponseEntity.ok(data);
+    }
 
 
 }

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-color: #e6f7ff;
+            border-radius: 4px;
+        }
+
+        .header-text {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f0f5ff;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .hot-tag {
+            color: red;
+            font-weight: bold;
+        }
+
+        .stock-info {
+            display: flex;
+        }
+
+        .stock-name {
+            font-weight: bold;
+        }
+
+        .stock-code {
+            color: #666;
+            margin-left: 10px;
+        }
+
+        .stock-details {
+            line-height: 1.5;
+            font-size: 13px;
+        }
+
+        .red-text {
+            color: #ff0000;
+        }
+
+        .green-text {
+            color: #00cc00;
+        }
+
+        .pagination {
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #0066cc;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/limitUpAnalyze.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div class="container" id="main">
+        <div class="header">
+            <div class="header-icon"></div>
+            <div class="header-text">2025年8月14日 星期四</div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+
+                <tr>
+                    <th>名称</th>
+                    <th>代码</th>
+                    <th>价格</th>
+                    <th>涨停时间</th>
+                    <th>板高</th>
+                    <th>封单额</th>
+                    <th>实际流通</th>
+                </tr>
+                </thead>
+
+                <tbody id="mainData">
+                <tr>
+                    <th colspan="6">算力 <span class="hot-tag">14</span> 个</th>
+                </tr>
+                <tr>
+                    <td>大元泵业(游)</td>
+                    <td>603757</td>
+                    <td>09:30</td>
+                    <td>4连板</td>
+                    <td>2.43</td>
+                    <td>25.50</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="stock-info">
+                            <div>液冷服务器+水利；</div>
+                            <div>1.液冷服务器：2025年3月6日互动：近几年公司液冷泵产品覆盖新能源汽车、风电、储能、IDC等多领域，技术可靠性得到验证，也具备批量化生产能力。公司给曙光提供液冷产品。2.水利：公司主要从事各类泵的研发、生产和销售，是拥有近30年品牌历史的全球知名品牌民用水泵提供商，同时也是国内屏蔽泵行业的高新技术及领军企业。</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>电子城(游)</td>
+                    <td>600658</td>
+                    <td>09:31</td>
+                    <td>3连板</td>
+                    <td>0.14</td>
+                    <td>42.32</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="stock-info">
+                            <div>算力；23年11月17日公司在业绩说明会上表示，公司子公司知鱼智联科技股份有限公司参与了公司控股股东北京电子控股有限责任公司基于产业和城市数字化的北京数字经济算力中心项目。</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>康盛股份(游)</td>
+                    <td>002418</td>
+                    <td>09:31</td>
+                    <td>4天2板</td>
+                    <td>0.60</td>
+                    <td>38.24</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="stock-info">
+                            <div>液冷服务器+无人驾驶；1.液冷服务器：康盛股份标准化浸没式液冷机房IT设备功率130kW，可提供2P算力。液冷机房建设主要依据GB50174-2017和液冷数据中心技术规范（康盛股份参编行业标准）。康盛股份标准化浸没式液冷机房配3台30kW42U高性能液冷机柜、2台20kW21U高性能液冷机柜。2.无人驾驶：2023年6月15日公司互动：无人驾驶样车已交付。</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>中科金财</td>
+                    <td>002657</td>
+                    <td>09:32</td>
+                    <td>首板</td>
+                    <td>1.61</td>
+                    <td>105.33</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="stock-info">
+                            <div>稳定币+AI智能体；1.稳定币：据2025年6月3日机构调研：公司深入探索稳定币业务，具备技术储备、团队建设和场景布局如跨境支付、短剧出海，计划与银行合作推动稳定币在跨境支付等领域的应用。2.AI智能体：公司继续深化技术研发，以“智能化”为技术核心理念，在多场景多基座大模型引擎、AI Agent等相关方向投入研发，促进人工智能技术在主营业务及行业的深入应用，并形成软著证书等技术研发成果，与兴业数金、某城商行等客户落地项目。</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>通鼎互联</td>
+                    <td>002491</td>
+                    <td>09:38</td>
+                    <td>首板</td>
+                    <td>1.50</td>
+                    <td>39.13</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="stock-info">
+                            <div>通信；8月13日天眼查APP显示，近日，通鼎互联信息股份有限公司申请的“一种非对称螺旋槽孔的低耦合损耗漏泄同轴电缆”专利公布。通信：通鼎在接入网领域提供OLT端后到用户侧终端设备（含光纤配线架、光缆交接箱、室外一体机柜、光缆分纤箱、光分路器、光纤跳线等），电源动力柜、综合布线系列为通讯运营商提供整体解决方案，新增了智能终端网(10G-EPON、XG-GPON)、4K IPTV盒、光电模块、数据中心布线等产品和解决方案，加快从传统通讯配件生产商向行业解决方案提供商的转型步伐，为客户带来更多行业价值。</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>山东章鼓</td>
+                    <td>002598</td>
+                    <td>09:42</td>
+                    <td>首板</td>
+                    <td>0.82</td>
+                    <td>21.86</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="stock-info">
+                            <div>数据中心+压缩机；1.数据中心：2025年8月12日互动易，经咨询参股公司章鼓高孚，公司的磁悬浮压缩机和空气悬浮压缩机已经完成系列化，目前除了为数据中心提供冷源之外还为星级酒店、体育中心、医院等在做相关设计和改造。2.压缩机：公司主要产品包括磁悬浮压缩机、磁悬浮风机等产品</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>金田股份(游)</td>
+                    <td>601609</td>
+                    <td>09:54</td>
+                    <td>2连板</td>
+                    <td>1.73</td>
+                    <td>85.49</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="stock-info">
+                            <div>机器人概念+液冷服务器；1.机器人概念：根据2024年董事会工作报告：报告期内，公司电磁线产品与稀土永磁材料在人形机器人空心杯电机、无框力矩电机、减速电机等多个场景实现量产；为紧跟机器人电机小型化和高功率化的趋势，公司开发的高精密高导电微细电磁线凭借尺寸精度高、中间特性的优势。</div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

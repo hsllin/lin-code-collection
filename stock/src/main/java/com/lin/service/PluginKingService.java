@@ -144,6 +144,20 @@ public class PluginKingService {
         return result;
     }
 
+    /**
+     * 获取涨停原因分析
+     *
+     * @return
+     */
+    public static String getLimitUpAnalyze(String date) {
+        String url = "https://api.zizizaizai.com/v2/api/review/uplimit/reason?date1=" + date;
+        Map<String, Object> param = new HashMap<>();
+        param.put("_", System.currentTimeMillis());
+
+        String result = HttpUtil.get(url, param);
+        return result;
+    }
+
 
 
     /**
