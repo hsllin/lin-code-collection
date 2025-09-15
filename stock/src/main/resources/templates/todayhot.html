@@ -10,17 +10,17 @@
     <script type="text/javascript" src="/js/chart.min.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
+        /** {*/
+        /*    margin: 0;*/
+        /*    padding: 0;*/
+        /*    box-sizing: border-box;*/
+        /*    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;*/
+        /*}*/
 
-        body {
-            background-color: #fff;
-            color: #333;
-        }
+        /*body {*/
+        /*    background-color: #fff;*/
+        /*    color: #333;*/
+        /*}*/
 
         /*.container {*/
         /*    max-width: 800px;*/
@@ -28,22 +28,11 @@
         /*    position: relative;*/
         /*}*/
 
-        header {
-            background-color: rgba(71, 182, 226, 0.79);
-            color: #fff;
-            padding: 15px 20px 40px;
-            position: relative;
-        }
-
-        header h1 {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        header p {
-            font-size: 14px;
-            opacity: 0.9;
+        .container {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
         }
 
         .date {
@@ -76,9 +65,14 @@
         }
 
         .theme-header {
+            /*display: flex;*/
+            /*align-items: center;*/
+            /*margin-bottom: 10px;*/
+            padding: 20px;
+            border-bottom: 1px solid #eee;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
         }
 
         .theme-number {
@@ -186,29 +180,242 @@
             height: 120px;
             z-index: 0;
         }
+        :root {
+            --primary-color: #343333;
+            --secondary-color: #6c757d;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --danger-color: #ff7675;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+        }
+
+
+        header {
+            background: #ffffff;
+            color: #3a5167;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hot-tag {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .date {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .header-desc {
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .decorative-element {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-badge {
+            background-color: rgba(71, 182, 226, 0.79);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .trend-tag {
+            background-color: var(--success-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-desc {
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            line-height: 1.5;
+        }
+
+        .stock-list {
+            list-style: none;
+        }
+
+        .stock-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .dot-1 { background-color: #FF6B6B; }
+        .dot-2 { background-color: #C7F464; }
+        .dot-3 { background-color: #4ECDC4; }
+        .dot-4 { background-color: #45B7D1; }
+
+        .stock-info {
+            flex-grow: 1;
+        }
+
+        .stock-name {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .stock-code {
+            font-size: 12px;
+            color: var(--secondary-color);
+        }
+
+        .stock-change {
+            font-weight: bold;
+            color: var(--success-color);
+        }
+
+        /*.chart-container {*/
+        /*    margin-top: 20px;*/
+        /*    height: 60px;*/
+        /*    !*background: linear-gradient(90deg, rgba(44,123,229,0.1) 0%, rgba(44,123,229,0.2) 100%);*!*/
+        /*    border-radius: 4px;*/
+        /*    position: relative;*/
+        /*    overflow: hidden;*/
+        /*}*/
+
+        .chart-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 60' preserveAspectRatio='none'%3E%3Cpath d='M0,45 C30,35 70,15 100,20 C130,25 170,45 200,40 C230,35 270,15 300,20' stroke='%232c7be5' stroke-width='2' fill='none' /%3E%3C/svg%3E") no-repeat;
+            background-size: 100% 100%;
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-    <header>
-        <h1>今天hot</h1>
-        <p>市场炒作事件逻辑梳理、热度发酵</p>
-<!--        <div class="date">-->
-<!--            <span class="date-icon"></span>-->
-<!--            <span id="date">2025-05-20</span>-->
+<!--    <header>-->
+<!--        <div class="header-content">-->
+<!--            <div>-->
+<!--                <div class="hot-tag">今天hot</div>-->
+<!--                <div class="date">2025-09-08</div>-->
+<!--            </div>-->
+<!--            <div class="decorative-element"></div>-->
 <!--        </div>-->
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjUsMTUgQzI1LDEwIDM1LDUgNTUsNSBDMzUsMTAgNDUsMTUgNDUsMjUgQzQ1LDM1IDM1LDQwIDM1LDUwIEMzNSw2MCA0NSw2NSA1NSw2NSBDMzUsNjUgMjUsNTAgMjUsMzUgQzI1LDIwIDIwLDE1IDI1LDE1IFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRjY2MiIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=" class="arrow-icon" alt="Arrow Icon">
-    </header>
-    <div class="container" id="mainData">
-        <section class="theme-item">
+<!--        <div class="header-desc">市场炒作事件逻辑梳理、热度发酵</div>-->
+<!--    </header>-->
+    <div class="container">
+        <!-- 新增刷新按钮 -->
+        <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+            <div class="toolbar">
+                <div class="disclaimer">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <div class="disclaimer-text">
+                        以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                    </div>
+                </div>
+                <div class="toolbar-buttons">
+                    <!-- 优化后的实时时钟 -->
+                    <div class="clock-container">
+                        <i class="fa fa-calendar"></i>
+                        <div class="clock-content">
+                            <div class="clock-time"><span id="time">00:00:00</span></div>
+                            <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-refresh" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> 刷新数据
+                    </button>
+                </div>
+            </div>
+        </div>
+        <section class="theme-item" id="mainData">
             <div class="theme-header">
                 <span class="theme-number">1</span>
                 <span class="theme-name">并购重组</span>
-                <span class="zhangting">涨停4</span>
+                <span class="card-badge">涨停4</span>
+                <span class="trend-tag">持续火爆</span>
             </div>
-            <span class="hot-badge">持续火爆</span>
+
             <h2 class="theme-title">重磅利好！一图梳理并购重组概念</h2>
             <div class="theme-content">
                 <div class="stock-list">

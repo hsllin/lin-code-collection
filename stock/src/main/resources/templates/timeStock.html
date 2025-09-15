@@ -10,18 +10,18 @@
     <script type="text/javascript" src="/js/chart.min.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-        }
+        /** {*/
+        /*    margin: 0;*/
+        /*    padding: 0;*/
+        /*    box-sizing: border-box;*/
+        /*    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;*/
+        /*}*/
 
-        body {
-            background-color: #0f172a;
-            color: #ffffff;
-            padding: 20px;
-        }
+        /*body {*/
+        /*    background-color: #0f172a;*/
+        /*    color: #ffffff;*/
+        /*    padding: 20px;*/
+        /*}*/
 
         .container {
             background: #fff;
@@ -358,35 +358,51 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-chart-line fa-2x" style="color: #3b82f6;"></i>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
             </div>
-            <div class="datetime">
-                <div id="current-date"></div>
-                <div id="current-time"></div>
-            </div>
-        </header>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
-        <div class="market-info">
-            <div class="index-value">
-<!--                <div>上证指数</div>-->
-                <div>3,245.67</div>
-            </div>
-            <div class="index-change positive">
-                <i class="fas fa-caret-up"></i>
-                <span>+15.83 (+0.49%)</span>
-            </div>
-            <div class="index-volume">
-                <div>成交量</div>
-                <div>3.42亿手</div>
-            </div>
-            <div class="index-volume">
-                <div>成交额</div>
-                <div>4,258亿元</div>
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
             </div>
         </div>
+    </div>
+
+    <div class="container">
+
+<!--        <div class="market-info">-->
+<!--            <div class="index-value">-->
+<!--&lt;!&ndash;                <div>上证指数</div>&ndash;&gt;-->
+<!--                <div>3,245.67</div>-->
+<!--            </div>-->
+<!--            <div class="index-change positive">-->
+<!--                <i class="fas fa-caret-up"></i>-->
+<!--                <span>+15.83 (+0.49%)</span>-->
+<!--            </div>-->
+<!--            <div class="index-volume">-->
+<!--                <div>成交量</div>-->
+<!--                <div>3.42亿手</div>-->
+<!--            </div>-->
+<!--            <div class="index-volume">-->
+<!--                <div>成交额</div>-->
+<!--                <div>4,258亿元</div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="main-content">
             <div class="chart-container">
@@ -469,33 +485,33 @@
 
 
         </div>
-        <div class="hot-concepts">
-            <div class="hot-header">
-                <div class="hot-title">今日热点概念</div>
-                <div class="index-change positive">
-                    <i class="fas fa-fire"></i>
-                    <span>概念热度</span>
-                </div>
-            </div>
-            <div class="concept-tags">
-                <div class="concept-tag">PCB</div>
-                <div class="concept-tag">数字货币</div>
-                <div class="concept-tag tag-highlight">创新药</div>
-                <div class="concept-tag">医疗美容</div>
-                <div class="concept-tag">芯片产业链</div>
-                <div class="concept-tag">游戏</div>
-                <div class="concept-tag">3D打印</div>
-                <div class="concept-tag">稀土永磁</div>
-                <div class="concept-tag">光伏</div>
-                <div class="concept-tag tag-highlight">固态电池</div>
-                <div class="concept-tag">亚玛顿</div>
-                <div class="concept-tag">大金融</div>
-                <div class="concept-tag">有机硅</div>
-                <div class="concept-tag">机器人</div>
-                <div class="concept-tag">钢铁</div>
-                <div class="concept-tag tag-highlight">算力工程</div>
-            </div>
-        </div>
+<!--        <div class="hot-concepts">-->
+<!--            <div class="hot-header">-->
+<!--                <div class="hot-title">今日热点概念</div>-->
+<!--                <div class="index-change positive">-->
+<!--                    <i class="fas fa-fire"></i>-->
+<!--                    <span>概念热度</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="concept-tags">-->
+<!--                <div class="concept-tag">PCB</div>-->
+<!--                <div class="concept-tag">数字货币</div>-->
+<!--                <div class="concept-tag tag-highlight">创新药</div>-->
+<!--                <div class="concept-tag">医疗美容</div>-->
+<!--                <div class="concept-tag">芯片产业链</div>-->
+<!--                <div class="concept-tag">游戏</div>-->
+<!--                <div class="concept-tag">3D打印</div>-->
+<!--                <div class="concept-tag">稀土永磁</div>-->
+<!--                <div class="concept-tag">光伏</div>-->
+<!--                <div class="concept-tag tag-highlight">固态电池</div>-->
+<!--                <div class="concept-tag">亚玛顿</div>-->
+<!--                <div class="concept-tag">大金融</div>-->
+<!--                <div class="concept-tag">有机硅</div>-->
+<!--                <div class="concept-tag">机器人</div>-->
+<!--                <div class="concept-tag">钢铁</div>-->
+<!--                <div class="concept-tag tag-highlight">算力工程</div>-->
+<!--            </div>-->
+<!--        </div>-->
         <footer>
             <p>数据更新时间: <span id="update-time"></span> | 免责声明：本页面数据仅供参考</p>
         </footer>

@@ -65,9 +65,9 @@ function buildBoardAndConceptsHtml(data) {
         htmlArray += stocksHTML;
         htmlArray += ` </td>
                 <td>${formatYi(item.fund_flow)}</td>
-                <td>
-                    <div class="graph" style="background: linear-gradient(to right, #3caee0, rgba(71,182,226,0.79));"></div>
-                </td>
+<!--                <td>-->
+<!--                    <div class="graph" style="background: linear-gradient(to right, #3caee0, rgba(71,182,226,0.79));"></div>-->
+<!--                </td>-->
             </tr>
   `
     })

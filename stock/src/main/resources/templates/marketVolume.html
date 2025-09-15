@@ -9,7 +9,7 @@
     <!-- 样式整合 -->
     <style>
         :root {
-            --primary-color: #0c91f8;
+            --primary-color: #ffffff;
             --rise-color: #1981f5;
             --fall-color: #3c3f3c;
             --neutral-color: #9e9e9e;
@@ -40,7 +40,7 @@
             padding: 1rem;
             background: var(--card-bg);
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .temperature {
@@ -63,7 +63,7 @@
             background: var(--card-bg);
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s;
         }
 
@@ -85,7 +85,7 @@
             margin: 2rem 0;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .bucket-bar {
@@ -119,7 +119,7 @@
             background: var(--card-bg);
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             margin: 2rem 0;
         }
 
@@ -156,61 +156,85 @@
 
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
-    <div class="dashboard-header">
-        <h6>📈 股票交易情绪看板 <span style="color:#666">2025-02-12</span></h6>
-        <div class="temperature" id="temperature">
-            市场温度：61.75°C
-        </div>
-    </div>
-
-    <div class="stats-grid" id="marketVolume">
-        <div class="stat-card">
-            <div>总股票数</div>
-            <div class="stat-value">5,131</div>
-        </div>
-        <div class="stat-card">
-            <div>涨停/跌停</div>
-            <div class="stat-value" style="color:var(--rise-color)">58/1</div>
-        </div>
-        <div class="stat-card">
-            <div>涨跌比</div>
-            <div class="stat-value" style="color:var(--rise-color)">1.14</div>
-        </div>
-        <div class="stat-card">
-            <div>涨超5%</div>
-            <div class="stat-value" style="color:var(--rise-color)">186</div>
-        </div>
-        <div class="stat-card">
-            <div>跌超5%</div>
-            <div class="stat-value" style="color:var(--fall-color)">16</div>
-        </div>
-    </div>
-    <div class="chart-container">
-        <h6>📊 涨跌分布可视化</h6>
-        <div id="distributionChart" style="height: 420px;"></div>
-    </div>
-
-    <!-- 新增分时图容器 -->
-    <div class="chart-container">
-        <h6 style="margin:0 0 1rem 0;">📈 涨停/跌停分时走势</h6>
-        <div id="timeChart" style="height: 350px;"></div>
-    </div>
-
-    <section class="day-section">
-        <h5 class="date-header">一字涨停</h5>
-        <div class="streak-level">
-            <div class="stock-list" id="yzzt">
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
             </div>
         </div>
-        <h5 class="date-header">一字跌停</h5>
-        <div class="streak-level">
-            <div class="stock-list" id="yzdt">
+    </div>
+    <div class="container">
+        <div class="dashboard-header">
+            <h6>📈 股票交易情绪看板 <span style="color:#666">2025-02-12</span></h6>
+            <div class="temperature" id="temperature">
+                市场温度：61.75°C
             </div>
         </div>
 
-    </section>
-</div>
+        <div class="stats-grid" id="marketVolume">
+            <div class="stat-card">
+                <div>总股票数</div>
+                <div class="stat-value">5,131</div>
+            </div>
+            <div class="stat-card">
+                <div>涨停/跌停</div>
+                <div class="stat-value" style="color:var(--rise-color)">58/1</div>
+            </div>
+            <div class="stat-card">
+                <div>涨跌比</div>
+                <div class="stat-value" style="color:var(--rise-color)">1.14</div>
+            </div>
+            <div class="stat-card">
+                <div>涨超5%</div>
+                <div class="stat-value" style="color:var(--rise-color)">186</div>
+            </div>
+            <div class="stat-card">
+                <div>跌超5%</div>
+                <div class="stat-value" style="color:var(--fall-color)">16</div>
+            </div>
+        </div>
+        <div class="chart-container">
+            <h6>📊 涨跌分布可视化</h6>
+            <div id="distributionChart" style="height: 420px;"></div>
+        </div>
+
+        <!-- 新增分时图容器 -->
+        <div class="chart-container">
+            <h6 style="margin:0 0 1rem 0;">📈 涨停/跌停分时走势</h6>
+            <div id="timeChart" style="height: 350px;"></div>
+        </div>
+
+        <section class="day-section">
+<!--            <h5 class="date-header">一字涨停</h5>-->
+            <div class="streak-level">
+                <div class="stock-list" id="yzzt">
+                </div>
+            </div>
+<!--            <h5 class="date-header">一字跌停</h5>-->
+            <div class="streak-level">
+                <div class="stock-list" id="yzdt">
+                </div>
+            </div>
+
+        </section>
+    </div>
 </div>
 </body>
 </html>

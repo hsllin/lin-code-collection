@@ -144,7 +144,10 @@ function buildAutionTradingHtml(data) {
     const i = 1;
     console.log(data)
     const htmlArray = data.map((item, index) => {
-
+        const industry=item.industry === 'null' ? '-' : item.industry;
+        const concepts=item.concepts === 'null' ? '-' : item.concepts
+        const type=item.type === 'null' ? '-' : item.type
+        const ratingType=item.ratingType === 'null' ? '-' : item.ratingType
         return `
         <tr>
                 <td>${index + 1}</td>
@@ -152,15 +155,15 @@ function buildAutionTradingHtml(data) {
                 <td>${item.code}</td>
                 <td>${item.rate}%</td>
                 <td>${item.price}</td>
-                 <td>${item.industry || '-'}</td>
-                 <td>${item.concepts || '-'}</td>
+                 <td>${industry}</td>
+                 <td>${concepts}</td>
                 <td>${formatToYi(item.buyMoney)}</td>
                 <td>${(item.buyNum / 10000).toFixed(2)}万</td>
                 <td>${formatToYi(item.flowMoney)}</td>
                 <td>${formatToYi(item.unMatchedMoney)}</td>
                 <td>${formatToYi(item.unMatchedNum)}</td>
-                 <td>${item.type}</td>
-                <td>${item.ratingType}</td>
+                 <td>${type}</td>
+                <td>${ratingType}</td>
             </tr>
   `
     });

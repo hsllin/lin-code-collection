@@ -132,6 +132,7 @@
             border-collapse: separate;
             border-spacing: 0;
             min-width: 900px;
+            padding: 8px;
         }
 
         th, td {
@@ -261,19 +262,31 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
-    <div class="container">
-        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 class="date-header" id="time" style="margin: 0;">2025年1月27日 星期一</h2>
-            <div>
-                <a href="javascript:;" onclick="refreshData()" class="" title="刷新数据">
-                    <i class="fa fa-refresh"></i> 刷新
-                </a>
-                <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
-                    <i class="fa fa-refresh"></i> 导出
-                </a>
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
             </div>
         </div>
+    </div>
+    <div class="container">
         <!-- 指数行情 -->
         <table id="stockTable">
             <thead>

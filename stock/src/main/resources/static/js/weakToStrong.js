@@ -178,4 +178,8 @@ function formatToYi(num) {
     return Math.round(number).toString();
 }
 
+function refreshData() {
+    document.getElementById('stock-table').innerHTML = '';
+    getWeakToStrongData();
+}
 

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!-- 引入Bootstrap -->
+    <!--    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/timeStock2.js"></script>
+    <script type="text/javascript" src="/js/chart.min.js"></script>
+<!--    <script type="text/javascript" src="/js/chart.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>-->
+    <script src="/js/chartjs-plugin-annotation"></script>
+
+    <style>
+
+
+        .container{
+            /*max-width: 1200px;*/
+            /*margin: 0 auto;*/
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a6bb3 0%, #0d4a82 100%);
+            color: white;
+            padding: 20px 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .chart-container {
+            /*position: relative;*/
+            height: 600px;
+            /*margin-bottom: 20px;*/
+            flex: 7;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .controls button {
+            background: #f0f4f9;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .controls button:hover {
+            background: #e1e9f2;
+        }
+
+        .controls button.active {
+            background: #1a6bb3;
+            color: white;
+        }
+
+        .concept-list {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a3c6e;
+            margin-bottom: 15px;
+        }
+
+        .concept-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .concept-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .concept-item:hover {
+            background: #f9fbfd;
+        }
+
+        .concept-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .concept-change {
+            font-weight: 600;
+        }
+
+        .change-positive {
+            color: #446391;
+        }
+
+        .change-negative {
+            color: #2e9b56;
+        }
+
+        .concept-time {
+            font-size: 12px;
+            color: #7a869d;
+            margin-top: 5px;
+        }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            color: #7a869d;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+        }
+        .annotation {
+            position: absolute;
+            background: rgba(74, 111, 165, 0.63);
+            color: #e5effa;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 2px 10px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            pointer-events: auto;
+            cursor: pointer;
+            border: 1px solid rgba(74, 111, 165, 0.63);
+        }
+        .annotation-line {
+            position: absolute;
+            width: 1px;
+            background: rgba(74, 111, 165, 0.63);
+            z-index: 5;
+        }
+        .annotation-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(74, 111, 165, 0.63);
+            border-radius: 50%;
+            border: 2px solid #fff;
+            z-index: 15;
+            box-sizing: border-box;
+        }
+        .side-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .top-concepts {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a3c6e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hot-tags {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .myTag {
+            background: #f0f4f9;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .myTag:hover {
+            background: #e1e9f2;
+            transform: translateY(-2px);
+        }
+
+        .myTag.hot {
+            background: #ffecec;
+            color: #e54c4c;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <header>
+            <div class="logo">
+<!--                <h1>概念板块分时走势标注</h1>-->
+            </div>
+        </header>
+
+        <div class="main-content">
+<!--            <div class="controls">-->
+<!--                <button class="active">今日</button>-->
+<!--                <button>5日</button>-->
+<!--                <button>本月</button>-->
+<!--            </div>-->
+
+            <div class="chart-container" id="chart-container">
+                <canvas id="chartCanvas"></canvas>
+            </div>
+            <div class="side-panel">
+                <div class="top-concepts">
+                    <div class="panel-title">
+                        <i class="fa fa-fire"></i>
+                        <span>领涨概念</span>
+                    </div>
+                    <ul class="concept-list" id="concept-list">
+                        <li class="concept-item">
+                            <span class="concept-name">算力工程</span>
+                            <span class="concept-change change-positive">+3.72%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">创新药</span>
+                            <span class="concept-change change-positive">+2.85%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">CPO概念</span>
+                            <span class="concept-change change-positive">+2.14%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">机器人</span>
+                            <span class="concept-change change-positive">+1.93%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">存储器</span>
+                            <span class="concept-change change-positive">+1.65%</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="top-concepts">
+                    <div class="panel-title">
+                        <i class="fa fa-fire"></i>
+                        <span>领涨板块</span>
+                    </div>
+                    <ul class="concept-list" id="industry-list">
+                        <li class="concept-item">
+                            <span class="concept-name">算力工程</span>
+                            <span class="concept-change change-positive">+3.72%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">创新药</span>
+                            <span class="concept-change change-positive">+2.85%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">CPO概念</span>
+                            <span class="concept-change change-positive">+2.14%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">机器人</span>
+                            <span class="concept-change change-positive">+1.93%</span>
+                        </li>
+                        <li class="concept-item">
+                            <span class="concept-name">存储器</span>
+                            <span class="concept-change change-positive">+1.65%</span>
+                        </li>
+                    </ul>
+                </div>
+
+<!--                <div class="hot-tags">-->
+<!--                    <div class="panel-title">-->
+<!--                        <i class="fa fa-hashtag"></i>-->
+<!--                        <span>热点板块</span>-->
+<!--                    </div>-->
+<!--                    <div class="tags-container" id="tags-container">-->
+<!--                        <div class="myTag hot">CPO</div>-->
+<!--                        <div class="myTag">有色金属</div>-->
+<!--                        <div class="myTag hot">机器人</div>-->
+<!--                        <div class="myTag">房地产</div>-->
+<!--                        <div class="myTag">军工</div>-->
+<!--                        <div class="myTag">钢铁</div>-->
+<!--                        <div class="myTag">固态电</div>-->
+<!--                        <div class="myTag">存储器</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+
+<!--            <div class="concept-list">-->
+<!--                <div class="panel-title">概念板块表现</div>-->
+<!--                <div class="concept-items">-->
+<!--                    <div class="concept-item">-->
+<!--                        <div class="concept-name">算力工程</div>-->
+<!--                        <div class="concept-change change-positive">+3.72%</div>-->
+<!--                        <div class="concept-time">09:40</div>-->
+<!--                    </div>-->
+<!--                    <div class="concept-item">-->
+<!--                        <div class="concept-name">创新药</div>-->
+<!--                        <div class="concept-change change-positive">+2.85%</div>-->
+<!--                        <div class="concept-time">10:00</div>-->
+<!--                    </div>-->
+<!--                    <div class="concept-item">-->
+<!--                        <div class="concept-name">CPO概念</div>-->
+<!--                        <div class="concept-change change-positive">+2.14%</div>-->
+<!--                        <div class="concept-time">10:20</div>-->
+<!--                    </div>-->
+<!--                    <div class="concept-item">-->
+<!--                        <div class="concept-name">机器人</div>-->
+<!--                        <div class="concept-change change-positive">+1.93%</div>-->
+<!--                        <div class="concept-time">10:40</div>-->
+<!--                    </div>-->
+<!--                    <div class="concept-item">-->
+<!--                        <div class="concept-name">存储器</div>-->
+<!--                        <div class="concept-change change-positive">+1.65%</div>-->
+<!--                        <div class="concept-time">11:00</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+
+        <footer>
+            <p>数据仅供参考，不构成投资建议</p>
+        </footer>
+    </div>
+</div>
+</body>
+</html>

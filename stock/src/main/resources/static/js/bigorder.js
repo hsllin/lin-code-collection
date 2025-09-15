@@ -144,3 +144,14 @@ function renderTable(data) {
     document.getElementById('data-table').innerHTML = htmlArray;
 }
 
+function refreshData(){
+    document.getElementById('data-table').innerHTML = '';
+    const canvas = document.getElementById('netFlowChart');
+    const ctx = canvas.getContext('2d');
+
+// 清除整个画布内容
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    getBigOrderData();
+}
+

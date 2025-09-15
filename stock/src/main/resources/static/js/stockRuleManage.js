@@ -325,10 +325,10 @@ function handleSearch() {
     loadRules(); // 重新从接口加载数据，包含搜索条件
 }
 // 页面加载时初始化
-window.addEventListener('DOMContentLoaded', () => {
-    loadRules();
-    ruleContent.focus();
-});
+// window.addEventListener('DOMContentLoaded', () => {
+//     loadRules();
+//     ruleContent.focus();
+// });
 
 /* 3. 渲染右侧个股 */
 function renderBoardData(plate) {

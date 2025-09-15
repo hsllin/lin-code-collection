@@ -6,8 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        .container{
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
         body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; }
+        table {
+            border-collapse: collapse;
+            /*width: 100%;*/
+            margin: 20px;
+        }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         th { background-color: #f2f2f2; cursor: pointer; }
         tr:nth-child(even) { background-color: #f9f9f9; }
@@ -65,22 +75,45 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-
-    <div class="container">
-        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <div class="clock">
-                <div class="time" id="time">--:--:--</div>
-                <div class="date" id="date">----年--月--日 星期-</div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
             </div>
-            <div>
-                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-                    <i class="fa fa-refresh"></i> 刷新
-                </a>
-                <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
-                    <i class="fa fa-refresh"></i> 导出
-                </a>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
             </div>
         </div>
+    </div>
+    <div class="container">
+<!--        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">-->
+<!--            <div class="clock">-->
+<!--                <div class="time" id="time">&#45;&#45;:&#45;&#45;:&#45;&#45;</div>-->
+<!--                <div class="date" id="date">&#45;&#45;&#45;&#45;年&#45;&#45;月&#45;&#45;日 星期-</div>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">-->
+<!--                    <i class="fa fa-refresh"></i> 刷新-->
+<!--                </a>-->
+<!--                <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="导出" style="margin-left: 10px;">-->
+<!--                    <i class="fa fa-refresh"></i> 导出-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
         <!-- 指数行情 -->
         <table id="stockTable">
             <thead>

@@ -75,9 +75,10 @@ function renderTable() {
             <div class="theme-header">
                 <span class="theme-number">${stock.sortNum}</span>
                 <span class="theme-name">${stock.themeName}</span>
-                <span class="zhangting">涨停${stock.fex3}</span>
+                <span class="card-badge">涨停${stock.fex3}</span>
+                <span class="trend-tag">${stock.isHot = '1' ? '持续火爆' : ''}</span>
             </div>
-            <span class="hot-badge">${stock.isHot = '1' ? '持续火爆' : ''}</span>
+            
             <h2 class="theme-title">${stock.title}</h2>
             <div class="theme-content">
                 <div class="stock-list">
@@ -257,3 +258,7 @@ function drawChart(canvasId, data) {
 //     drawChart('chart2', data2);
 // });
 
+function refreshData(){
+    document.getElementById("mainData").innerHTML='';
+    getDayHotData();
+}

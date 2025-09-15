@@ -25,38 +25,38 @@ $(function () {
         $('#' + activeId).addClass('active');
     }
 
-    const refreshBtn = document.getElementById('refreshBtn');
-    $(document).on('click', '#refreshBtn', function () {
-        // 添加刷新动画
-        refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
-        refreshBtn.disabled = true;
-
-        // 模拟API请求延迟
-        setTimeout(function () {
-            document.getElementById('dataTable').innerHTML = '';
-            if (whichDay===1){
-                getLimitUpTodayData();
-            }else {
-                getLimitUpYesterDayData();
-            }
-
-            // 更新最后更新时间
-            updateTime();
-
-            // 恢复按钮状态
-            refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新数据';
-            refreshBtn.disabled = false;
-
-            // 添加视觉反馈
-            refreshBtn.style.background = 'linear-gradient(90deg, #0d9488, #0ea5e9)';
-            setTimeout(() => {
-                refreshBtn.style.background = 'linear-gradient(90deg, #0ea5e9, #0d9488)';
-            }, 500);
-
-            // 提示刷新成功
-            console.log('数据已刷新');
-        }, 500);
-    });
+    // const refreshBtn = document.getElementById('refreshBtn');
+    // $(document).on('click', '#refreshBtn', function () {
+    //     // 添加刷新动画
+    //     refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
+    //     refreshBtn.disabled = true;
+    //
+    //     // 模拟API请求延迟
+    //     setTimeout(function () {
+    //         document.getElementById('dataTable').innerHTML = '';
+    //         if (whichDay===1){
+    //             getLimitUpTodayData();
+    //         }else {
+    //             getLimitUpYesterDayData();
+    //         }
+    //
+    //         // 更新最后更新时间
+    //         updateTime();
+    //
+    //         // 恢复按钮状态
+    //         refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新数据';
+    //         refreshBtn.disabled = false;
+    //
+    //         // 添加视觉反馈
+    //         refreshBtn.style.background = 'linear-gradient(90deg, #0d9488, #0ea5e9)';
+    //         setTimeout(() => {
+    //             refreshBtn.style.background = 'linear-gradient(90deg, #0ea5e9, #0d9488)';
+    //         }, 500);
+    //
+    //         // 提示刷新成功
+    //         console.log('数据已刷新');
+    //     }, 500);
+    // });
     // 模拟刷新功能
     // refreshBtn.addEventListener('click', function () {
     //     // 添加刷新动画
@@ -212,8 +212,35 @@ function escapeHtml(unsafe) {
 }
 
 function refreshData() {
-    document.getElementById('pool').innerHTML = '';
-    getLimitPoolData('330324', '');
+        // 添加刷新动画
+        // refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
+        // refreshBtn.disabled = true;
+
+        // 模拟API请求延迟
+        setTimeout(function () {
+            document.getElementById('dataTable').innerHTML = '';
+            if (whichDay===1){
+                getLimitUpTodayData();
+            }else {
+                getLimitUpYesterDayData();
+            }
+
+            // // 更新最后更新时间
+            // updateTime();
+            //
+            // // 恢复按钮状态
+            // refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新数据';
+            // refreshBtn.disabled = false;
+            //
+            // // 添加视觉反馈
+            // refreshBtn.style.background = 'linear-gradient(90deg, #0d9488, #0ea5e9)';
+            // setTimeout(() => {
+            //     refreshBtn.style.background = 'linear-gradient(90deg, #0ea5e9, #0d9488)';
+            // }, 500);
+
+            // 提示刷新成功
+            console.log('数据已刷新');
+        }, 500);
 }
 
 function sortTable(orderFiled, orderBy) {

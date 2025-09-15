@@ -57,6 +57,8 @@ public class BuyChangeBean {
             private Integer count=1;
             private String time;
             private double percent;
-            private double buyNum;        }
+            private double buyNum;
+            private String industry;
+        }
     }
 }

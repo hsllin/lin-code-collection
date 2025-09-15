@@ -22,11 +22,12 @@ public class InstraDayChangeController {
     @RequestMapping("/intraDayChange")
     public ResponseEntity<List<IntradayChange.DataBean.AllstockBean>> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
+        String checkedData = request.getParameter("checkedData");
         List<IntradayChange.DataBean.AllstockBean> stockList = new ArrayList<>();
         if (type.equals("1")) {
-            stockList = intraDayChangeService.getIntradayChangeList(IntraDayChangeService.INCREASE);
+            stockList = intraDayChangeService.getIntradayChangeList(IntraDayChangeService.INCREASE,checkedData);
         } else {
-            stockList = intraDayChangeService.getIntradayChangeList(IntraDayChangeService.DECREASE);
+            stockList = intraDayChangeService.getIntradayChangeList(IntraDayChangeService.DECREASE,checkedData);
         }
 
         CollectionUtil.reverse(stockList);
@@ -36,11 +37,12 @@ public class InstraDayChangeController {
     @RequestMapping("/buyChange")
     public ResponseEntity<List<BuyChangeBean.DataDTO.AllstockDTO>> buyChange(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
+        String checkedData = request.getParameter("checkedData");
         List<BuyChangeBean.DataDTO.AllstockDTO> stockList = new ArrayList<>();
         if (type.equals("1")) {
-            stockList = intraDayChangeService.getBuyChangeList(IntraDayChangeService.BUY);
+            stockList = intraDayChangeService.getBuyChangeList(IntraDayChangeService.BUY,checkedData);
         } else {
-            stockList = intraDayChangeService.getBuyChangeList(IntraDayChangeService.SELL);
+            stockList = intraDayChangeService.getBuyChangeList(IntraDayChangeService.SELL,checkedData);
         }
 
         CollectionUtil.reverse(stockList);

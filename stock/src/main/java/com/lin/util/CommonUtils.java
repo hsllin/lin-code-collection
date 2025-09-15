@@ -10,10 +10,7 @@ import jodd.util.StringUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class CommonUtils {
     public static void main(String[] args) {
@@ -41,7 +38,7 @@ public class CommonUtils {
      * @return
      */
     public static double formatStringPrice(String totalPrice) {
-        if (totalPrice == null|| StringUtil.isEmpty(totalPrice)||"null".equals(totalPrice)) {
+        if (totalPrice == null || StringUtil.isEmpty(totalPrice) || "null".equals(totalPrice)) {
             return 0;
         }
         BigDecimal bg = new BigDecimal(totalPrice).setScale(2, RoundingMode.UP);
@@ -139,9 +136,31 @@ public class CommonUtils {
 
         for (int i = 4; i >= 0; i--) {
             int digit = random.nextInt(10); // 0-9
-            number += digit * (int)Math.pow(10, i);
+            number += digit * (int) Math.pow(10, i);
         }
 
         return number;
+    }
+
+    public static List<String> dealFilterCodeList(List<String> filterNameList) {
+        List<String> resultList = new ArrayList<>();
+        for (String name : filterNameList) {
+            if ("创业板".equals(name)) {
+                resultList.add("3");
+            }
+            if ("深沪".equals(name)) {
+                resultList.add("60");
+                resultList.add("00");
+            }
+            if ("北交所".equals(name)) {
+                resultList.add("82");
+                resultList.add("83");
+                resultList.add("87");
+            }
+            if ("科创板".equals(name)) {
+                resultList.add("688");
+            }
+        }
+        return resultList;
     }
 }

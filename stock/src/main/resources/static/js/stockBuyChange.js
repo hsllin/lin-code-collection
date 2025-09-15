@@ -1,7 +1,23 @@
+let checkedData = []
+let currentTab = 'up';
 $(function () {
-
+    document.querySelector('.filter-options')
+        .addEventListener('change', () => updateData());
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentTab = tab.dataset.tab;
+            if (currentTab === 'up') {
+                getBuyChangeData();
+            } else {
+                getSellChangeData();
+            }
+        });
+    });
+    checkedData = getSelectedValues();
     getBuyChangeData();
-    getSellChangeData();
+    // getSellChangeData();
 
 })
 
@@ -13,7 +29,7 @@ function getBuyChangeData() {
         url: "buyChange",
 
         data: {
-
+            checkedData: checkedData.join(','),
             type: "1"
 
         },
@@ -33,7 +49,7 @@ function getSellChangeData() {
         url: "buyChange",
 
         data: {
-
+            checkedData: checkedData.join(','),
             type: "2"
 
         },
@@ -74,7 +90,7 @@ function buildSellChangeHtml(data) {
         // const icon = buyNum > 0.8 ? '🔥' : "";
 
         // 判断条件
-        const icon = buyNum > 0.8? '💥' :
+        const icon = buyNum > 0.8 ? '💥' :
             '';
         return `
     <div class="stock-item">
@@ -100,8 +116,23 @@ function escapeHtml(unsafe) {
 
 function refreshData() {
     document.getElementById('industry-item-up').innerHTML = '';
-    document.getElementById('industry-item-down').innerHTML = '';
-    getBuyChangeData();
-    // getDecreaseData();
+    // document.getElementById('industry-item-down').innerHTML = '';
+    if (currentTab === 'up') {
+        getBuyChangeData();
+    } else {
+        getDecreaseData();
+    }
 
+}
+
+function getSelectedValues(wrapperSelector = '.filter-options') {
+    const wrapper = document.querySelector(wrapperSelector);
+    if (!wrapper) return [];
+
+    return [...wrapper.querySelectorAll('input[type="checkbox"]:checked')]  // 所有已勾选的 checkbox
+        .map(cb => cb.nextElementSibling.textContent.trim());           // 对应 label 的文字
+}
+
+function updateData() {
+    checkedData = getSelectedValues();
 }

@@ -26,35 +26,55 @@ function buildStockThemeChanceHtml(data) {
     console.log(data)
     var htmlArray = '';
     data.List.forEach((group, groupIndex) => {
-            htmlArray += `
-            <div class="section">
-            <div class="section-title">${group.ZSName}</div>
-            <div class="section-date">${formatTime(group.TimeStamp)} ${group.Title}</div>
-            <ul class="stock-list">
+        htmlArray += `
+             <div class="card">
+            <div class="theme-header">
+                <div class="theme-title">${group.Kword||group.ZSName}</div>
+                <div class="theme-time">${formatTime(group.TimeStamp)}</div>
+            </div>
+            <div class="theme-content">${group.Title}</div>
+            <div class="stock-grid">
+                
                     `;
+            // htmlArray += `
+            // <div class="section">
+            // <div class="section-title">${group.ZSName}</div>
+            // <div class="section-date">${formatTime(group.TimeStamp)} ${group.Title}</div>
+            // <ul class="stock-list">
+            //         `;
         group.Stocks.forEach((stock, stockIndex) => {
 
             htmlArray += ` 
-            <li class="stock-item">
-                    <div class="stock-info">
+            <!-- 这里可以添加相关股票信息 -->
+            <div class="stock-item">
+            <div class="stock-info">
                         <span class="stock-code">${stock.Code}</span>
                         <span class="stock-name">${stock.Name}</span>
                     </div>
                     <div class="stock-change positive">${stock.Rate}%</div>
-                </li>
+              </div>
             `
+            // htmlArray += `
+            // <li class="stock-item">
+            //         <div class="stock-info">
+            //             <span class="stock-code">${stock.Code}</span>
+            //             <span class="stock-name">${stock.Name}</span>
+            //         </div>
+            //         <div class="stock-change positive">${stock.Rate}%</div>
+            //     </li>
+            // `
         });
-        htmlArray += `  </ul>
-        </div>`;
+        htmlArray += ` </div></div>`;
 
         }
     );
+    console.log(data)
     document.getElementById('main').innerHTML = htmlArray;
 }
 
 function refreshData() {
     document.getElementById('main').innerHTML = '';
-    getLianBanChiListData();
+    getStockThemeChance();
 }
 
 function unicodeToChinese(str) {

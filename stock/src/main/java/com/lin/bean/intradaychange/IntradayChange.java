@@ -33,6 +33,7 @@ public class IntradayChange {
             private String i;
             private Integer count=1;
             private String time;
+            private String industry;
             private double percent;
         }
     }

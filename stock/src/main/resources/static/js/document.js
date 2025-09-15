@@ -76,8 +76,8 @@ function escapeHtml(unsafe) {
 }
 
 function refreshData() {
-    document.getElementById('news-list').innerHTML = '';
-    getWallStreetNews();
+    document.getElementById('announcements').innerHTML = '';
+    getDocumentList();
 }
 
 function updateDate() {

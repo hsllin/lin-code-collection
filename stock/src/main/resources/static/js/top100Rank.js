@@ -166,5 +166,10 @@ function generatePhoto() {
     });
 }
 
+function refreshData(){
+    document.getElementById('stock-table').innerHTML = '';
+    getDecreaseData();
+}
+
 
 

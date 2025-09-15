@@ -89,6 +89,11 @@ function renderTable() {
     });
 }
 
+function refreshData(){
+    document.getElementById('content').innerHTML = '';
+    getLiveStreamingData();
+}
+
 
 
 

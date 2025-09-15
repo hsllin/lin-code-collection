@@ -156,7 +156,7 @@ public class MyStockServiceImpl extends ServiceImpl<MyStockMapper, MyStock> impl
             bean.setPe(data.get("PE_DYNAMIC") + "");
             bean.setDescription("");
             bean.setRate(Double.valueOf(data.get("CHG") + ""));
-            bean.setTurnoverRate(Double.valueOf(data.get("TURNOVER_RATE") + ""));
+            bean.setTurnoverRate(CommonUtils.formatStringPrice(data.get("TURNOVER_RATE") + ""));
             bean.setVolality(data.get("CIRCULATION_MARKET_VALUE<140>") + "");
             bean.setTradingVolume(data.get("TRADING_VOLUMES") + "");
 

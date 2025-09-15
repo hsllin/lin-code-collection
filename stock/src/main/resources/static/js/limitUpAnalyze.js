@@ -28,26 +28,52 @@ function buildLimitUpAnalyzeHtml(data) {
     var htmlArray = '';
     data.data.forEach((group, groupIndex) => {
         console.log(group.plate_name)
-        htmlArray+=`<tr> 
-             <th colspan="7">${group.plate_name} <span class="hot-tag">${group.stocks.length}</span> 个</th>
-              </tr>`
+        // htmlArray+=`<tr>
+        //      <th colspan="7">${group.plate_name} <span class="hot-tag">${group.stocks.length}</span> 个</th>
+        //       </tr>`
+        htmlArray+=`<tr class="section-title">
+                    <td colspan="7">${group.plate_name} (${group.stocks.length}只)</td>
+                </tr>`
         group.stocks.forEach((item,itemGroup)=>{
             const marketType=item.market_type?'('+item.market_type+')':''
+            // htmlArray += `
+            //   <tr>
+            //         <td>${item.stock_name}${marketType}</td>
+            //         <td>${item.stock_code}</td>
+            //         <td>${item.stock_price}</td>
+            //         <td>${item.up_limit_time}</td>
+            //         <td>${item.up_limit_desc}</td>
+            //         <td>${formatToYi(item.fengdan_money)}</td>
+            //         <td>${formatToYi(item.actualcirculation_value)}</td>
+            //     </tr>
+            //     <tr>
+            //         <td colspan="7">
+            //             <div class="stock-info">
+            //                 <div>液冷服务器+水利；</div>
+            //                 <div>${item.reason}</div>
+            //             </div>
+            //         </td>
+            //     </tr>
+            //         `;
             htmlArray += `
               <tr>
-                    <td>${item.stock_name}${marketType}</td>
-                    <td>${item.stock_code}</td>
-                    <td>${item.stock_price}</td>
+                    <td>
+                        <div class="stock-name">${item.stock_name}</div>
+                        <div class="stock-tags">
+                            <span class="myTag">${marketType}</span>
+                        </div>
+                    </td>
+                    <td><span class="stock-code">${item.stock_code}</span></td>
+                    <td class="up-limit">${item.stock_price}</td>
                     <td>${item.up_limit_time}</td>
-                    <td>${item.up_limit_desc}</td>
+                    <td><span class="first-board">${item.up_limit_desc}</span></td>
                     <td>${formatToYi(item.fengdan_money)}</td>
                     <td>${formatToYi(item.actualcirculation_value)}</td>
                 </tr>
                 <tr>
                     <td colspan="7">
-                        <div class="stock-info">
-                            <div>液冷服务器+水利；</div>
-                            <div>${item.reason}</div>
+                        <div class="description">
+                        ${item.reason}
                         </div>
                     </td>
                 </tr>
@@ -64,7 +90,7 @@ function buildLimitUpAnalyzeHtml(data) {
 
 function refreshData() {
     document.getElementById('mainData').innerHTML = '';
-    getLianBanChiListData();
+    getLimitUpAnalyzeData();
 }
 
 function unicodeToChinese(str) {

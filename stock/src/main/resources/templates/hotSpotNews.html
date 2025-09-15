@@ -49,8 +49,8 @@
             border-bottom: none;
         }
 
-        .time {
-            color: #909399;
+        .myTime {
+            color: #446391;
             min-width: 80px;
             font-size: 14px;
         }
@@ -83,28 +83,36 @@
                 flex-direction: column;
             }
 
-            .time {
+            .myTime {
                 margin-bottom: 5px;
             }
         }
 
-        /* 刷新按钮样式 */
-        .refresh-btn {
-            padding: 10px 15px;
-            background: #0c91f8; /* 主色调绿色 */
-            color: white !important;
-            border-radius: 6px;
-            margin: 8px 15px 0 0;
-            transition: background 0.3s;
-        }
 
-        .refresh-btn:hover {
-            background: #63b7ee; /* 悬停深绿色 */
-            cursor: pointer;
+        .clock-container {
+            display: flex;
+            align-items: center;
+            /*justify-content: space-between;*/
+            padding: 15px;
+            width: 1200px;
+            /*background-color: #f5f6f7;*/
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e1e1e1;
         }
-
-        .refresh-btn .fa-refresh {
-            margin-right: 5px;
+        .clock {
+            font-size: 16px;
+            font-weight: normal;
+            color: #333;
+        }
+        .date {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .week {
+            font-size: 14px;
+            color: #666;
         }
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
@@ -116,14 +124,41 @@
     <div class="clearfix"></div>
 
     <div class="container">
-        <section class="news-card">
+
             <!-- 新增刷新按钮 -->
-            <li>
-                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-                    <i class="fa fa-refresh"></i> 刷新
-                </a>
-            </li>
-            <h2 class="date-header" id="time">2025年1月27日 星期一</h2>
+            <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+                <div class="toolbar">
+                    <div class="disclaimer">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <div class="disclaimer-text">
+                            以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                        </div>
+                    </div>
+                    <div class="toolbar-buttons">
+                        <button class="btn btn-refresh" id="refreshBtn">
+                            <i class="fas fa-sync-alt"></i> 刷新数据
+                        </button>
+                        <!--            <button class="btn btn-export" id="exportBtn">-->
+                        <!--                <i class="fas fa-download"></i> 导出报告-->
+                        <!--            </button>-->
+                    </div>
+                </div>
+            </div>
+<!--            <h2 class="date-header" id="time">2025年1月27日 星期一</h2>-->
+<!--            <div class="clock" id="clock">加载中…</div>-->
+        <div class="financial-clock">
+            <div class="clock-container">
+                <div class="time-section">
+                    <div class="time" id="time">14:25:36</div>
+                    <div class="timezone">北京时间 (UTC+8)</div>
+                </div>
+                <div class="date-week">
+                    <div class="date" id="date">2025年9月2日</div>
+                    <div class="weekday" id="weekday">星期二</div>
+                </div>
+            </div>
+        </div>
+        <section class="news-card">
             <div class="news-list" id="news-list">
 
 <!--                <div class="news-item">-->

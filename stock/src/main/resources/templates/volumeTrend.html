@@ -7,25 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         #chart { width: 100%; height: 600px; margin: 20px auto; }
-        /* 刷新按钮样式 */
-        .refresh-btn {
-            padding: 3px 8px;
-            background: #0c91f8; /* 主色调绿色 */
-            color: white !important;
-            border-radius: 6px;
-            margin: 4px 6px 0 0;
-            transition: background 0.3s;
-            float: right;
-        }
-
-        .refresh-btn:hover {
-            background: #63b7ee; /* 悬停深绿色 */
-            cursor: pointer;
-        }
-
-        .refresh-btn .fa-refresh {
-            margin-right: 5px;
-
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
         }
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
@@ -36,14 +22,30 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-    <li>
-        <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-            <i class="fa fa-refresh"></i> 刷新
-        </a>
-        <a href="javascript:;" onclick="updateVolumeTrendData()" class="refresh-btn" title="刷新数据">
-            <i class="fa fa-refresh"></i> 同步数据
-        </a>
-    </li>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div id="chart"></div>
     </div>

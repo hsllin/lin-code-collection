@@ -218,5 +218,13 @@ function closeModal() {
     document.getElementById("modal").style.display = "none";
 }
 
+function refreshData(){
+    document.getElementById('stock-table').innerHTML = '';
+    document.getElementById('increase-table').innerHTML = '';
+    document.getElementById('tlimit-table').innerHTML = '';
 
+    getIncreaseData();
+    getOneWordData();
+    getTLimitupData();
+}
 

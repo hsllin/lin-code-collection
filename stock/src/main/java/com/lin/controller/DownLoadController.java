@@ -39,7 +39,7 @@ public class DownLoadController {
     public ResponseEntity<Boolean> downloadAllData(HttpServletRequest request, Model model) {
         String dateIndex = "0";
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));
-//        date="20250725";
+//        date="20250829";
         strongStockService.downloadStrongSrockData(date);
         limitUpPoolService.downloadLimitUpData(date);
         limitDownPoolService.downloadLimitDownData(date);
@@ -55,6 +55,7 @@ public class DownLoadController {
         increaseAndDecreaseService.downStockPackagingData();
         increaseAndDecreaseService.downloadStockBuyLowStrong();
         increaseAndDecreaseService.downStockBuyLowNormalData();
+        increaseAndDecreaseService.downStockIncreaseVolumeData();
         pluginKingService.downLoadRangeIncreaseStockData("3", "1");
         pluginKingService.downLoadRangeIncreaseStockData("5", "1");
         pluginKingService.downLoadRangeIncreaseStockData("10", "1");

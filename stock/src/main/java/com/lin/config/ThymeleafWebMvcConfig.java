@@ -31,7 +31,7 @@ public class ThymeleafWebMvcConfig extends WebMvcConfigurerAdapter implements Ap
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/index").setViewName("index");
         registry.addViewController("/stockIndex").setViewName("stockIndex");
-        registry.addViewController("/hotSpotIndex").setViewName("hotSpotNews");
+        registry.addViewController("/hotSpotIndex").setViewName("hotSpotNews2");
         registry.addViewController("/wallStreetNews").setViewName("wallStreetNews");
         registry.addViewController("/documentIndex").setViewName("documentIndex");
         registry.addViewController("/conceptAndIndex").setViewName("conceptAndIndex");
@@ -71,6 +71,7 @@ public class ThymeleafWebMvcConfig extends WebMvcConfigurerAdapter implements Ap
         registry.addViewController("/decreaseRank").setViewName("decreaseRank");
 
         registry.addViewController("/zhangtingjiantu").setViewName("zhangtingjiantu");
+        registry.addViewController("/tanghulu").setViewName("tanghulu");
         registry.addViewController("/trendRank").setViewName("trendRank");
         registry.addViewController("/top100Rank").setViewName("top100Rank");
         registry.addViewController("/boardandconcepts").setViewName("boardandconcepts");
@@ -79,7 +80,7 @@ public class ThymeleafWebMvcConfig extends WebMvcConfigurerAdapter implements Ap
         registry.addViewController("/autionTrading1").setViewName("autionTrading1");
         registry.addViewController("/autionNoMatched").setViewName("autionNoMatched");
         registry.addViewController("/hongkongStock").setViewName("hongkongStock");
-        registry.addViewController("/timeStock").setViewName("timeStock");
+        registry.addViewController("/timeStock2").setViewName("timeStock2");
         registry.addViewController("/tradeRank").setViewName("tradeRank");
         registry.addViewController("/weakToStrong").setViewName("weakToStrong");
         registry.addViewController("/dragonFirstGreen").setViewName("dragonFirstGreen");
@@ -99,6 +100,10 @@ public class ThymeleafWebMvcConfig extends WebMvcConfigurerAdapter implements Ap
         registry.addViewController("/stockPackaging").setViewName("stockPackaging");
         registry.addViewController("/stockBuyLow").setViewName("stockBuyLow");
         registry.addViewController("/limitUpAnalyze").setViewName("limitUpAnalyze");
+        registry.addViewController("/stockIncreaseVolume").setViewName("stockIncreaseVolume");
+        registry.addViewController("/stockDayangLine").setViewName("stockDayangLine");
+
+
 
     }
 

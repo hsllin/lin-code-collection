@@ -6,23 +6,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
-            background-color: #f5f6fa;
-        }
 
         /*.container {*/
         /*    max-width: 1400px;*/
         /*    margin: 0 auto;*/
         /*}*/
 
-        .chart-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
         }
 
         table {
@@ -42,8 +36,8 @@
         }
 
         th {
-            background-color: #73879C;
-            color: white;
+            background-color: #ffffff;
+            color: #446391;
             font-weight: 600;
         }
 
@@ -94,17 +88,32 @@
 
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
-        <li>
-            <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-                <i class="fa fa-refresh"></i> 刷新
-            </a>
-            <a href="javascript:;" onclick="updateVolumeTrendData()" class="refresh-btn" title="刷新数据">
-                <i class="fa fa-refresh"></i> 同步数据
-            </a>
-        </li>
         <table>
             <thead>
             <tr>

@@ -1,8 +1,8 @@
 $(function () {
 
     getHotSpotNews();
-
-    updateDate();
+    updateClock();
+    setInterval(updateClock,1000);
 })
 
 function getHotSpotNews() {
@@ -31,7 +31,7 @@ function buildHotSpotNewsHtml(data) {
 
         return `
     <div class="news-item">
-      <span class="time">${newItem.showTime}</span>
+      <span class="myTime">${newItem.showTime}</span>
       <a href="${newItem.url}" class="title" target="_blank">${newItem.summary}</a>
     </div>
   `

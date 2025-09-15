@@ -1,0 +1,53 @@
+
+/* 优化后的时钟样式 */
+.clock-container {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    color: #444;
+    gap: 10px;
+}
+
+.clock-icon {
+    color: #3498db;
+    font-size: 16px;
+}
+
+.clock-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.clock-time {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.clock-date {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .toolbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .disclaimer {
+        max-width: 100%;
+    }
+
+    .toolbar-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

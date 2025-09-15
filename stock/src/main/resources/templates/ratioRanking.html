@@ -12,19 +12,24 @@
         /*    box-sizing: border-box;*/
         /*}*/
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
+        /*body {*/
+        /*    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;*/
+        /*    background-color: #f5f7fa;*/
+        /*    color: #333;*/
+        /*    line-height: 1.6;*/
+        /*}*/
 
         /*.container {*/
         /*    max-width: 1200px;*/
         /*    margin: 20px auto;*/
         /*    padding: 0 15px;*/
         /*}*/
-
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
         .title {
             font-size: 24px;
             font-weight: 500;
@@ -52,6 +57,7 @@
             color: #666;
             font-weight: 500;
             text-align: center;
+            border-bottom: 1px solid #446391;
         }
 
         td {
@@ -106,16 +112,31 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
-    <div class="container">
-        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h4 class="date-header" id="time" style="margin: 0;">量比排行分析</h4>
-            <div>
-                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-                    <i class="fa fa-refresh"></i> 刷新
-                </a>
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
             </div>
         </div>
+    </div>
+    <div class="container">
         <table class="stock-table">
             <thead>
             <tr>

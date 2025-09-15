@@ -8,12 +8,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .main {
-            background: #fff;
-            border-radius: 4px;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
-            margin-top: 10px;
-        }
+        /*.main {*/
+        /*    background: #fff;*/
+        /*    border-radius: 4px;*/
+        /*    box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);*/
+        /*    margin-top: 10px;*/
+        /*}*/
 
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
         /** {*/
@@ -29,6 +29,16 @@
         /*    line-height: 1.8;*/
         /*    padding: 20px;*/
         /*}*/
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
 
         .container1 {
             /*max-width: 800px;*/
@@ -73,22 +83,81 @@
             font-size: 16px;
         }
 
+        /* 美化样式5 - 多彩样式 */
         .my::before {
             content: counter(section);
             counter-increment: section;
             position: absolute;
             left: 0;
             top: 0;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #fff;
-            background-color: #409eff;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .counter-list {
+            margin: 30px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .counter-item {
+            position: relative;
+            padding: 15px 15px 15px 60px;
+            margin: 12px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .counter-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter-item::before {
+            content: counter(section);
+            counter-increment: section;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .counter-item:hover::before {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+
+        /* 为每个计数器设置不同颜色 */
+        .my:nth-child(1)::before { background: linear-gradient(135deg, #FF9A8B, #FF6A6A); }
+        .my:nth-child(2)::before { background: linear-gradient(135deg, #90CAF9, #42A5F5); }
+        .my:nth-child(3)::before { background: linear-gradient(135deg, #A5D6A7, #66BB6A); }
+        .my:nth-child(4)::before { background: linear-gradient(135deg, #FFF59D, #FFEE58); }
+        .my:nth-child(5)::before { background: linear-gradient(135deg, #CE93D8, #AB47BC); }
+
+        .my:hover::before {
+            transform: scale(1.1);
         }
 
         strong {

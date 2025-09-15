@@ -6,172 +6,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #6c757d;
+            --background-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --positive-color: #3a5167;
+            --negative-color: rgba(74, 111, 165, 0.63);
+        }
 
-        .container {
-            background-color: white;
+        /** {*/
+        /*    margin: 0;*/
+        /*    padding: 0;*/
+        /*    box-sizing: border-box;*/
+        /*    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;*/
+        /*}*/
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
             padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            padding: 20px 0;
-            border-bottom: 1px solid #e9ecef;
-            margin-bottom: 15px;
-            position: relative;
+            padding: 20px;
+            margin: 20px;
         }
 
-        .header h1 {
-            font-size: 24px;
-            font-weight: 500;
-            color: #212529;
-        }
-
-        .sub-header {
-            font-size: 14px;
-            color: #6c757d;
-            margin-top: 4px;
-        }
-
-        .top-tag {
-            position: absolute;
-            top: 20px;
-            right: 0;
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            padding: 2px 8px;
-            font-size: 12px;
-            border-radius: 15px;
-            color: #6c757d;
-        }
-
-        .section {
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .section:last-child {
-            border-bottom: none;
-            margin-bottom: 15px;
-        }
-
-        .section-title {
-            font-size: 17px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: #212529;
-        }
-
-        .section-date {
-            font-size: 13px;
-            color: #6c757d;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        /*.stock-list {*/
-        /*    list-style-type: none;*/
-        /*    background-color: white;*/
-        /*    border-radius: 10px;*/
-        /*    overflow: hidden;*/
-        /*    border: 1px solid #e9ecef;*/
-        /*}*/
-
-        /*.stock-item {*/
-        /*    display: flex;*/
-        /*    justify-content: space-between;*/
-        /*    padding: 14px 16px;*/
-        /*}*/
-
-        .stock-list {
-            list-style-type: none;
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #e9ecef;
+        .theme-header {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .theme-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .theme-time {
+            color: var(--secondary-color);
+            font-size: 14px;
+        }
+
+        .theme-content {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
         }
 
         .stock-item {
             display: flex;
             justify-content: space-between;
-            padding: 18px 16px;
-            width: 50%; /* 设置50%宽度实现双列布局 */
-            border-bottom: 1px solid #e9ecef;
-            border-right: 1px solid #e9ecef;
-            box-sizing: border-box;
-        }
-
-
-        .stock-item:nth-child(even) {
-            background-color: #f8f9fa;
+            align-items: center;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: rgba(245, 247, 250, 0.7);
         }
 
         .stock-info {
-            font-size: 15px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
         }
 
         .stock-code {
-            color: #868e96;
-            width: 60px;
-            font-family: monospace;
+            font-size: 12px;
+            color: var(--secondary-color);
         }
 
         .stock-name {
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            font-weight: 500;
         }
 
         .stock-change {
-            font-size: 14px;
-            font-weight: 500;
-            font-feature-settings: "tnum";
+            font-weight: 600;
         }
 
         .positive {
-            color: #9198a1;
+            color: var(--positive-color);
         }
 
         .negative {
-            color: #40c057;
+            color: var(--negative-color);
         }
 
-        .neutral {
-            color: #868e96;
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .news-section {
-            background-color: white;
-            padding: 16px;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
-        }
-
-        .news-title {
-            font-size: 15px;
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
             font-weight: 500;
-            margin-bottom: 8px;
-            color: #212529;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
 
-        .news-content {
-            font-size: 14px;
-            color: #495057;
-            line-height: 1.45;
-        }
-
-        .footer {
-            text-align: center;
-            color: #868e96;
-            font-size: 13px;
-            padding-top: 20px;
-            margin-top: 10px;
-            border-top: 1px solid #e9ecef;
+        .btn:hover {
+            background-color: #0d62c9;
         }
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
@@ -181,48 +171,156 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-    <div class="container">
-        <h4>主题机会</h4>
-        <div class="sub-header">最新主题</div>
-        <div class="top-tag">Top</div>
+<!--    <div class="container">-->
+<!--        <h4>主题机会</h4>-->
+<!--        <div class="sub-header">最新主题</div>-->
+<!--        <div class="top-tag">Top</div>-->
+<!--    </div>-->
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
     </div>
     <div class="container" id="main">
+        <div class="card">
+            <div class="theme-header">
+                <div class="theme-title">钠电池</div>
+                <div class="theme-time">2025-09-09 10:10:53</div>
+            </div>
+            <div class="theme-content">宁德时代钠新电池通过新国标认证</div>
+            <div class="stock-grid">
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">300750</span>
+                        <span class="stock-name">宁德时代</span>
+                    </div>
+                    <div class="stock-change negative">-1.65%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">002866</span>
+                        <span class="stock-name">传艺科技</span>
+                    </div>
+                    <div class="stock-change positive">+10.02%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">301238</span>
+                        <span class="stock-name">瑞泰新材</span>
+                    </div>
+                    <div class="stock-change positive">+13.05%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">002709</span>
+                        <span class="stock-name">天赐材料</span>
+                    </div>
+                    <div class="stock-change positive">+3.18%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">002407</span>
+                        <span class="stock-name">多氟多</span>
+                    </div>
+                    <div class="stock-change positive">+5.33%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">600348</span>
+                        <span class="stock-name">华阳股份</span>
+                    </div>
+                    <div class="stock-change positive">+0.57%</div>
+                </div>
+            </div>
+        </div>
 
+        <div class="card">
+            <div class="theme-header">
+                <div class="theme-title">中国一东盟自贸区</div>
+                <div class="theme-time">2025-09-08 17:43:26</div>
+            </div>
+            <div class="theme-content">商务部：推动年底前正式签署中国一东盟自贸区3.0版议定书</div>
+            <div class="stock-grid">
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">000582</span>
+                        <span class="stock-name">北部湾港</span>
+                    </div>
+                    <div class="stock-change positive">+3.08%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">002929</span>
+                        <span class="stock-name">润建股份</span>
+                    </div>
+                    <div class="stock-change negative">-1.50%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">300240</span>
+                        <span class="stock-name">飞力达</span>
+                    </div>
+                    <div class="stock-change negative">-0.96%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">300717</span>
+                        <span class="stock-name">华信新材</span>
+                    </div>
+                    <div class="stock-change negative">-2.77%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">600712</span>
+                        <span class="stock-name">南宁百货</span>
+                    </div>
+                    <div class="stock-change negative">-1.33%</div>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-info">
+                        <span class="stock-code">301027</span>
+                        <span class="stock-name">华蓝集团</span>
+                    </div>
+                    <div class="stock-change negative">-1.23%</div>
+                </div>
+            </div>
+        </div>
 
-        <!-- 新型工业化主题 -->
-        <div class="section">
-            <div class="section-title">新型工业化</div>
-            <div class="section-date">2025-08-05 央行等七部门联合发文，事关金融支持新型工业化</div>
-            <ul class="stock-list">
-                <li class="stock-item">
+        <div class="card">
+            <div class="theme-header">
+                <div class="theme-title">卫星通信</div>
+                <div class="theme-time">2025-09-08 14:27:15</div>
+            </div>
+            <div class="theme-content">工信部向中国联通颁发卫星移动通信业务经营许可</div>
+            <div class="stock-grid">
+                <!-- 这里可以添加相关股票信息 -->
+                <div class="stock-item">
                     <div class="stock-info">
-                        <span class="stock-code">300486</span>
-                        <span class="stock-name">东杰智能</span>
+                        <span class="stock-code">600050</span>
+                        <span class="stock-name">中国联通</span>
                     </div>
-                    <div class="stock-change positive">+20.01%</div>
-                </li>
-                <li class="stock-item">
-                    <div class="stock-info">
-                        <span class="stock-code">002046</span>
-                        <span class="stock-name">国机精工</span>
-                    </div>
-                    <div class="stock-change positive">+10.00%</div>
-                </li>
-                <li class="stock-item">
-                    <div class="stock-info">
-                        <span class="stock-code">000837</span>
-                        <span class="stock-name">秦川机床</span>
-                    </div>
-                    <div class="stock-change neutral">+0.32%</div>
-                </li>
-                <li class="stock-item">
-                    <div class="stock-info">
-                        <span class="stock-code">002097</span>
-                        <span class="stock-name">山河智能</span>
-                    </div>
-                    <div class="stock-change positive">+9.99%</div>
-                </li>
-            </ul>
+                    <div class="stock-change positive">+2.45%</div>
+                </div>
+            </div>
         </div>
 
     </div>

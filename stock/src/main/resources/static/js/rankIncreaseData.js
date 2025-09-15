@@ -255,6 +255,13 @@ function changeSort() {
     }
 }
 
+function refreshData(){
+    document.querySelector('#stockBody').innerHTML = '';
+    document.querySelector('#boardBody').innerHTML = '';
+
+    getRangeIncreaseStockData();
+}
+
 
 
 

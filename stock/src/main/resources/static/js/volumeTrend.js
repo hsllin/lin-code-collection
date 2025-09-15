@@ -50,7 +50,8 @@ function escapeHtml(unsafe) {
 }
 
 function refreshData() {
-    document.getElementById('chart').innerHTML = '';
+    document.getElementById('order').innerHTML='';
+    document.getElementById('chart').resize()
     loadEchartsData();
 }
 

@@ -291,6 +291,30 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
     <div class="board_container" id="board">
         <!--        <div class="header">-->
         <!--            <div class="mood">短线情绪：<span>21℃</span></div>-->
@@ -359,20 +383,20 @@
         <!--        </div>-->
         <!-- 顶部工具栏 -->
 <!--        <div class="board_container">-->
-            <div class="header-toolbar">
-                <div class="clock">
-                    <div class="time" id="time">09:30:45</div>
-                    <div class="date" id="date">2025年7月5日 星期六</div>
-                </div>
-                <div class="btn-group1">
-                    <button class="btn btn-primary" onclick="refreshData()">
-                        <i class="fa fa-sync-alt"></i> 刷新
-                    </button>
-                    <button class="btn btn-secondary" onclick="downLoadData()">
-                        <i class="fa fa-download"></i> 导出
-                    </button>
-                </div>
-            </div>
+<!--            <div class="header-toolbar">-->
+<!--                <div class="clock">-->
+<!--                    <div class="time" id="time">09:30:45</div>-->
+<!--                    <div class="date" id="date">2025年7月5日 星期六</div>-->
+<!--                </div>-->
+<!--                <div class="btn-group1">-->
+<!--                    <button class="btn btn-primary" onclick="refreshData()">-->
+<!--                        <i class="fa fa-sync-alt"></i> 刷新-->
+<!--                    </button>-->
+<!--                    <button class="btn btn-secondary" onclick="downLoadData()">-->
+<!--                        <i class="fa fa-download"></i> 导出-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
 <!--        </div>-->
 
         <!-- 指数行情 -->

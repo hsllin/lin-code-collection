@@ -5,6 +5,8 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.lin.bean.intradaychange.BuyChangeBean;
 import com.lin.bean.intradaychange.IntradayChange;
+import com.lin.bean.stockstudy.StockStudy;
+import com.lin.service.impl.StockStudyServiceImpl;
 import com.lin.util.CommonUtils;
 import com.lin.util.WechatMessageUtils;
 import com.ugrong.framework.redis.repository.cache.IStringRedisRepository;
@@ -29,12 +31,15 @@ public class IntraDayChangeService {
     public static final String SIXTY_DAY = "8215";
     public static final String OPEN_LIMIT_DOWN = "32";
 
+    @Autowired
+    StockStudyService stockStudyService;
+
     public static void main(String[] args) {
 
 //        getIntradayChangeList(INCREASE);
 //        System.out.println("-----------------------------------------------------");
 //        getIntradayChangeList(DECREASE);
-        getBuyChangeList(BUY);
+//        getBuyChangeList(BUY);
     }
 
     /**
@@ -43,7 +48,7 @@ public class IntraDayChangeService {
      * @param type
      * @return
      */
-    public static List<IntradayChange.DataBean.AllstockBean> getIntradayChangeList(String type) {
+    public List<IntradayChange.DataBean.AllstockBean> getIntradayChangeList(String type, String checkedData) {
         String url = "https://push2ex.eastmoney.com/getAllStockChanges";
 
 //        20250121
@@ -74,19 +79,47 @@ public class IntraDayChangeService {
 
         Set<String> codeSet = new HashSet<>();
         Iterator<IntradayChange.DataBean.AllstockBean> allstockBeanIterator = allstockBeanList.iterator();
+
+        List<String> filterNameList = Arrays.asList(checkedData.split(","));
+        List<String> filterCodeList = CommonUtils.dealFilterCodeList(filterNameList);
         while (allstockBeanIterator.hasNext()) {
             IntradayChange.DataBean.AllstockBean allstockBean = allstockBeanIterator.next();
             countMap.put(allstockBean.getC(), countMap.get(allstockBean.getC()) == null ? allstockBean.getCount() : countMap.get(allstockBean.getC()) + 1);
-            if (codeSet.contains(allstockBean.getC()) || allstockBean.getC().startsWith("8") || allstockBean.getC().startsWith("3") || allstockBean.getC().startsWith("68") || allstockBean.getN().contains("ST")) {
-                allstockBeanIterator.remove();
+//            if (codeSet.contains(allstockBean.getC()) || allstockBean.getC().startsWith("8") || allstockBean.getC().startsWith("3") || allstockBean.getC().startsWith("68") || allstockBean.getN().contains("ST")) {
+//                allstockBeanIterator.remove();
+//            }
+            boolean isMatch = false;
+            for (String prefix : filterCodeList) {
+                if (allstockBean.getC().startsWith(prefix)) {
+                    isMatch = true;
+                    break;
+                }
             }
 
-            codeSet.add(allstockBean.getC());
+            // 移除条件（满足任一条件即移除）：
+            // 1. 代码已存在（重复）
+            // 2. 是ST/*ST股票
+            // 3. 不匹配 filterCodeList 中的任何前缀
+            if (codeSet.contains(allstockBean.getC())
+                    || allstockBean.getN().contains("ST")
+                    || !isMatch) {  // 关键修改：!isMatch 表示不在过滤列表中
+                allstockBeanIterator.remove();
+            } else {
+                // 仅保留的股票才加入codeSet（避免重复）
+                codeSet.add(allstockBean.getC());
+            }
+
+//            codeSet.add(allstockBean.getC());
         }
         CollectionUtil.reverse(allstockBeanList);
         String message = "";
         String increase;
         StringBuilder txtBuilder = new StringBuilder();
+        List<StockStudy> allStockList = stockStudyService.getAllStockList();
+        Map<String, String> stockStudyMap = new HashMap<>();
+        for (StockStudy stockStudy : allStockList) {
+            stockStudyMap.put(stockStudy.getCode(), stockStudy.getIndustry() == null ? "" : stockStudy.getIndustry().replaceAll("-(.*)", ""));
+        }
         for (IntradayChange.DataBean.AllstockBean allstockBean : allstockBeanList) {
             if (type.equals(INCREASE)) {
                 message = "\033[34;4m";
@@ -108,19 +141,20 @@ public class IntraDayChangeService {
             allstockBean.setTime(getTime(allstockBean.getTm()));
             allstockBean.setPercent(CommonUtils.formatPrice(IncreasePersent));
             allstockBean.setCount(countMap.get(allstockBean.getC()));
+            allstockBean.setIndustry(stockStudyMap.get(allstockBean.getC()));
             String finalSys = message + allstockBean.getTime() + " " + allstockBean.getN() + "(" + allstockBean.getC() + ")" + "上涨幅度：" + CommonUtils.formatPrice(IncreasePersent) + "%" + "\033[0m" + "\r\n";
             System.out.println(finalSys);
             txtBuilder.append(finalSys);
         }
-        File file = new File("D:/intraDay.txt");
-        try {
-            FileWriter writer = new FileWriter(file);
-            writer.write(txtBuilder.toString());
-            writer.flush();
-            writer.close();
-        } catch (Exception e) {
-
-        }
+//        File file = new File("D:/intraDay.txt");
+//        try {
+//            FileWriter writer = new FileWriter(file);
+//            writer.write(txtBuilder.toString());
+//            writer.flush();
+//            writer.close();
+//        } catch (Exception e) {
+//
+//        }
         return allstockBeanList;
 
     }
@@ -141,7 +175,7 @@ public class IntraDayChangeService {
      * @param type
      * @return
      */
-    public static List<BuyChangeBean.DataDTO.AllstockDTO> getBuyChangeList(String type) {
+    public List<BuyChangeBean.DataDTO.AllstockDTO> getBuyChangeList(String type, String checkedData) {
         String url = "https://push2ex.eastmoney.com/getAllStockChanges";
 
 //        8193
@@ -172,20 +206,47 @@ public class IntraDayChangeService {
 
         Set<String> codeSet = new HashSet<>();
         Iterator<BuyChangeBean.DataDTO.AllstockDTO> allstockBeanIterator = allstockBeanList.iterator();
+        List<String> filterNameList = Arrays.asList(checkedData.split(","));
+        List<String> filterCodeList = CommonUtils.dealFilterCodeList(filterNameList);
         while (allstockBeanIterator.hasNext()) {
             BuyChangeBean.DataDTO.AllstockDTO allstockBean = allstockBeanIterator.next();
             countMap.put(allstockBean.getC(), countMap.get(allstockBean.getC()) == null ? allstockBean.getCount() : countMap.get(allstockBean.getC()) + 1);
-            if (codeSet.contains(allstockBean.getC()) || allstockBean.getC().startsWith("8") || allstockBean.getC().startsWith("3") || allstockBean.getC().startsWith("68") || allstockBean.getN().contains("ST")) {
-                allstockBeanIterator.remove();
+//            if (codeSet.contains(allstockBean.getC()) || allstockBean.getC().startsWith("8") || allstockBean.getC().startsWith("3") || allstockBean.getC().startsWith("68") || allstockBean.getN().contains("ST")) {
+//                allstockBeanIterator.remove();
+//            }
+            boolean isMatch = false;
+            for (String prefix : filterCodeList) {
+                if (allstockBean.getC().startsWith(prefix)) {
+                    isMatch = true;
+                    break;
+                }
             }
 
-            codeSet.add(allstockBean.getC());
+            // 移除条件（满足任一条件即移除）：
+            // 1. 代码已存在（重复）
+            // 2. 是ST/*ST股票
+            // 3. 不匹配 filterCodeList 中的任何前缀
+            if (codeSet.contains(allstockBean.getC())
+                    || allstockBean.getN().contains("ST")
+                    || !isMatch) {  // 关键修改：!isMatch 表示不在过滤列表中
+                allstockBeanIterator.remove();
+            } else {
+                // 仅保留的股票才加入codeSet（避免重复）
+                codeSet.add(allstockBean.getC());
+            }
+
+//            codeSet.add(allstockBean.getC());
         }
         CollectionUtil.reverse(allstockBeanList);
         String message = "";
         String buy = "";
         String percent = "";
         StringBuilder txtBuilder = new StringBuilder();
+        List<StockStudy> allStockList = stockStudyService.getAllStockList();
+        Map<String, String> stockStudyMap = new HashMap<>();
+        for (StockStudy stockStudy : allStockList) {
+            stockStudyMap.put(stockStudy.getCode(), stockStudy.getIndustry() == null ? "" : stockStudy.getIndustry().replaceAll("-(.*)", ""));
+        }
         for (BuyChangeBean.DataDTO.AllstockDTO allstockBean : allstockBeanList) {
             buy = allstockBean.getI().substring(0, allstockBean.getI().indexOf(","));
             percent = getContentBetweenCommas(allstockBean.getI());
@@ -196,6 +257,7 @@ public class IntraDayChangeService {
             allstockBean.setTime(getTime(allstockBean.getTm()));
             allstockBean.setBuyNum(buyNum);
             allstockBean.setCount(countMap.get(allstockBean.getC()));
+            allstockBean.setIndustry(stockStudyMap.get(allstockBean.getC()));
             String finalSys = message + allstockBean.getTime() + " " + allstockBean.getN() + "(" + allstockBean.getC() + ")" + "大买单：" + buyNum + "万手" + "\033[0m" + "\r\n";
             System.out.println(finalSys);
             txtBuilder.append(finalSys);
@@ -291,7 +353,7 @@ public class IntraDayChangeService {
         String result = HttpUtil.get(url, param);
         IntradayChange bean = JSONUtil.toBean(JSONUtil.toJsonStr(result), IntradayChange.class);
         List<IntradayChange.DataBean.AllstockBean> allstockBeanList = bean.getData().getAllstock();
-        if (null == allstockBeanList||CollectionUtil.isEmpty(allstockBeanList)) {
+        if (null == allstockBeanList || CollectionUtil.isEmpty(allstockBeanList)) {
             return new ArrayList<>();
         }
         HashMap<String, Integer> countMap = new HashMap<>();

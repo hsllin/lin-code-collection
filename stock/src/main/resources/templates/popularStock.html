@@ -18,10 +18,13 @@
             padding: 20px;
         }
 
-        /*.container {*/
-        /*    max-width: 1200px;*/
-        /*    margin: 0 auto;*/
-        /*}*/
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
 
         /* 头部样式 */
         .header {
@@ -62,7 +65,7 @@
             grid-template-columns: 2fr 2fr;
             gap: 30px;
             background: #fff;
-            padding: 20px;
+            margin: 20px;
             border-radius: 0 0 12px 12px;
         }
 
@@ -219,16 +222,40 @@
 
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <!-- 头部 -->
-        <div class="header">
-            <h6>热榜</h6>
-        </div>
-        <div>
-            <a href="javascript:;" onclick="downLoadHotBoardAndConceptData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
-                <i class="fa fa-refresh"></i> 导出板块概念
-            </a>
-        </div>
+<!--        <div class="header">-->
+<!--            <h6>热榜</h6>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <a href="javascript:;" onclick="downLoadHotBoardAndConceptData()" class="refresh-btn" title="导出" style="margin-left: 10px;">-->
+<!--                <i class="fa fa-refresh"></i> 导出板块概念-->
+<!--            </a>-->
+<!--        </div>-->
 
         <!-- 导航标签 -->
         <div class="nav-tabs">

@@ -360,9 +360,10 @@ function escapeHtml(unsafe) {
 }
 
 function refreshData() {
-    dateIndex = 0;
-    document.getElementById('app').innerHTML = '';
-    getStrongStockData();
+    document.getElementById('hot_content').innerHTML = '';
+    document.getElementById('rise_content').innerHTML = '';
+    getPopularHotStockData('normal');
+    getPopularRiseStockData('skyrocket');
 }
 
 function preDayData() {

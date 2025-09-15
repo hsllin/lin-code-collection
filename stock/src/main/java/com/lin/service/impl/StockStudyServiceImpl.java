@@ -88,7 +88,7 @@ public class StockStudyServiceImpl extends ServiceImpl<StockStudyMapper, StockSt
 
     @Override
     public List<StockStudy> getAllStockList() {
-        return List.of();
+        return getBaseMapper().selectList(new QueryWrapper<StockStudy>());
     }
 
     @Override

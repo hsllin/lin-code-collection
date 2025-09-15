@@ -7,24 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        th { background-color: #f2f2f2; cursor: pointer; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        新增布局样式
-        .stockcontainer {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            gap: 24px;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
         }
+        /*table { border-collapse: collapse; width: 100%; }*/
+        /*th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }*/
+        /*th { background-color: #f2f2f2; cursor: pointer; }*/
+        /*tr:nth-child(even) { background-color: #f9f9f9; }*/
+
         /* 确保容器宽度足够 */
-        /*.stockcontainer {*/
-        /*    max-width: 1400px;*/
-        /*    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); !* 加大卡片最小宽度 *!*/
-        /*}*/
+        .stockcontainer {
+            /*max-width: 1400px;*/
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); /* 加大卡片最小宽度 */
+            /*padding: 12px;*/
+        }
 
         /* 行业卡片布局优化 */
         .card {
@@ -105,6 +104,43 @@
         .refresh-btn .fa-refresh {
             margin-right: 5px;
         }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 900px;
+            padding: 8px;
+        }
+
+        th, td {
+            padding: 16px 18px;
+            text-align: left;
+            color: #3a5167;
+            font-size: 12px;
+        }
+
+        thead th {
+            background-color: #ffffff;
+            color: #4a6fa5;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        tbody tr {
+            background-color: rgba(255,255,255,0.05);
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.08);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(14, 165, 233, 0.1);
+            transform: translateX(5px);
+        }
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/limitDownPool.js"></script>
@@ -113,27 +149,40 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-
-    <div class="container">
-        <div class="header-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 class="date-header" id="time" style="margin: 0;">2025年1月27日 星期一</h2>
-            <div>
-                <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-                    <i class="fa fa-refresh"></i> 刷新
-                </a>
-                <a href="javascript:;" onclick="downLoadData()" class="refresh-btn" title="导出" style="margin-left: 10px;">
-                    <i class="fa fa-refresh"></i> 导出
-                </a>
-            </div>
-        </div>
-        <div class="stockcontainer">
-            <div class="card">
-                <div class="header up">📈 打开跌停</div>
-                <div class="industry-item" id="industry-item-up">
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
                 </div>
             </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
         </div>
+    </div>
+    <div class="stockcontainer">
+        <div class="card">
+            <div class="header up">📈 打开跌停</div>
+            <div class="industry-item" id="industry-item-up">
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+
         <!-- 指数行情 -->
         <table id="stockTable">
             <thead>

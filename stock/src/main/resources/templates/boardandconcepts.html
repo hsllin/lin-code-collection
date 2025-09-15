@@ -18,6 +18,13 @@
             color: #333;
         }
 
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
+
         /*.container {*/
         /*    max-width: 1200px;*/
         /*    margin: 0 auto;*/
@@ -38,12 +45,19 @@
 
         .card {
             flex: 1;
-            background-color: #3a5167;
-            color: white;
-            border-radius: 8px;
+            /*background-color: #3a5167;*/
+            color: #666;
+            border-radius: 12px;
             padding: 20px;
             position: relative;
             overflow: hidden;
+            margin: 12px;
+            background: #fff;
+            /*border-radius: 4px;*/
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 10px;
+            font-weight: 400;
+            line-height: 1.471;
         }
 
         .card-title {
@@ -51,6 +65,10 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            font-weight: 800;
+            line-height: 1.471;
+            font-size: 24px;
+            color: #0a53be;
         }
 
         .card-title h3 {
@@ -216,9 +234,31 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
     <div class="container">
-        <h2 class="header">风口板块</h2>
 
         <div class="top-cards" id="hotCard">
 <!--            <div class="card">-->
@@ -258,12 +298,12 @@
 <!--            </div>-->
         </div>
 
-        <div class="tabs">
-            <div class="tab active">全部板块</div>
-            <div class="tab">行业板块</div>
-            <div class="tab">概念板块</div>
-            <div class="tab">风格板块</div>
-        </div>
+<!--        <div class="tabs">-->
+<!--            <div class="tab active">全部板块</div>-->
+<!--            <div class="tab">行业板块</div>-->
+<!--            <div class="tab">概念板块</div>-->
+<!--            <div class="tab">风格板块</div>-->
+<!--        </div>-->
 
         <table>
             <thead>
@@ -275,7 +315,7 @@
                 <th>涨停家数</th>
                 <th>领涨/领跌股</th>
                 <th>资金流向</th>
-                <th>分时图</th>
+<!--                <th>分时图</th>-->
             </tr>
             </thead>
             <tbody id="dataTable">

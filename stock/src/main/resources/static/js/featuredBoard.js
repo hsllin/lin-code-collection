@@ -1,6 +1,6 @@
 let data = [];
-let stockData=[];
-let boardId='';
+let stockData = [];
+let boardId = '';
 
 
 /* 3. 渲染右侧个股 */
@@ -25,7 +25,7 @@ function renderPlate(plate) {
 
     list.forEach(item => {
         const tr = document.createElement('tr');
-        const tag=item[23]?'tag tag-short':'';
+        const tag = item[23] ? 'tag tag-short' : '';
         tr.innerHTML = `
             <td>${item[0]}</td>
             <td>${item[1]}</td>
@@ -57,9 +57,7 @@ function getFeaturedBoards() {
 
         url: "getFeaturedBoards",
 
-        data: {
-
-        },
+        data: {},
 
         success: function (reuslt) {
             reuslt = unicodeToChinese(reuslt);
@@ -135,7 +133,7 @@ function renderTable() {
     // console.log(data.List)
     const contentDiv = document.querySelector('#plateList');
     let htmlArray = '';
-    boardId=data.list[0][0];
+    boardId = data.list[0][0];
     console.log(boardId)
     data.list.forEach(item => {
         htmlArray += `
@@ -166,6 +164,12 @@ function formatToYi(num) {
     }
     // 不足1万：直接返回整数
     return Math.round(number).toString();
+}
+
+function refreshData() {
+    document.querySelector('#plateList').innerHTML = '';
+    getFeaturedBoards();
+    getFeaturedBoardsData();
 }
 
 

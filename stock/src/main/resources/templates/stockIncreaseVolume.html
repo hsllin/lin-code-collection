@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>Stock Market</title>
+    <meta charset="utf-8">
+    <!-- 引入Bootstrap -->
+    <!--    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/stockIncreaseVolume.js"></script>
+    <script type="text/javascript" src="/js/chart.min.js"></script>
+
+    <style>
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .element {
+            width: 200px;
+            height: 100px;
+            background-color: lightblue;
+            border-radius: 15px; /* 设置圆角 */
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* 设置阴影 */
+        }
+
+        .header p {
+            /*margin: 8px 0 0;*/
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        .date-info {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* 工具栏样式 */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background: #f8f9fc;
+            border-bottom: 1px solid #eaeff5;
+        }
+
+        .export-btn {
+            background: #3a5167;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s;
+            margin: 8px;
+        }
+
+        .export-btn:hover {
+            background: #1a68d1;
+        }
+
+        .export-btn i {
+            margin-right: 6px;
+        }
+
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* 表格样式 */
+        .table-container {
+            overflow-x: auto;
+            padding: 0 15px 15px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #f8f9fc;
+            color: #3b506c;
+            font-weight: 600;
+            font-size: 12px;
+            text-align: center;
+            padding: 14px 10px;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid #e1e5eb;
+        }
+
+        td {
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 12px;
+            border-bottom: 1px solid #edf2f9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fbfd;
+        }
+
+        tr:hover {
+            background-color: #f0f7ff !important;
+            transition: background 0.2s;
+        }
+
+        .price-up {
+            color: #446391;
+            font-weight: bold;
+        }
+
+        .price-down {
+            color: #32cd32;
+        }
+
+        .collapse-text {
+            display: inline-block;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            position: relative;
+            color: #446391;
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 60%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .detail-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="clearfix"></div>
+        <table >
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>股票代码</th>
+                <th>股票名称</th>
+                <th>现价(元)</th>
+                <th>涨跌幅(%)</th>
+                <th>dde大单净流入量</th>
+                <th>市值</th>
+                <th>所属概念</th>
+                <th>所属行业</th>
+
+            </tr>
+            </thead>
+            <tbody id="stock-table">
+            <tr>
+                <td>1</td>
+                <td>001390.SZ</td>
+                <td>古麒绒材</td>
+                <td>34.49</td>
+                <td class="price-up">185.51</td>
+                <td><span class="collapse-text"
+                          onclick="showDetail('古麒绒材')">注册制次新股;次股与次新股;融资融券</span></td>
+                <td>纺织服饰-纺织制造-其他纺织</td>
+                <td>3</td>
+                <td>16.96亿</td>
+                <td>1.78亿</td>
+                <td>2.00亿</td>
+                <td>45.41</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>834475.BJ</td>
+                <td>三友科技</td>
+                <td>24.67</td>
+                <td class="price-up">29.98</td>
+                <td><span class="collapse-text" onclick="showDetail('三友科技')">融资融券;无人驾驶;AI概念</span></td>
+                <td>机械设备-专用设备-其他专用设备</td>
+                <td>5</td>
+                <td>10.37亿</td>
+                <td>1.03亿</td>
+                <td>-110.57</td>
+                <td>19.70</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>300149.SZ</td>
+                <td>睿智医药</td>
+                <td>8.56</td>
+                <td class="price-up">20.06</td>
+                <td><span class="collapse-text" onclick="showDetail('睿智医药')">CRO概念;细胞免疫治疗;创新药</span></td>
+                <td>医药生物-医疗服务-医疗研发外包</td>
+                <td>8</td>
+                <td>42.55亿</td>
+                <td>1.42亿</td>
+                <td>4.98亿</td>
+                <td>160.44</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>300804.SZ</td>
+                <td>广康生化</td>
+                <td>41.26</td>
+                <td class="price-up">20.01</td>
+                <td><span class="collapse-text" onclick="showDetail('广康生化')">融资融券</span></td>
+                <td>基础化工-农化制品-农药</td>
+                <td>1</td>
+                <td>11.35亿</td>
+                <td>3527.66万</td>
+                <td>7400.00万</td>
+                <td>44.61</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>688206.SH</td>
+                <td>概伦电子</td>
+                <td>27.77</td>
+                <td class="price-up">20.01</td>
+                <td><span class="collapse-text"
+                          onclick="showDetail('概伦电子')">芯片概念;专精特新;股权转让;EDA行业并购重组;一季报扭亏</span>
+                </td>
+                <td>计算机-软件开发-垂直应用软件</td>
+                <td>5</td>
+                <td>49.55亿</td>
+                <td>5872.49万</td>
+                <td>4.35亿</td>
+                <td>2008.70</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>300546.SZ</td>
+                <td>雄帝科技</td>
+                <td>22.08</td>
+                <td class="price-up">20.00</td>
+                <td><span class="collapse-text" onclick="showDetail('雄帝科技')">电子身份证;数字货币;人脸识别</span>
+                </td>
+                <td>计算机-计算机设备-其他计算机设备</td>
+                <td>26</td>
+                <td>29.62亿</td>
+                <td>1.47亿</td>
+                <td>1.87亿</td>
+                <td>-98.34</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>300024.SZ</td>
+                <td>舒泰神</td>
+                <td>23.04</td>
+                <td class="price-up">20.00</td>
+                <td><span class="collapse-text" onclick="showDetail('舒泰神')">创新药;血友病治疗药物</span></td>
+                <td>医药生物-化学制药-化学制剂</td>
+                <td>2</td>
+                <td>108.74亿</td>
+                <td>1.67亿</td>
+                <td>4.78亿</td>
+                <td>-1178.55</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>300698.SZ</td>
+                <td>万马科技</td>
+                <td>41.59</td>
+                <td class="price-up">19.99</td>
+                <td><span class="collapse-text" onclick="showDetail('万马科技')">东数西算(算力);车联网+自动驾驶</span>
+                </td>
+                <td>通信-通信网络设备-通信网络设备</td>
+                <td>16</td>
+                <td>49.30亿</td>
+                <td>8336.70万</td>
+                <td>1.34亿</td>
+                <td>278.11</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>301005.SZ</td>
+                <td>超捷股份</td>
+                <td>36.61</td>
+                <td class="price-up">19.99</td>
+                <td><span class="collapse-text" onclick="showDetail('超捷股份')">汽车-汽车零部件-其他汽车零部件</span>
+                </td>
+                <td>汽车-汽车零部件-其他汽车零部件</td>
+                <td>24</td>
+                <td>48.46亿</td>
+                <td>1.34亿</td>
+                <td>1.35亿</td>
+                <td>77.21</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>300815.SZ</td>
+                <td>玉禾田</td>
+                <td>26.78</td>
+                <td class="price-up">19.98</td>
+                <td><span class="collapse-text" onclick="showDetail('玉禾田')">环保-环境治理-固废处理</span></td>
+                <td>环保-环境治理-固废处理</td>
+                <td>13</td>
+                <td>103.60亿</td>
+                <td>-2837.34万</td>
+                <td>3.99亿</td>
+                <td>16.55</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>300682.SZ</td>
+                <td>朗新集团</td>
+                <td>16.94</td>
+                <td class="price-up">19.97</td>
+                <td><span class="collapse-text" onclick="showDetail('朗新集团')">计算机-IT服务-IT服务III</span></td>
+                <td>计算机-IT服务-IT服务III</td>
+                <td>18</td>
+                <td>175.17亿</td>
+                <td>1.27亿</td>
+                <td>10.80亿</td>
+                <td>1357.16</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="detail-title" id="modal-title">涨停类别详情</div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+</body>
+
+
+</html>

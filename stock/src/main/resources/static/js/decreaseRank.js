@@ -97,7 +97,8 @@ function renderChart(data) {
 function renderTable(data) {
     var htmlArray = '';
     data.forEach((item, index) => {
-
+        var increaseReason=item.increaseReason==='null'?'-':item.increaseReason;
+        console.log(increaseReason)
         htmlArray += `
         <tr>
                 <td>${index + 1}</td>
@@ -108,11 +109,10 @@ function renderTable(data) {
                 <td><span class="collapse-text"
                           onclick="showDetail('${item.concepts}')">${item.concepts}</span></td>
                 <td>${item.industry}</td>
-                <td>${item.increaseReason}</td>
+                <td>${increaseReason}</td>
             </tr>
   `
     });
-    console.log(htmlArray)
     document.getElementById('stock-table').innerHTML = htmlArray;
 }
 
@@ -134,6 +134,11 @@ function showDetail(stockName) {
 // 关闭模态框
 function closeModal() {
     document.getElementById("modal").style.display = "none";
+}
+
+function refreshData(){
+    document.getElementById('stock-table').innerHTML = '';
+    getDecreaseData();
 }
 
 

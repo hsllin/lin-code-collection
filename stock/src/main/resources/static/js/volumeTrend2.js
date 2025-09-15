@@ -180,3 +180,9 @@ function loadData(result) {
     // 窗口大小改变时自适应
     window.addEventListener('resize', () => chart.resize());
 }
+
+function freshData(){
+
+    document.getElementById('order').innerHTML='';
+    loadEchartsData();
+}

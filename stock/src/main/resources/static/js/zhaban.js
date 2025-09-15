@@ -93,3 +93,7 @@ function renderTable() {
     });
 }
 
+function refreshData(){
+    document.getElementById('stockData').innerHTML = '';
+    getZhaBanData();
+}

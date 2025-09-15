@@ -1,8 +1,9 @@
 $(function () {
-
+    document.getElementById('news-list').innerHTML='';
     getWallStreetNews();
-
-    updateDate();
+    updateClock();
+    setInterval(updateClock,1000);
+    // updateDate();
 })
 
 function getWallStreetNews() {
@@ -27,15 +28,33 @@ function getWallStreetNews() {
 
 
 function buildWallStreetNewsHtml(data) {
+    console.log(11111111111111)
     const htmlArray = data.map(newItem => {
-
+        const regex = /(\d{4}-\d{2})-(\d{2}) (\d{2}:\d{2}:\d{2})/;
+        const match = newItem.time.match(regex);
+        const yearMonth = match[1];
+        const day = match[2];
+        const time = match[3];
         return `
-    <div class="news-item">
-      <span class="time">${newItem.time} </span>
-      <a href="${newItem.uri}" class="title" target="_blank">${newItem.content}</a>
-    </div>
+      <div class="news-item">
+                <div class="news-date">
+                    <div class="news-date-month">${yearMonth}</div>
+                    <div class="news-date-day">${day}</div>
+                    <!-- 新增的时间显示 -->
+                    <div class="news-date-time">${time}</div>
+                </div>
+                <div class="news-content">
+                    <div class="news-title" href="${newItem.uri}">${newItem.title===''?newItem.content:newItem.title}</div>
+                    <a class="news-desc" href="${newItem.uri}" target="_blank">${newItem.content}</a>
+                    <div class="news-meta">
+<!--                        <span class="news-category">科技</span>-->
+<!--                        <span>阅读量: 2.5万</span>-->
+                    </div>
+                </div>
+            </div>
   `
     });
+
     document.getElementById('news-list').innerHTML = htmlArray.join('');
 }
 

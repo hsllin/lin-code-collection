@@ -13,7 +13,7 @@ $(function () {
 })
 // 模拟数据
 let stockData = [];
-let tag='strong';
+let tag = 'strong';
 
 function getStockBuyLowStrong() {
     $.ajax({
@@ -118,9 +118,9 @@ function toggleFilter(tagName) {
 function filterStocks(tagName) {
     console.log(tagName)
     document.getElementById('stock-table').innerHTML = '';
-    if (tagName==='strong'){
+    if (tagName === 'strong') {
         getStockBuyLowStrong()
-    }else {
+    } else {
         getStockBuyLowNormal()
     }
 }
@@ -164,6 +164,11 @@ function formatToYi(num) {
     }
     // 不足1万：直接返回整数
     return Math.round(number).toString();
+}
+
+function refreshData() {
+    document.getElementById('stock-table').innerHTML = '';
+    getStockBuyLowStrong();
 }
 
 

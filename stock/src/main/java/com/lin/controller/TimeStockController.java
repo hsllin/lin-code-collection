@@ -28,6 +28,7 @@ public class TimeStockController {
     public ResponseEntity<List<TimeStock.DataDTO>> getTimeStockList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
                                                                     @RequestParam(value = "size", defaultValue = "10") Integer size, Model model) {
         String date = DateUtil.format(new Date(), "yyyy-MM-dd");
+//        date="2025-09-12";
         List<TimeStock.DataDTO> list = timeStockService.getTimeStockList(date);
         return ResponseEntity.ok(list);
     }

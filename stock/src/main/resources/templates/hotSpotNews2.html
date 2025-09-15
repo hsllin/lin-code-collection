@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>hotSpotNews</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-hover: #f3f4f6;
+            --border-color: #e5e7eb;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f9fafb;
+            padding: 2rem;
+            /*max-width: 800px;*/
+            /*margin: 0 auto;*/
+            line-height: 1.5;
+        }
+
+        .news-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .news-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 1.25rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .news-item:hover {
+            background-color: var(--bg-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .news-date-month {
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .news-date-day {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* 新增的时间样式 */
+        .news-date-time {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            opacity: 0.9;
+        }
+
+        .news-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .news-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .news-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .news-category {
+            background: var(--bg-hover);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/hotSpotNews2.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="news-container" id="news-list">
+            <div class="news-item">
+                <div class="news-date">
+                    <div class="news-date-month">9月</div>
+                    <div class="news-date-day">03</div>
+                    <!-- 新增的时间显示 -->
+                    <div class="news-date-time">16:39</div>
+                </div>
+                <div class="news-content">
+                    <div class="news-title">人工智能技术迎来新突破，多模态模型实现跨领域应用</div>
+                    <div class="news-desc">研究人员开发出新一代多模态AI系统，能够同时处理文本、图像和音频信息，在医疗、教育和创意产业展现出巨大潜力。</div>
+                    <div class="news-meta">
+                        <span class="news-category">科技</span>
+                        <span>阅读量: 2.5万</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">
+                    <div class="news-date-month">9月</div>
+                    <div class="news-date-day">02</div>
+                    <!-- 新增的时间显示 -->
+                    <div class="news-date-time">14:20</div>
+                </div>
+                <div class="news-content">
+                    <div class="news-title">全球可持续发展峰会召开，各国承诺加大减排力度</div>
+                    <div class="news-desc">在多国领导人参加的全球气候峰会上，与会国家提出了2030年减排新目标，并承诺增加对发展中国家绿色技术的资金支持。</div>
+                    <div class="news-meta">
+                        <span class="news-category">环境</span>
+                        <span>阅读量: 1.8万</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">
+                    <div class="news-date-month">9月</div>
+                    <div class="news-date-day">01</div>
+                    <!-- 新增的时间显示 -->
+                    <div class="news-date-time">10:15</div>
+                </div>
+                <div class="news-content">
+                    <div class="news-title">数字经济成为经济增长新引擎，上半年增速达15%</div>
+                    <div class="news-desc">最新统计数据显示，我国数字经济规模持续扩大，占GDP比重已超过40%，成为推动经济高质量发展的重要力量。</div>
+                    <div class="news-meta">
+                        <span class="news-category">经济</span>
+                        <span>阅读量: 3.2万</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

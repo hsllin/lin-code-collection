@@ -13,7 +13,12 @@
         /*    padding: 20px;*/
         /*    background-color: #f5f6fa;*/
         /*}*/
-
+        .container{
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
         .section-title {
             font-size: 12px;
             font-weight: bold;
@@ -25,6 +30,7 @@
 
         .up-section .section-title {
             border-color: #27ae60;
+            margin: 8px;
         }
 
         .down-section .section-title {
@@ -120,15 +126,38 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
 
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <!-- 新增刷新按钮 -->
-        <li>
-            <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-                <i class="fa fa-refresh"></i> 刷新
-            </a>
-        </li>
-        <h2 class="date-header" id="time">2025年1月27日 星期一</h2>
+<!--        <li>-->
+<!--            <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">-->
+<!--                <i class="fa fa-refresh"></i> 刷新-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        <h2 class="date-header" id="time">2025年1月27日 星期一</h2>-->
         <!-- 指数行情 -->
         <div class="index-section">
             <div class="section-title">🌍 全球主要指数</div>
@@ -145,7 +174,7 @@
                 </div>
                 <!-- 其他指数数据 -->
             </div>
-            <div class="flex w-full items-center justify-between pt-4"><div class="app-color-up min-w-fit"><span>涨</span><span class="mx-1 text-lg font-semibold"><span>1470</span></span><span> 家</span></div><div class="mx-4 w-4/12"><div role="progressbar" class="ant-progress ant-progress-line ant-progress-status-normal ant-progress-small css-btoszv"><div class="ant-progress-outer" style="width: 100%; height: 6px;"><div class="ant-progress-inner" style="background-color: rgb(0, 153, 68);"><div class="ant-progress-bg" style="width: 29.2247%; height: 6px; background-color: rgb(255, 0, 0);"></div><!----></div></div><!----></div></div><div class="app-color-down min-w-fit"><span>跌</span><span class="mx-1 text-lg font-semibold"><span>3560</span></span><span> 家</span></div></div>
+
         </div>
 
         <!-- 快速上涨概念 -->

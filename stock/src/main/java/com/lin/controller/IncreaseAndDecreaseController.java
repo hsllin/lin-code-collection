@@ -382,4 +382,40 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
+    /**
+     * 获取同花顺放量2倍以上涨幅大于3.5%的票
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getStockIncreaseVolumeData")
+    public ResponseEntity<List<IncreaseRankData>> getStockIncreaseVolumeData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getStockIncreaseVolumeData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺上下影线的票，近5日有过涨停
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getStockDayangLineData")
+    public ResponseEntity<List<IncreaseRankData>> getStockDayangLineData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getStockDayangLineData();
+        return ResponseEntity.ok(list);
+    }
+
+
+
 }

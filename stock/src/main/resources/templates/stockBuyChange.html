@@ -4,7 +4,7 @@
     <title>Stock Market</title>
     <meta charset="utf-8">
     <style>
-         新增布局样式
+        新增布局样式
         .stockcontainer {
             max-width: 1400px;
             margin: 0 auto;
@@ -13,6 +13,7 @@
             gap: 24px;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         }
+
         /* 确保容器宽度足够 */
         /*.stockcontainer {*/
         /*    max-width: 1400px;*/
@@ -22,9 +23,9 @@
         /* 行业卡片布局优化 */
         .card {
             background: white;
-            border-radius: 12px;
+            border-radius: 4px;
             padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s ease;
             margin-bottom: 24px;
         }
@@ -36,6 +37,7 @@
             gap: 12px;
             padding: 8px 0;
         }
+
         .card {
             min-width: 600px; /* 确保3列布局空间 */
         }
@@ -45,28 +47,51 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 16px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            transition: all 0.2s;
-            min-width: 200px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            padding: 14px 20px;
+            background: linear-gradient(to right, #ffffff, #ffffff);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 12px rgba(42, 62, 79, 0.08);
+            font-size: 13px;
+            color: rgba(58, 81, 103, 0.75);
+            position: relative;
+            overflow: hidden;
+            font-weight: 400;
         }
 
         /* 悬停效果增强 */
         .stock-item:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             background: linear-gradient(to right, #f8f9fa, #ffffff);
         }
 
         /* 颜色修正 */
-        .up { color: #dc3545; }  /* 绿色表示上涨 */
-        .down { color: #28a745; } /* 红色表示下跌 */
-        .positive { color: #73879C; }
-        .negative { color: #73879C; }
-         .code { color: #2a2d2d; }
-         .hight { color: #3caee0; }
+        .up {
+            color: #dc3545;
+        }
+
+        /* 绿色表示上涨 */
+        .down {
+            color: #28a745;
+        }
+
+        /* 红色表示下跌 */
+        .positive {
+            color: #73879C;
+        }
+
+        .negative {
+            color: #73879C;
+        }
+
+        .code {
+            color: #2a2d2d;
+        }
+
+        .hight {
+            color: #3caee0;
+        }
 
         /* 行业标题样式 */
         .industry-name {
@@ -96,6 +121,7 @@
                 grid-template-columns: 1fr;
                 padding: 12px;
             }
+
             .industry-item {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -105,6 +131,7 @@
             .industry-item {
                 grid-template-columns: 1fr;
             }
+
             .stock-item {
                 min-width: auto;
             }
@@ -123,24 +150,122 @@
             font-family: monospace;
         }
 
-        /* 刷新按钮样式 */
-        .refresh-btn {
-            padding: 10px 15px;
-            background: #0c91f8; /* 主色调绿色 */
-            color: white !important;
-            border-radius: 6px;
-            margin: 8px 15px 0 0;
-            transition: background 0.3s;
+
+        .index {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            /*margin-right: 15px;*/
+            flex-shrink: 0;
         }
 
-        .refresh-btn:hover {
-            background: #63b7ee; /* 悬停深绿色 */
+        .tabs {
+            display: flex;
+            /*background: #ffffff;*/
+            /*border-radius: 10px;*/
+            overflow: hidden;
+
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px 8px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            /*backdrop-filter: blur(10px);*/
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid #3498db;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            color: #5d7aae;
+            margin: 8px;
+
         }
 
-        .refresh-btn .fa-refresh {
-            margin-right: 5px;
+        .tab.active {
+            background: #3498db;
+            color: white;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
         }
+
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-option input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #3498db;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .filter-option input[type="checkbox"]:checked::before {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .filter-option input[type="checkbox"]:checked {
+            background: #3498db;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            color: #2c3e50;
+        }
+
+
+        /*.controls {*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    gap: 15px;*/
+        /*    margin: 20px 0;*/
+        /*    flex-wrap: wrap;*/
+        /*    left: 15px;*/
+        /*    top: 50%;*/
+        /*    color: #ffffff;*/
+        /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);*/
+        /*}*/
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/stockBuyChange.js"></script>
@@ -149,64 +274,101 @@
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="clearfix"></div>
-    <!-- 新增刷新按钮 -->
-    <li>
-        <a href="javascript:;" onclick="refreshData()" class="refresh-btn" title="刷新数据">
-            <i class="fa fa-refresh"></i> 刷新
-        </a>
-    </li>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="filter-section">
+                <span class="filter-label">板块筛选：</span>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="shsz" checked>
+                        <label for="shsz">深沪</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cyb">
+                        <label for="cyb">创业板</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="kcb">
+                        <label for="kcb">科创板</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="bse">
+                        <label for="bse">北交所</label>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+                <!--            <button class="btn btn-export" id="exportBtn">-->
+                <!--                <i class="fas fa-download"></i> 导出报告-->
+                <!--            </button>-->
+            </div>
+        </div>
+    </div>
     <div class="stockcontainer">
+        <div class="tabs">
+            <div class="tab active" data-tab="up">快速上涨</div>
+            <div class="tab" data-tab="down">快速下跌</div>
+        </div>
         <!-- 上涨行业 -->
         <div class="card">
-            <div class="header up">📈 快速上涨</div>
+<!--            <div class="header up">📈 快速上涨</div>-->
             <div class="industry-item" id="industry-item-up">
-<!--                <div class="stock-item">-->
-<!--                    <span>🐲 圣诺生物</span>-->
-<!--                    <span class="positive">+5.05%</span>-->
-<!--                </div>-->
-<!--                <div class="stock-item">-->
-<!--                    <span>⬇️ 华仁药业</span>-->
-<!--                    <span class="negative">-8.04%</span>-->
-<!--                </div>-->
-<!--                <div class="stock-item">-->
-<!--                    <span>🐲 圣诺生物</span>-->
-<!--                    <span class="positive">+5.05%</span>-->
-<!--                </div>-->
-<!--                <div class="stock-item">-->
-<!--                    <span>⬇️ 华仁药业</span>-->
-<!--                    <span class="negative">-8.04%</span>-->
-<!--                </div>-->
+                <!--                <div class="stock-item">-->
+                <!--                    <span>🐲 圣诺生物</span>-->
+                <!--                    <span class="positive">+5.05%</span>-->
+                <!--                </div>-->
+                <!--                <div class="stock-item">-->
+                <!--                    <span>⬇️ 华仁药业</span>-->
+                <!--                    <span class="negative">-8.04%</span>-->
+                <!--                </div>-->
+                <!--                <div class="stock-item">-->
+                <!--                    <span>🐲 圣诺生物</span>-->
+                <!--                    <span class="positive">+5.05%</span>-->
+                <!--                </div>-->
+                <!--                <div class="stock-item">-->
+                <!--                    <span>⬇️ 华仁药业</span>-->
+                <!--                    <span class="negative">-8.04%</span>-->
+                <!--                </div>-->
             </div>
         </div>
 
         <!-- 下跌行业 -->
-        <div class="card">
-            <div class="header down">📉 跌幅行业</div>
-            <div class="industry-item" id="industry-item-down">
-                <div class="industry-name">电机</div>
-                <div class="industry-change down">涨幅：-3.17%</div>
-<!--                <div class="stock-item">-->
-<!--                    <span>🐲 八方股份</span>-->
-<!--                    <span class="positive">+0.27%</span>-->
-<!--                </div>-->
-<!--                <div class="stock-item">-->
-<!--                    <span>⬇️ 兆威机电</span>-->
-<!--                    <span class="negative">-7.55%</span>-->
-<!--                </div>-->
-            </div>
-<!--            <div class="industry-item">-->
-<!--                <div class="industry-name">通信设备</div>-->
-<!--                <div class="industry-change down">涨幅：-3.13%</div>-->
-<!--                <div class="stock-item">-->
-<!--                    <span>🐲 长飞光纤</span>-->
-<!--                    <span class="positive">+9.00%</span>-->
-<!--                </div>-->
-<!--                <div class="stock-item">-->
-<!--                    <span>⬇️ 银河电子</span>-->
-<!--                    <span class="negative">-9.93%</span>-->
-<!--                </div>-->
+<!--        <div class="card">-->
+<!--            <div class="header down">📉 跌幅行业</div>-->
+<!--            <div class="industry-item" id="industry-item-down">-->
+<!--                <div class="industry-name">电机</div>-->
+<!--                <div class="industry-change down">涨幅：-3.17%</div>-->
+<!--                &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <span>🐲 八方股份</span>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <span class="positive">+0.27%</span>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--                &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <span>⬇️ 兆威机电</span>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <span class="negative">-7.55%</span>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </div>&ndash;&gt;-->
 <!--            </div>-->
-        </div>
+<!--            &lt;!&ndash;            <div class="industry-item">&ndash;&gt;-->
+<!--            &lt;!&ndash;                <div class="industry-name">通信设备</div>&ndash;&gt;-->
+<!--            &lt;!&ndash;                <div class="industry-change down">涨幅：-3.13%</div>&ndash;&gt;-->
+<!--            &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+<!--            &lt;!&ndash;                    <span>🐲 长飞光纤</span>&ndash;&gt;-->
+<!--            &lt;!&ndash;                    <span class="positive">+9.00%</span>&ndash;&gt;-->
+<!--            &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--            &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+<!--            &lt;!&ndash;                    <span>⬇️ 银河电子</span>&ndash;&gt;-->
+<!--            &lt;!&ndash;                    <span class="negative">-9.93%</span>&ndash;&gt;-->
+<!--            &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--        </div>-->
     </div>
 </div>
 </body>

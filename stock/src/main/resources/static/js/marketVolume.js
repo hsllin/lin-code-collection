@@ -6,8 +6,8 @@ $(function () {
     document.getElementById('yzdt').innerHTML = '';
     getMartketVolume();
     getMarketTimeLine();
-    getMarketYzzt();
-    loadZdtData();
+    // getMarketYzzt();
+    // loadZdtData();
 })
 
 function getMartketVolume() {
@@ -432,4 +432,12 @@ function loadZdtData(data){
         window.addEventListener('resize', function() {
             chart.resize();
         });
+}
+
+function refreshData(){
+    document.getElementById("marketVolume").innerHTML = '';
+    document.getElementById("yzzt").innerHTML = '';
+    document.getElementById('yzdt').innerHTML = '';
+    getMartketVolume();
+    getMarketTimeLine();
 }

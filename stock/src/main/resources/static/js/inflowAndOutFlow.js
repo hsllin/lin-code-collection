@@ -113,9 +113,9 @@ function escapeHtml(unsafe) {
 }
 
 function refreshData() {
-    dateIndex = 0;
-    document.getElementById('app').innerHTML = '';
-    getStrongStockData();
+    document.getElementById('dataTable').innerHTML = '';
+    getInflowAndOutFlowRankData();
+    getInflowAndOutFlowListData();
 }
 
 function preDayData() {

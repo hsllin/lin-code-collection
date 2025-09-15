@@ -42,9 +42,9 @@ function buildRatioRankingHtml(data) {
                 <td class="change">${stock.increaseAndDecrease}%</td>
                 <td class="latest-price">${stock.current}</td>
                 <td class="amount">${stock.sellMoney}</td>
-                <th class="amount">${stock.max}</th>
-                <th class="amount">${stock.min}</th>
-                <th class="amount ${fudu}">${stock.amplitude}%</th>
+                <td class="amount">${stock.max}</td>
+                <td class="amount">${stock.min}</td>
+                <td class="amount ${fudu}">${stock.amplitude}%</td>
             </tr>
   `
     });
