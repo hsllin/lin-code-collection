@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.YiDong;
 import com.lin.bean.lianban.ZhaBanBean;
 import com.lin.service.YidongService;
@@ -27,6 +28,7 @@ public class ZhaBanController {
     ZhaBanChiService zhaBanChiService;
 
     @RequestMapping("/getZhaBanData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<ZhaBanBean.DataDTO.InfoDTO>> list(HttpServletRequest request, Model model) {
         String date = CommonUtils.getTradeDay(0);
         List<ZhaBanBean.DataDTO.InfoDTO> list = zhaBanChiService.getZhaBanData(date);

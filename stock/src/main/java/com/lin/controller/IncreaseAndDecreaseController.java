@@ -40,8 +40,8 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
-    @EncryptResponse(encryptAll = true)
     @RequestMapping("/getDecreaseData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getDecreaseData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getDecreaseData();
@@ -57,8 +57,8 @@ public class IncreaseAndDecreaseController {
      * @throws ScriptException
      * @throws IOException
      */
-    @EncryptResponse(encryptAll = true)
     @RequestMapping("/getOneWordData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getOneWordData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getOneWordData();
@@ -75,6 +75,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getTLimitupData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getTLimitupData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getTLimitupData();
@@ -91,6 +92,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getLeaderData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getLeaderData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getLeaderData();
@@ -108,6 +110,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getTrendData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getTrendData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getTrendData();
@@ -115,12 +118,14 @@ public class IncreaseAndDecreaseController {
     }
 
     @RequestMapping("/downloadTrendData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downloadTrendData(HttpServletRequest request, Model model) {
         increaseAndDecreaseService.downloadTrendData();
         return ResponseEntity.ok(true);
     }
 
     @RequestMapping("/generateTrendDataPhoto")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> generateTrendDataPhoto(HttpServletRequest request, Model model) {
         increaseAndDecreaseService.generateTrendDataPhoto();
         return ResponseEntity.ok(true);
@@ -137,6 +142,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getTop100Data")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getTop100Data(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getTop100Data();
@@ -154,6 +160,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getYesterdayLimitUpData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LimitUpData>> getLimitUpYesterDayData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         List<LimitUpData> list = increaseAndDecreaseService.getYesterdayLimitUpData();
         return ResponseEntity.ok(list);
@@ -170,6 +177,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getTodayLimitUpData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LimitUpData>> getTodayLimitUpData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         List<LimitUpData> list = increaseAndDecreaseService.getTodayLimitUpData();
         return ResponseEntity.ok(list);
@@ -185,6 +193,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getAutionTradingData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<AutionTradingBean>> getAutionTradingData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         List<AutionTradingBean> list = increaseAndDecreaseService.getAutionTradingData();
         return ResponseEntity.ok(list);
@@ -200,6 +209,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getAutionNoMatchedData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<AutionTradingBean>> getAutionNoMatchedData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         List<AutionTradingBean> list = increaseAndDecreaseService.getAutionNoMatchedData();
         return ResponseEntity.ok(list);
@@ -215,6 +225,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getHotConceptAndIndustry")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Map<String, List<IncreaseRankData>>> getHotConceptAndIndustry(HttpServletRequest request, Model model) throws ScriptException, IOException {
         Map<String, List<IncreaseRankData>> list = increaseAndDecreaseService.getHotConcept();
         return ResponseEntity.ok(list);
@@ -230,6 +241,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getTradeData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getTradeData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getTradeData();
@@ -246,6 +258,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getWeakToStrongData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getWeakToStrongData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getWeakToStrongData();
@@ -262,6 +275,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getDragonToGreenData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getDragonToGreenData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getDragonToGreenData();
@@ -278,6 +292,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getNewHighData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getNewHighData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getNewHighData();
@@ -295,6 +310,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getIncreaseYesterdayData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getIncreaseYesterdayData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<IncreaseRankData> list = increaseAndDecreaseService.getIncreaseYesterdayData();
@@ -311,6 +327,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getIncreaseConcept")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getIncreaseConcept(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");
@@ -328,6 +345,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getStrongMorningData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getStrongMorningData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");
@@ -345,6 +363,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getStockPackagingData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getStockPackagingData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");
@@ -362,6 +381,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getStockBuyLowNormal")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getStockBuyLowNormal(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");
@@ -379,6 +399,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getStockBuyLowStrong")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getStockBuyLowStrong(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");
@@ -396,6 +417,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getStockIncreaseVolumeData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getStockIncreaseVolumeData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");
@@ -413,6 +435,7 @@ public class IncreaseAndDecreaseController {
      * @throws IOException
      */
     @RequestMapping("/getStockDayangLineData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getStockDayangLineData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");

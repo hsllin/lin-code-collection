@@ -11,56 +11,32 @@ $(function () {
 })
 
 function getMartketVolume() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getMarketVolume",
-
-        data: {
-            dateIndex: dateIndex
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getMarketVolume?dateIndex=${encodeURIComponent(dateIndex)}`, { method: 'GET' })
+        .then(function (data) {
             buildMarketVolumeHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getMarketVolume 请求失败:', error);
+        });
 }
 
 function getMarketTimeLine() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getMarketTimeLine",
-
-        data: {
-            dateIndex: dateIndex
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getMarketTimeLine?dateIndex=${encodeURIComponent(dateIndex)}`, { method: 'GET' })
+        .then(function (data) {
             loadMarketTimeLineData(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getMarketTimeLine 请求失败:', error);
+        });
 }
 function getMarketYzzt() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getMarketYzzt",
-
-        data: {
-            dateIndex: dateIndex
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getMarketYzzt?dateIndex=${encodeURIComponent(dateIndex)}`, { method: 'GET' })
+        .then(function (data) {
             buildYzzt(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getMarketYzzt 请求失败:', error);
+        });
 }
 
 function buildYzzt(data){

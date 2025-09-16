@@ -1,5 +1,7 @@
 package com.lin.controller;
 
+import com.lin.annotation.DecryptRequest;
+import com.lin.annotation.EncryptResponse;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -26,6 +28,7 @@ public class StockConceptController {
     StockConceptService conceptService;
 
     @RequestMapping("/getStockConceptList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockConcept>> getStockConceptList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
                                                                   @RequestParam(value = "size", defaultValue = "10") Integer size, Model model) {
         String keyword = request.getParameter("keyword");
@@ -35,18 +38,22 @@ public class StockConceptController {
 
     @PostMapping("/addOrEditStockConceptData")
     @ResponseBody
+    @DecryptRequest
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> addOrEditStockKnownData(HttpServletRequest request, @RequestBody StockConcept stockConcept) {
         boolean result = conceptService.addOrEditStockConcept(stockConcept);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping("/deleteStockConcept")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockConcept(HttpServletRequest request, String id) {
         boolean result = conceptService.deleteStockConcept(id);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping("/sysTonghuaShunConcept")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> sysTonghuaShunConcept(HttpServletRequest request) {
         boolean result = conceptService.sysTonghuaShunConcept();
         return ResponseEntity.ok(result);

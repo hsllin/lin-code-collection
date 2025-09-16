@@ -91,7 +91,7 @@ function getHotConceptAndIndustryData() {
     $.ajax({
         type: "GET",
         url: "getHotConceptAndIndustry",
-        contentType: 'application/json',
+        // contentType: 'application/json',
         data: {},
         success: function (data) {
             timeLineData = data;

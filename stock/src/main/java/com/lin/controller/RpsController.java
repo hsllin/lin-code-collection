@@ -2,6 +2,7 @@ package com.lin.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.crypto.Mode;
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.intradaychange.BuyChangeBean;
 import com.lin.bean.intradaychange.IntradayChange;
 import com.lin.bean.rps.RpsBean;
@@ -25,6 +26,7 @@ public class RpsController {
     private RpsService rpsService;
 
     @RequestMapping("/getRpsData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<RpsBean>> getRpsData(HttpServletRequest request, Model model) {
         List<RpsBean> rpsBeanArrayList = new ArrayList<>();
         rpsBeanArrayList = rpsService.getRpsData();
@@ -41,6 +43,7 @@ public class RpsController {
     }
 
     @RequestMapping("/getRpsDataDetail")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<RpsDetailBean>> buyChange(HttpServletRequest request, ModelAndView modelAndView) {
         String blockName = request.getParameter("blockName");
         List<RpsDetailBean> stockList = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.lin.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tonghuashun.IncreaseRankData;
 import com.lin.bean.xuangutong.XuanGuTongBoardBean;
 import com.lin.bean.xuangutong.XuanGuTongCardBean;
@@ -32,6 +33,7 @@ public class BoardAndConceptsController {
     IndustryAndBoardService industryAndBoardService;
 
     @RequestMapping("/getBoardAndConcepts")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<XuanGuTongBoardBean>> getIncreaseData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         List<String> codeList = industryAndBoardService.getRankCodeList();
         if (CollectionUtil.isNotEmpty(codeList)) {
@@ -43,6 +45,7 @@ public class BoardAndConceptsController {
     }
 
     @RequestMapping("/getBoardCardList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<XuanGuTongCardBean.DataDTO.ItemsDTO>> getBoardCardList(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         List<XuanGuTongCardBean.DataDTO.ItemsDTO> list = industryAndBoardService.getBoardCardList();
         return ResponseEntity.ok(list);

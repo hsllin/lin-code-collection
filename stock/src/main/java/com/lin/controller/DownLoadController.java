@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.service.*;
 import com.lin.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class DownLoadController {
 
 
     @RequestMapping("/downloadAllData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downloadAllData(HttpServletRequest request, Model model) {
         String dateIndex = "0";
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));

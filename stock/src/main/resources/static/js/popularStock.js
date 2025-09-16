@@ -8,55 +8,37 @@ $(function () {
 })
 
 function getPopularHotStockData() {
-    $.ajax({
-
-        type: "get",
-        url: "getPopularStockList",
-        data: {
-            type: 'normal',
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getPopularStockList?type=${encodeURIComponent('normal')}`, { method: 'GET' })
+        .then(function (data) {
             console.log(data)
             buildPopularHotStockHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getPopularHotStockData 请求失败:', error);
+        });
 }
 function downLoadHotBoardAndConceptData() {
-    $.ajax({
-
-        type: "get",
-        url: "downLoadHotBoardAndConceptData",
-        data: {
-            type: 'normal',
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`downLoadHotBoardAndConceptData?type=${encodeURIComponent('normal')}`, { method: 'GET' })
+        .then(function (data) {
             console.log(data)
             buildPopularHotStockHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('downLoadHotBoardAndConceptData 请求失败:', error);
+        });
 }
 
 
 
 function getPopularRiseStockData() {
-    $.ajax({
-
-        type: "get",
-        url: "getPopularStockList",
-        data: {
-            type: 'skyrocket',
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getPopularStockList?type=${encodeURIComponent('skyrocket')}`, { method: 'GET' })
+        .then(function (data) {
             console.log(data)
             buildPopularRiseStockHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getPopularRiseStockData 请求失败:', error);
+        });
 }
 
 function buildPopularHotStockHtml(data) {
@@ -179,54 +161,36 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getPopularHotIndustryData() {
-    $.ajax({
-
-        type: "get",
-        url: "getPopularStockList",
-        data: {
-            type: 'normal',
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getPopularStockList?type=${encodeURIComponent('normal')}`, { method: 'GET' })
+        .then(function (data) {
             console.log(data)
             getPopularHotIndustryData(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getPopularHotIndustryData 请求失败:', error);
+        });
 }
 
 function getPopularHotConceptData() {
-    $.ajax({
-
-        type: "get",
-        url: "getPopularConceptList",
-        data: {
-            type: 'concept',
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getPopularConceptList?type=${encodeURIComponent('concept')}`, { method: 'GET' })
+        .then(function (data) {
             console.log(data)
             buildPopularHotConceptHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getPopularHotConceptData 请求失败:', error);
+        });
 }
 
 function getPopularHotIndustryData() {
-    $.ajax({
-
-        type: "get",
-        url: "getPopularConceptList",
-        data: {
-            type: 'industry',
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getPopularConceptList?type=${encodeURIComponent('industry')}`, { method: 'GET' })
+        .then(function (data) {
             console.log(data)
             buildPopularIndustryHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getPopularHotIndustryData 请求失败:', error);
+        });
 }
 
 function buildPopularIndustryHtml(data) {
@@ -304,18 +268,14 @@ function buildPopularHotConceptHtml(data) {
 }
 
 function getPopularHotDongCaiData() {
-    $.ajax({
-
-        type: "get",
-        url: "getDongCaiPopularStocktList",
-        data: {},
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted(`getDongCaiPopularStocktList`, { method: 'GET' })
+        .then(function (data) {
             console.log(data)
             buildPopularDongCaiHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getPopularHotDongCaiData 请求失败:', error);
+        });
 }
 
 function buildPopularDongCaiHtml(data) {

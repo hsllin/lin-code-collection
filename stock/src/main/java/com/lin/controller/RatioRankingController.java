@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.RatioRankingResultBean;
 import com.lin.service.RatioRankingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class RatioRankingController {
     RatioRankingService ratioRankingService;
 
     @RequestMapping("/getRatioRanking")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<RatioRankingResultBean> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         RatioRankingResultBean bean = ratioRankingService.getRatioRanking();

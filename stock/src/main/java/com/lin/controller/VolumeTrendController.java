@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.index.VolumeTrend;
 import com.lin.service.VolumeTrendService;
 import com.lin.util.CommonUtils;
@@ -21,6 +22,7 @@ public class VolumeTrendController {
     VolumeTrendService volumeTrendService;
 
     @RequestMapping("/getVolumeTrendData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<VolumeTrend>> getVolumeTrendData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
@@ -32,6 +34,7 @@ public class VolumeTrendController {
 
 
     @RequestMapping("/updateVolumeTrendData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> updateVolumeTrendData(HttpServletRequest request, Model model) {
         Boolean result = volumeTrendService.saveOrUpdateData();
 

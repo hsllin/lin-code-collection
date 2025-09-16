@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LianBanNew;
 import com.lin.bean.strongstock.StrongStockBean;
 import com.lin.service.StrongStockService;
@@ -22,6 +23,7 @@ public class StrongStockController {
     StrongStockService strongStockService;
 
     @RequestMapping("/getStrongStockList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<StrongStockBean.DataBean>> list(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
@@ -32,6 +34,7 @@ public class StrongStockController {
     }
 
     @RequestMapping("/downloadStrongStockData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downloadLimitUpData(HttpServletRequest request, Model model) {
         String dateIndex = request.getParameter("dateIndex");
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));
@@ -41,6 +44,7 @@ public class StrongStockController {
     }
 
     @RequestMapping("/dealLianBanData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LianBanNew>> dealLianBanData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");

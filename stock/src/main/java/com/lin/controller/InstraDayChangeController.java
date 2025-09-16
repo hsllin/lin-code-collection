@@ -1,6 +1,7 @@
 package com.lin.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.intradaychange.BuyChangeBean;
 import com.lin.bean.intradaychange.IntradayChange;
 import com.lin.service.IntraDayChangeService;
@@ -20,6 +21,7 @@ public class InstraDayChangeController {
     private IntraDayChangeService intraDayChangeService;
 
     @RequestMapping("/intraDayChange")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IntradayChange.DataBean.AllstockBean>> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         String checkedData = request.getParameter("checkedData");
@@ -35,6 +37,7 @@ public class InstraDayChangeController {
     }
 
     @RequestMapping("/buyChange")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<BuyChangeBean.DataDTO.AllstockDTO>> buyChange(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         String checkedData = request.getParameter("checkedData");
@@ -50,6 +53,7 @@ public class InstraDayChangeController {
     }
 
     @RequestMapping("/sixtyChange")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IntradayChange.DataBean.AllstockBean>> sixtyChange(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<IntradayChange.DataBean.AllstockBean> stockList = new ArrayList<>();
@@ -61,6 +65,7 @@ public class InstraDayChangeController {
     }
 
     @RequestMapping("/openLimitDown")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IntradayChange.DataBean.AllstockBean>> openLimitDown(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<IntradayChange.DataBean.AllstockBean> stockList = new ArrayList<>();

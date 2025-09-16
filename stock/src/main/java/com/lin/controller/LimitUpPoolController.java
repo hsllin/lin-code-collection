@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LimitUpPoolResultBean;
 import com.lin.service.LimitUpPoolService;
 import com.lin.util.CommonUtils;
@@ -21,6 +22,7 @@ public class LimitUpPoolController {
     LimitUpPoolService limitUpPoolService;
 
     @RequestMapping("/getLimitUpPoolList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LimitUpPoolResultBean>> list(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
@@ -32,6 +34,7 @@ public class LimitUpPoolController {
     }
 
     @RequestMapping("/downloadLimitUpData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downloadLimitUpData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");

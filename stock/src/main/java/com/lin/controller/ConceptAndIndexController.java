@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.index.ConceptAndIndex;
 import com.lin.service.ConceptBoardService;
 import com.lin.service.GlobalIndexService;
@@ -20,6 +21,7 @@ public class ConceptAndIndexController {
     GlobalIndexService globalIndexService;
 
     @RequestMapping("/getConceptAndIndexList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<ConceptAndIndex> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<ConceptAndIndex.Concept> increaseIndustryList = conceptBoardService.logLianBan("1", type);

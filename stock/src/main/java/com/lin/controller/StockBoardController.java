@@ -1,5 +1,7 @@
 package com.lin.controller;
 
+import com.lin.annotation.DecryptRequest;
+import com.lin.annotation.EncryptResponse;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lin.bean.stockknow.StockBoard;
 import com.lin.service.StockBoardService;
@@ -20,6 +22,7 @@ public class StockBoardController {
     StockBoardService BoardService;
 
     @RequestMapping("/getStockBoardList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockBoard>> getStockBoardList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
                                                               @RequestParam(value = "size", defaultValue = "10") Integer size, Model model) {
         String keyword = request.getParameter("keyword");
@@ -29,18 +32,22 @@ public class StockBoardController {
 
     @PostMapping("/addOrEditStockBoardData")
     @ResponseBody
+    @DecryptRequest
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> addOrEditStockKnownData(HttpServletRequest request, @RequestBody StockBoard stockBoard) {
         boolean result = BoardService.addOrEditStockBoard(stockBoard);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping("/deleteStockBoard")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockBoard(HttpServletRequest request, String id) {
         boolean result = BoardService.deleteStockBoard(id);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping("/updateBoardData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> updateBoardData(HttpServletRequest request) {
         boolean result = BoardService.updateBoardData();
         return ResponseEntity.ok(result);

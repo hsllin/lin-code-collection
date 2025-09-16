@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.TodayHotBean;
 import com.lin.bean.lianban.ZhaBanBean;
 import com.lin.service.TodayHotService;
@@ -26,6 +27,7 @@ public class TodayHotController {
     TodayHotService todayHotService;
 
     @RequestMapping("/getDayHotData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<TodayHotBean.DataDTO>> list(HttpServletRequest request) {
         String date = CommonUtils.getTradeDay(0);
         List<TodayHotBean.DataDTO> list = todayHotService.getTodayHotData();

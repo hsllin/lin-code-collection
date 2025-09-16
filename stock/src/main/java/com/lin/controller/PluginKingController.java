@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.pluginking.LiveStreamingBean;
 import com.lin.bean.tonghuashun.BigOrderBean;
 import com.lin.service.BigOrderService;
@@ -29,6 +30,7 @@ public class PluginKingController {
     PluginKingService pluginKingService;
 
     @RequestMapping("/getLiveStreamingData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getLiveStreamingData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String data = pluginKingService.getLiveStreamingData();
@@ -36,6 +38,7 @@ public class PluginKingController {
     }
 
     @RequestMapping("/getFeaturedBoards")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getFeaturedBoards(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String data = pluginKingService.getFeaturedBoards();
@@ -43,6 +46,7 @@ public class PluginKingController {
     }
 
     @RequestMapping("/getFeaturedBoardsData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getFeaturedBoardsData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String boardId = request.getParameter("boardId");
@@ -51,6 +55,7 @@ public class PluginKingController {
     }
 
     @RequestMapping("/getRangeIncreaseBoardData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getRangeIncreaseBoardData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String days = request.getParameter("days");
@@ -60,6 +65,7 @@ public class PluginKingController {
     }
 
     @RequestMapping("/getRangeIncreaseStockData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getRangeIncreaseStockData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String days = request.getParameter("days");
@@ -69,6 +75,7 @@ public class PluginKingController {
     }
 
     @RequestMapping("/getStockThemeChance")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getStockThemeChance(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String days = request.getParameter("days");
@@ -78,6 +85,7 @@ public class PluginKingController {
     }
 
     @RequestMapping("/getLimitUpAnalyze")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getLimitUpAnalyze(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String days = request.getParameter("days");

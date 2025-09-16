@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.HotSpotBean;
 import com.lin.service.HotSpotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class HotSpotController {
     HotSpotService hotSpotService;
 
     @RequestMapping("/getHotSpotNews")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<HotSpotBean.DataBean.FastNewsListBean>> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<HotSpotBean.DataBean.FastNewsListBean> list = hotSpotService.getNews();

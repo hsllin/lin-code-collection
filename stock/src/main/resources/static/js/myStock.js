@@ -11,19 +11,13 @@ $(function () {
 })
 
 function getListData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getMyStockList",
-
-        data: {},
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted("getMyStockList", { method: 'GET' })
+        .then(function (data) {
             buildListHtml(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getMyStockList 请求失败:', error);
+        });
 }
 
 function buildListHtml(data) {
@@ -89,22 +83,13 @@ function addStock() {
     // 这里应该是向服务器发送请求添加股票
     // 简化处理：直接在表格中添加一行
     const table = document.querySelector('.stock-table tbody');
-    $.ajax({
-
-        type: "get",
-
-        url: "addOrEditMyStock",
-
-        data: {
-            code: code
-        },
-
-        success: function (data) {
-            // buildLianBanChiListHtml(data);
+    window.encryptionUtil.fetchDecrypted(`addOrEditMyStock?code=${encodeURIComponent(code)}`, { method: 'GET' })
+        .then(function (data) {
             refreshStocks();
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('addOrEditMyStock 请求失败:', error);
+        });
     // // 模拟随机价格
     // const basePrice = Math.random() * 100 + 50;
     // const changePercent = (Math.random() - 0.5) * 10;
@@ -152,39 +137,25 @@ function sellStock(code) {
 
 function deleteStock(code) {
     if (confirm('确定要删除这只股票吗？')) {
-        $.ajax({
-
-            type: "get",
-
-            url: "deleteMyStock",
-
-            data: {
-                code: code
-            },
-
-            success: function (data) {
+        window.encryptionUtil.fetchDecrypted(`deleteMyStock?code=${encodeURIComponent(code)}`, { method: 'GET' })
+            .then(function (data) {
                 getListData();
-            }
-
-        });
+            })
+            .catch(function (error) {
+                console.log('deleteMyStock 请求失败:', error);
+            });
     }
 }
 
 
 function refreshStocks() {
-    $.ajax({
-
-        type: "get",
-
-        url: "sysMyStockData",
-
-        data: {},
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted("sysMyStockData", { method: 'GET' })
+        .then(function (data) {
             getListData();
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('sysMyStockData 请求失败:', error);
+        });
 }
 
 function toggleAutoRefresh() {

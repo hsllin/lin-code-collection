@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tigerdragon.LhbBean;
 import com.lin.service.TigerAndDragonService;
 import com.lin.util.CommonUtils;
@@ -20,6 +21,7 @@ public class TigerAndDragonController {
     TigerAndDragonService tigerAndDragonService;
 
     @RequestMapping("/getTigerAndDragonData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<LhbBean> getTigerAndDragonData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");

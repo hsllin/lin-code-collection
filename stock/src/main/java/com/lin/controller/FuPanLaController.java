@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.service.FupanlaService;
 import com.lin.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class FuPanLaController {
     FupanlaService fupanlaService;
 
     @GetMapping(value = "getFuPanLaData", produces = "text/html;charset=utf-8")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getBigOrderData(HttpServletRequest request, HttpServletResponse response) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         String result = fupanlaService.getFupanData();

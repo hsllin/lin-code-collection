@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.util.EncryptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class KeyController {
      * 注意：实际生产环境中应该通过更安全的方式传递密钥
      */
     @GetMapping("/get")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Map<String, String>> getKey(HttpServletRequest request) {
         // 可以添加权限验证逻辑
         // 例如：验证用户身份、IP白名单等

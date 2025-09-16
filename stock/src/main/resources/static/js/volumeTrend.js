@@ -5,35 +5,23 @@ $(function () {
 })
 
 function updateVolumeTrendData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "updateVolumeTrendData",
-
-        data: {},
-
-        success: function (data) {
-        }
-
-    });
+    window.encryptionUtil.fetchDecrypted("updateVolumeTrendData", { method: 'GET' })
+        .then(function (data) {
+            // Success callback
+        })
+        .catch(function (error) {
+            console.log('updateVolumeTrendData 请求失败:', error);
+        });
 }
 
 function loadEchartsData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getVolumeTrendData",
-
-        data: {
-        },
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted("getVolumeTrendData", { method: 'GET' })
+        .then(function (data) {
             loadData(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getVolumeTrendData 请求失败:', error);
+        });
 }
 
 

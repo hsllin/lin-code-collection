@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.IndustryAnalyzeBean;
 import com.lin.service.IndustryAnalyzeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class IndustryAnalyzeController {
     IndustryAnalyzeService industryAnalyzeService;
 
     @RequestMapping("/getIndustryAnalyzeData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<IndustryAnalyzeBean> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         IndustryAnalyzeBean bean = industryAnalyzeService.getIndustryAnalyzeData();

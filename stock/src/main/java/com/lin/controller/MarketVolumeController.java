@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.market.MarketBean;
 import com.lin.bean.market.MarketTimeLineBean;
 import com.lin.bean.market.OneWordLimitBean;
@@ -22,6 +23,7 @@ public class MarketVolumeController {
     MarketVolumeTemperatureService marketVolumeTemperatureService;
 
     @RequestMapping("/getMarketVolume")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<MarketBean> list(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
@@ -32,6 +34,7 @@ public class MarketVolumeController {
     }
 
     @RequestMapping("/getMarketTimeLine")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<MarketTimeLineBean> getMarketTimeLine(HttpServletRequest request, Model model) {
         String dateIndex = request.getParameter("dateIndex");
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));
@@ -41,6 +44,7 @@ public class MarketVolumeController {
     }
 
     @RequestMapping("/getMarketYzzt")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<OneWordLimitBean> getStrongStockList(HttpServletRequest request, Model model) {
         String dateIndex = request.getParameter("dateIndex");
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));

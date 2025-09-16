@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LianBanNew;
 import com.lin.bean.popular.DongCaiPopularStock;
 import com.lin.bean.popular.FlushPopularStock;
@@ -30,6 +31,7 @@ public class PopularStockController {
      */
     //
     @RequestMapping("/getPopularStockList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<FlushPopularStock.DataDTO.StockListDTO>> getPopularStockList(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<FlushPopularStock.DataDTO.StockListDTO> list = PopularStockService.getPopularStockList(type);
@@ -42,6 +44,7 @@ public class PopularStockController {
      * @return
      */
     @RequestMapping("/getPopularConceptList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IndustryPopularStock.DataDTO.PlateListDTO>> getPopularConceptList(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<IndustryPopularStock.DataDTO.PlateListDTO> list = PopularStockService.getPopularConceptList(type);
@@ -54,6 +57,7 @@ public class PopularStockController {
      * @return
      */
     @RequestMapping("/getDongCaiPopularStocktList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List< DongCaiPopularStock.DataDTO.DiffDTO>> getDongCaiPopularStocktList(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<DongCaiPopularStock.DataDTO.DiffDTO> list = PopularStockService.getDongCaiPopularStocktList(type);
@@ -61,6 +65,7 @@ public class PopularStockController {
     }
 
     @RequestMapping("/downLoadHotBoardAndConceptData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downLoadHotBoardAndConceptData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");

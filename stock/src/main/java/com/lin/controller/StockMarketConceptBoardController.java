@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LimitDownPoolResultBean;
 import com.lin.service.LimitDownPoolService;
 import com.lin.service.SysnConceptStockService;
@@ -24,6 +25,7 @@ public class StockMarketConceptBoardController {
     SysnConceptStockService sysnConceptStockService;
 
     @RequestMapping("/getStockKnownList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LimitDownPoolResultBean>> list(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
@@ -35,6 +37,7 @@ public class StockMarketConceptBoardController {
     }
 
     @RequestMapping("/addOrEditStockKnownData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> addOrEditStockKnownData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
@@ -45,6 +48,7 @@ public class StockMarketConceptBoardController {
     }
 
     @RequestMapping("/deleteStockKnownData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockKnownData(HttpServletRequest request, Model model) {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
@@ -55,6 +59,7 @@ public class StockMarketConceptBoardController {
     }
 
     @RequestMapping("/sysnConceptData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> sysnConceptData(HttpServletRequest request, Model model) {
         sysnConceptStockService.sysnData();
         return ResponseEntity.ok(true);

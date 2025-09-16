@@ -2,6 +2,7 @@ package com.lin.controller;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.TimeStock;
 import com.lin.bean.TimeStockLine;
 import com.lin.bean.stockknow.StockConcept;
@@ -25,6 +26,7 @@ public class TimeStockController {
     TimeStockService timeStockService;
 
     @RequestMapping("/getTimeStockList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<TimeStock.DataDTO>> getTimeStockList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
                                                                     @RequestParam(value = "size", defaultValue = "10") Integer size, Model model) {
         String date = DateUtil.format(new Date(), "yyyy-MM-dd");
@@ -34,6 +36,7 @@ public class TimeStockController {
     }
 
     @RequestMapping("/getTimeStockLine")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<TimeStockLine.DataDTO>> getTimeStockLine(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
                                                                         @RequestParam(value = "size", defaultValue = "10") Integer size, Model model) {
         String date = DateUtil.format(new Date(), "yyyy-MM-dd");

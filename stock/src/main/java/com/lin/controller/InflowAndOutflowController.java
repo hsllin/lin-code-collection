@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.jfzt.InflowAndOutFlowBean;
 import com.lin.bean.jfzt.InflowAndOutFlowRankBean;
 import com.lin.bean.tonghuashun.IncreaseRankData;
@@ -30,6 +31,7 @@ public class InflowAndOutflowController {
     InAndOutFlowService inAndOutFlowService;
 
     @RequestMapping("/getInflowAndOutFlowListData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<InflowAndOutFlowBean.DataDTO.ListDTO>> getInflowAndOutFlowListData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         String date = CommonUtils.getTradeDay(0);
         List<InflowAndOutFlowBean.DataDTO.ListDTO> list = inAndOutFlowService.getInflowAndOutFlowListData();
@@ -37,6 +39,7 @@ public class InflowAndOutflowController {
     }
 
     @RequestMapping("/getInflowAndOutFlowRankData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<InflowAndOutFlowRankBean.DataDTO.ListDTO>> getInflowAndOutFlowRankData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<InflowAndOutFlowRankBean.DataDTO.ListDTO> list = inAndOutFlowService.getInflowAndOutFlowRankData();

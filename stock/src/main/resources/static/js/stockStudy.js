@@ -69,12 +69,10 @@ $(function () {
 
 function saveMarketData(stock) {
     console.log(stock)
-    $.ajax({
-        contentType: 'application/json;charset=UTF-8',
-        type: "POST",
-        dataType: "json",
-        url: "addOrEditStockMarketData",
-        data: JSON.stringify({
+    window.encryptionUtil.fetchDecrypted("addOrEditStockMarketData", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
             code: stock.code,
             name: stock.name,
             description: stock.business,
@@ -82,20 +80,19 @@ function saveMarketData(stock) {
             location: stock.region,
             profitLoss: stock.business,
             volume: stock.amount,
-        }),
-        success: function (data) {
-            // refreshConcept();
-        }
+        })
+    }).then(function (data) {
+        // refreshConcept();
+    }).catch(function (error) {
+        console.log('saveMarketData 请求失败:', error);
     });
 }
 function getMarketDataList() {
     console.log(stock)
-    $.ajax({
-        contentType: 'application/json;charset=UTF-8',
-        type: "POST",
-        dataType: "json",
-        url: "getMarketDataList",
-        data: JSON.stringify({
+    window.encryptionUtil.fetchDecrypted("getMarketDataList", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
             code: stock.code,
             name: stock.name,
             description: stock.business,
@@ -103,34 +100,24 @@ function getMarketDataList() {
             location: stock.region,
             profitLoss: stock.business,
             volume: stock.amount,
-        }),
-        success: function (data) {
-            stockData=data;
-        }
+        })
+    }).then(function (data) {
+        stockData=data;
+    }).catch(function (error) {
+        console.log('getMarketDataList 请求失败:', error);
     });
 }
 // 删除概念
 function deleteConcept(id) {
     console.log(id)
     if (confirm('确定要删除这个概念吗？')) {
-        $.ajax({
-
-            type: "get",
-
-            url: "deleteStockConcept",
-
-            data: {
-
-                id: id,
-
-            },
-
-            success: function (data) {
-
+        window.encryptionUtil.fetchDecrypted(`deleteStockConcept?id=${encodeURIComponent(id)}`, { method: 'GET' })
+            .then(function (data) {
                 getStockConceptList();
-            }
-
-        });
+            })
+            .catch(function (error) {
+                console.log('deleteStockConcept 请求失败:', error);
+            });
         // localStorage.setItem('stockConcepts', JSON.stringify(concepts));
 
         // 如果当前页没有数据了，且不是第一页，则返回上一页
@@ -156,20 +143,13 @@ function deleteConcept(id) {
     }
 
 function downLoadData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "downloadStrongStockData",
-
-        data: {
-            dateIndex: dateIndex
-        },
-
-        success: function (data) {
-        }
-
-    });
+    window.encryptionUtil.fetchDecrypted(`downloadStrongStockData?dateIndex=${encodeURIComponent(dateIndex)}`, { method: 'GET' })
+        .then(function (data) {
+            // Success callback
+        })
+        .catch(function (error) {
+            console.log('downloadStrongStockData 请求失败:', error);
+        });
 }
 
 // 初始化多选组件

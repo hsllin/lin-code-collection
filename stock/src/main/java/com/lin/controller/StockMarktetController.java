@@ -1,5 +1,7 @@
 package com.lin.controller;
 
+import com.lin.annotation.DecryptRequest;
+import com.lin.annotation.EncryptResponse;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lin.bean.stockknow.StockMarket;
 import com.lin.service.StockMarketService;
@@ -20,6 +22,7 @@ public class StockMarktetController {
     StockMarketService marketService;
 
     @RequestMapping("/getStockMarketList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockMarket>> getStockMarketList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
                                                                   @RequestParam(value = "size", defaultValue = "10") Integer size, Model model) {
         String keyword = request.getParameter("keyword");
@@ -29,12 +32,15 @@ public class StockMarktetController {
 
     @PostMapping("/addOrEditStockMarketData")
     @ResponseBody
+    @DecryptRequest
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> addOrEditStockKnownData(HttpServletRequest request, @RequestBody StockMarket stockMarket) {
         boolean result = marketService.addOrEditStockMarket(stockMarket);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping("/deleteStockMarket")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockMarket(HttpServletRequest request, String id) {
         boolean result = marketService.deleteStockMarket(id);
         return ResponseEntity.ok(result);

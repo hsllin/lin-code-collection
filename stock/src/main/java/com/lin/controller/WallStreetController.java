@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.NewsBean;
 import com.lin.service.WallStreetNewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class WallStreetController {
     WallStreetNewsService wallStreetNewsService;
 
     @RequestMapping("/getWallStreetNews")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<NewsBean.DataBean.ItemsBean>> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         List<NewsBean.DataBean.ItemsBean> list = wallStreetNewsService.getNews();

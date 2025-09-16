@@ -92,20 +92,10 @@ let rules = [];
 // 从接口加载规则
 function loadRules() {
     const searchTerm = searchInput ? searchInput.value : '';
-    
-    $.ajax({
-        type: "GET",
-        url: "/getStockRuleList",
-        data: {
-            keyword: searchTerm,
-        },
-        success: function(result) {
-            // 保存原始数据，包含ID信息
+    window.encryptionUtil.fetchDecrypted(`/getStockRuleList?keyword=${encodeURIComponent(searchTerm)}`, { method: 'GET' })
+        .then(function (result) {
             window.stockRuleData = result;
-            
-            // 将接口返回的StockRule对象数组转换为规则数组
             rules = result.map((rule, index) => {
-                // 如果content已经包含编号，直接返回；否则添加编号
                 const content = rule.content;
                 if (content.match(/^\d+\.\s*/)) {
                     return content;
@@ -113,21 +103,16 @@ function loadRules() {
                     return `${index + 1}. ${content}`;
                 }
             });
-            
-            // 如果数据库中没有数据，使用初始规则
             if (rules.length === 0) {
                 rules = [...initialRules];
             }
-            
             renderRules();
-        },
-        error: function(xhr, status, error) {
-            console.error('加载规则失败:', error);
-            // 如果接口调用失败，使用初始规则
+        })
+        .catch(function (error) {
+            console.log('加载规则失败:', error);
             rules = [...initialRules];
             renderRules();
-        }
-    });
+        });
 }
 
 // 保存规则到接口
@@ -201,23 +186,20 @@ function addRule(content) {
         sortOrder: rules.length + 1
     };
 
-    $.ajax({
-        type: "POST",
-        url: "/addOrEditStockRuleData",
-        contentType: "application/json",
-        data: JSON.stringify(stockRule),
-        success: function(result) {
-            if (result) {
-                loadRules(); // 重新加载规则列表
-                resetForm();
-            } else {
-                alert('添加规则失败');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('添加规则失败:', error);
+    window.encryptionUtil.fetchDecrypted(`/addOrEditStockRuleData`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(stockRule)
+    }).then(function (result) {
+        if (result) {
+            loadRules();
+            resetForm();
+        } else {
             alert('添加规则失败');
         }
+    }).catch(function (error) {
+        console.log('添加规则失败:', error);
+        alert('添加规则失败');
     });
 }
 
@@ -255,23 +237,20 @@ function updateRule(index, content) {
         stockRule.id = window.stockRuleData[index].id;
     }
 
-    $.ajax({
-        type: "POST",
-        url: "/addOrEditStockRuleData",
-        contentType: "application/json",
-        data: JSON.stringify(stockRule),
-        success: function(result) {
-            if (result) {
-                loadRules(); // 重新加载规则列表
-                resetForm();
-            } else {
-                alert('更新规则失败');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('更新规则失败:', error);
+    window.encryptionUtil.fetchDecrypted(`/addOrEditStockRuleData`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(stockRule)
+    }).then(function (result) {
+        if (result) {
+            loadRules();
+            resetForm();
+        } else {
             alert('更新规则失败');
         }
+    }).catch(function (error) {
+        console.log('更新规则失败:', error);
+        alert('更新规则失败');
     });
 }
 
@@ -291,23 +270,20 @@ function deleteRule(index) {
             deleteData.content = rules[index].replace(/^\d+\.\s*/, '');
         }
         
-        $.ajax({
-            type: "GET",
-            url: deleteUrl,
-            data: deleteData,
-            success: function(result) {
+        const query = Object.keys(deleteData).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(deleteData[k])}`).join('&');
+        window.encryptionUtil.fetchDecrypted(`${deleteUrl}${query ? ('?' + query) : ''}`, { method: 'GET' })
+            .then(function (result) {
                 if (result) {
-                    loadRules(); // 重新加载规则列表
+                    loadRules();
                     resetForm();
                 } else {
                     alert('删除规则失败');
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('删除规则失败:', error);
+            })
+            .catch(function (error) {
+                console.log('删除规则失败:', error);
                 alert('删除规则失败');
-            }
-        });
+            });
     }
 }
 

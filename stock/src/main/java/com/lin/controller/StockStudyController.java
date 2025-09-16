@@ -1,6 +1,7 @@
 package com.lin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.stockknow.Stock;
 import com.lin.bean.stockstudy.StockStudy;
 import com.lin.bean.tonghuashun.BigOrderBean;
@@ -34,6 +35,7 @@ public class StockStudyController {
     StockStudyService studyService;
 
     @RequestMapping("/sysStockData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> sysStockData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
 //        String date = CommonUtils.getTradeDay(0);
         boolean list = studyService.sysStockData();
@@ -41,6 +43,7 @@ public class StockStudyController {
     }
 
     @RequestMapping("/getStudyStockList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockStudy>> getTodayStudyStockList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
                                                                    @RequestParam(value = "size", defaultValue = "10") Integer size, Model model) throws ScriptException, IOException, InterruptedException {
         String type = request.getParameter("type");
@@ -50,6 +53,7 @@ public class StockStudyController {
     }
 
     @RequestMapping("/sysTodayStudyData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> sysTodayStudyData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         String type = request.getParameter("type");
         String keyword = request.getParameter("keyword");
@@ -58,6 +62,7 @@ public class StockStudyController {
     }
 
     @RequestMapping("/changeStudyStatus")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> changeStudyStatus(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         String code = request.getParameter("code");
         boolean result = studyService.changeStudyStatus(code);
@@ -65,11 +70,13 @@ public class StockStudyController {
     }
 
     @RequestMapping("/getStudyNum")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Map<String, Object>> getStudyNum(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         Map<String, Object> result = studyService.getStudyNum();
         return ResponseEntity.ok(result);
     }
     @RequestMapping("/addOrEditStudyStock")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> addOrEditStudyStock(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         String code = request.getParameter("code");
         boolean result = studyService.addOrEditStudyStock(code);

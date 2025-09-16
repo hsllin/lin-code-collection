@@ -72,6 +72,53 @@ class EncryptionUtil {
     }
 
     /**
+     * 加密数据（与后端AES-GCM兼容，IV前置）
+     * @param {any} data 原始数据对象或字符串
+     * @returns {Promise<string>} Base64(IV||ciphertext)
+     */
+    async encrypt(data) {
+        if (!this.key) {
+            await this.loadKey();
+        }
+        try {
+            const plainString = typeof data === 'string' ? data : JSON.stringify(data);
+            const keyBuffer = this.stringToArrayBuffer(this.key);
+            const cryptoKey = await crypto.subtle.importKey(
+                'raw',
+                keyBuffer,
+                { name: 'AES-GCM' },
+                false,
+                ['encrypt']
+            );
+
+            // 生成随机IV(12字节)
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const encoded = new TextEncoder().encode(plainString);
+            const encryptedBuffer = await crypto.subtle.encrypt(
+                { name: 'AES-GCM', iv: iv, tagLength: 128 },
+                cryptoKey,
+                encoded
+            );
+
+            // 拼接 IV + 密文
+            const encryptedBytes = new Uint8Array(encryptedBuffer);
+            const output = new Uint8Array(iv.length + encryptedBytes.length);
+            output.set(iv, 0);
+            output.set(encryptedBytes, iv.length);
+
+            // 转 base64
+            let binary = '';
+            for (let i = 0; i < output.byteLength; i++) {
+                binary += String.fromCharCode(output[i]);
+            }
+            return btoa(binary);
+        } catch (error) {
+            console.error('加密失败:', error);
+            throw error;
+        }
+    }
+
+    /**
      * 解密API响应
      * @param {Object} response - API响应对象
      * @returns {Promise<any>} 解密后的数据
@@ -102,11 +149,24 @@ class EncryptionUtil {
     async fetchDecrypted(url, options = {}) {
         console.log(url)
         try {
+            const finalOptions = { ...options, headers: { ...options.headers } };
+
+            // 对非GET请求的body进行加密封装
+            const method = (finalOptions.method || 'GET').toUpperCase();
+            if (method !== 'GET' && finalOptions.body != null) {
+                // 将原始body（对象或字符串）加密
+                const rawBody = typeof finalOptions.body === 'string' ? finalOptions.body : JSON.stringify(finalOptions.body);
+                const encryptedPayload = await this.encrypt(rawBody);
+                finalOptions.body = JSON.stringify({ encrypted: true, data: encryptedPayload });
+                finalOptions.headers['Content-Type'] = 'application/json';
+                finalOptions.headers['X-Encrypted'] = 'true';
+            }
+
             const response = await fetch(url, {
-                ...options,
+                ...finalOptions,
                 headers: {
                     'Content-Type': 'application/json',
-                    ...options.headers
+                    ...finalOptions.headers
                 }
             });
             console.log(response)
@@ -170,3 +230,61 @@ window.fetch = async function(url, options = {}) {
     
     return response;
 };
+
+// 兼容 jQuery：重写 $.ajax 以走加解密通道
+if (window.$ && typeof window.$.ajax === 'function') {
+    const originalAjax = window.$.ajax;
+    window.$.ajax = function(options) {
+        try {
+            const method = (options.type || options.method || 'GET').toUpperCase();
+            let url = options.url || '';
+            let fetchOptions = { method, headers: {} };
+
+            // 处理 data 与 contentType
+            const contentType = options.contentType || options.headers?.['Content-Type'] || options.headers?.['content-type'];
+            const data = options.data || {};
+
+            if (method === 'GET') {
+                const query = typeof data === 'string' ? data : Object.keys(data).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`).join('&');
+                if (query) {
+                    url += (url.includes('?') ? '&' : '?') + query;
+                }
+            } else {
+                // POST/PUT...: 按 contentType 放入 body
+                if ((contentType && contentType.toLowerCase().includes('application/json')) || typeof data === 'object') {
+                    fetchOptions.headers['Content-Type'] = 'application/json';
+                    fetchOptions.body = typeof data === 'string' ? data : JSON.stringify(data);
+                } else {
+                    fetchOptions.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+                    fetchOptions.body = typeof data === 'string' ? data : Object.keys(data).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`).join('&');
+                }
+            }
+
+            // 合并自定义 headers
+            if (options.headers) {
+                fetchOptions.headers = { ...fetchOptions.headers, ...options.headers };
+            }
+
+            // 通过加解密通道发送
+            window.encryptionUtil.fetchDecrypted(url, fetchOptions)
+                .then(function(respData) {
+                    if (typeof options.success === 'function') {
+                        options.success(respData);
+                    }
+                })
+                .catch(function(err) {
+                    if (typeof options.error === 'function') {
+                        options.error(null, 'error', err);
+                    } else {
+                        console.log('$.ajax 请求失败:', err);
+                    }
+                });
+        } catch (e) {
+            if (typeof options?.error === 'function') {
+                options.error(null, 'error', e);
+            } else {
+                console.log('$.ajax 调用异常:', e);
+            }
+        }
+    };
+}

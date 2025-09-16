@@ -16,37 +16,25 @@ let stockData = [];
 let tag = 'strong';
 
 function getStockBuyLowStrong() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getStockBuyLowStrong",
-
-        data: {},
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted("getStockBuyLowStrong", { method: 'GET' })
+        .then(function (data) {
             stockData = data;
             renderTable(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getStockBuyLowStrong 请求失败:', error);
+        });
 }
 
 function getStockBuyLowNormal() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getStockBuyLowNormal",
-
-        data: {},
-
-        success: function (data) {
+    window.encryptionUtil.fetchDecrypted("getStockBuyLowNormal", { method: 'GET' })
+        .then(function (data) {
             stockData = data;
             renderTable(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getStockBuyLowNormal 请求失败:', error);
+        });
 }
 
 
@@ -126,18 +114,13 @@ function filterStocks(tagName) {
 }
 
 function downLoadData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "downloadTrendData",
-
-        data: {},
-
-        success: function (data) {
-        }
-
-    });
+    window.encryptionUtil.fetchDecrypted("downloadTrendData", { method: 'GET' })
+        .then(function (data) {
+            // Success callback
+        })
+        .catch(function (error) {
+            console.log('downloadTrendData 请求失败:', error);
+        });
 }
 
 /**

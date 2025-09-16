@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tonghuashun.BigOrderBean;
 import com.lin.service.BigOrderService;
 import com.lin.util.CommonUtils;
@@ -27,6 +28,7 @@ public class BigOrderController {
     BigOrderService bigOrderService;
 
     @RequestMapping("/getBigOrderData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<BigOrderBean>> list(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
         List<BigOrderBean> list = bigOrderService.getBigOrderList();

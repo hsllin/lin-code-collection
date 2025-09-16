@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.YiDong;
 import com.lin.bean.strongstock.StrongStockBean;
 import com.lin.service.StrongStockService;
@@ -27,6 +28,7 @@ public class YiDongController {
     YidongService yidongService;
 
     @RequestMapping("/getYidongList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<YiDong>> list(HttpServletRequest request, Model model) {
         List<YiDong> list = yidongService.getYidongList();
         return ResponseEntity.ok(list);

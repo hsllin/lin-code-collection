@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.lianban.LianBanBean;
 import com.lin.service.LianBanChiService;
@@ -28,6 +29,7 @@ public class LianBanController {
      * @return
      */
     @RequestMapping("/getLianBanChiList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LianBanBean>> getLianBanChiList(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         String today = CommonUtils.getTradeDay(0);
@@ -59,6 +61,7 @@ public class LianBanController {
     }
 
     @RequestMapping("/downloadLianBanData")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downloadData(HttpServletRequest request, Model model) {
         String dateIndex = request.getParameter("dateIndex");
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));

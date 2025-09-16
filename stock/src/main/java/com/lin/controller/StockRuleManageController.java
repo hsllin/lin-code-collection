@@ -1,5 +1,7 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
+import com.lin.annotation.DecryptRequest;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lin.bean.StockRule;
 import com.lin.service.StockBoardService;
@@ -25,6 +27,7 @@ public class StockRuleManageController {
     private com.lin.mapper.StockRuleMapper stockRuleMapper;
 
     @RequestMapping("/getStockRuleList")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<StockRule>> getStockRuleList(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         List<StockRule> list = RuleService.getStockRuleList(keyword);
@@ -33,18 +36,22 @@ public class StockRuleManageController {
 
     @PostMapping("/addOrEditStockRuleData")
     @ResponseBody
+    @DecryptRequest
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> addOrEditStockKnownData(HttpServletRequest request, @RequestBody StockRule stockRule) {
         boolean result = RuleService.addOrEditStockRule(stockRule);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping("/deleteStockRule")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockRule(HttpServletRequest request, @RequestParam("id") Integer id) {
         boolean result = RuleService.deleteStockRule(id);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping("/deleteStockRuleByContent")
+    @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockRuleByContent(HttpServletRequest request, @RequestParam("content") String content) {
         boolean result = RuleService.deleteStockRuleByContent(content);
         return ResponseEntity.ok(result);
