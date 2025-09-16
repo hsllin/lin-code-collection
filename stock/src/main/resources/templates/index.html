@@ -22,17 +22,57 @@
 
     .refresh-btn .fa-refresh {
         margin-right: 5px;
-
     }
 </style>
-<script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/js/index.js"></script>
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
     <div class="row mainContent" id="content-main">
-
+        <!-- 标签页容器 -->
+        <div id="tabs" class="tabs-container">
+            <!-- 标签页将在这里动态生成 -->
+        </div>
+        <!-- iframe 内容区域 -->
+        <div id="iframeContent" class="iframe-content">
+            <!-- iframe 将在这里动态生成 -->
+        </div>
+        
+        <!-- 测试加密API的按钮 -->
+        <div style="margin: 20px; padding: 20px; border: 1px solid #ccc;">
+            <h3>加密API测试</h3>
+            <button onclick="testEncryptedAPI()" class="btn btn-primary">测试加密API</button>
+            <div id="testResult" style="margin-top: 10px;"></div>
+        </div>
     </div>
+    
+    <!-- 引入加密相关脚本 -->
+    <script src="/js/encryption.js"></script>
+    <script src="/js/api-client.js"></script>
+    
+    <script>
+        // 测试加密API
 
+        async function testEncryptedAPI() {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.innerHTML = '正在测试...';
+            console.log(apiClient)
+            try {
+                // 测试获取涨幅数据
+                const data = await apiClient.stock.getIncreaseData();
+                console.log('11111111111')
+                console.log(data)
+                resultDiv.innerHTML = `
+                    <h4>测试成功！</h4>
+                    <p>获取到 ${data.length} 条涨幅数据</p>
+                    <pre>${JSON.stringify(data.slice(0, 3), null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h4>测试失败！</h4>
+                    <p style="color: red;">错误信息: ${error.message}</p>
+                `;
+            }
+        }
+    </script>
 </div>
 </body>
 </html>

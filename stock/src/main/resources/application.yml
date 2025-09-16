@@ -48,4 +48,15 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*Mapper.xml
 
+# 加密配置
+encryption:
+  # 加密密钥（生产环境建议从环境变量获取）
+  secret-key: "MySecretKey123456789012345678901"
+  # 是否启用加密
+  enabled: true
+  # 加密算法
+  algorithm: "AES"
+  # 加密模式
+  mode: "GCM"
+
 

@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tonghuashun.AutionTradingBean;
 import com.lin.bean.tonghuashun.BigOrderBean;
 import com.lin.bean.tonghuashun.IncreaseRankData;
@@ -31,6 +32,7 @@ public class IncreaseAndDecreaseController {
     @Autowired
     IncreaseAndDecreaseService increaseAndDecreaseService;
 
+    @EncryptResponse(encryptAll = true)
     @RequestMapping("/getIncreaseData")
     public ResponseEntity<List<IncreaseRankData>> getIncreaseData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
         String date = CommonUtils.getTradeDay(0);
@@ -38,6 +40,7 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
+    @EncryptResponse(encryptAll = true)
     @RequestMapping("/getDecreaseData")
     public ResponseEntity<List<IncreaseRankData>> getDecreaseData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);
