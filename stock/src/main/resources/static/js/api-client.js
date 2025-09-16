@@ -15,9 +15,11 @@ class ApiClient {
      * @returns {Promise<any>} 响应数据
      */
     async get(url, params = {}) {
+
         const queryString = new URLSearchParams(params).toString();
+
         const fullUrl = queryString ? `${url}?${queryString}` : url;
-        
+
         return await this.encryptionUtil.fetchDecrypted(fullUrl, {
             method: 'GET'
         });
@@ -121,3 +123,4 @@ apiClient.stock.getTimeStockList(1, 20).then(data => {
     console.log('股票列表:', data);
 });
 */
+

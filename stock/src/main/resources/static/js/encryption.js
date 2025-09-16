@@ -4,7 +4,7 @@
  */
 class EncryptionUtil {
     constructor() {
-        this.key = null;
+        this.key = 'MySecretKey123456789012345678901';
         this.algorithm = 'AES-GCM';
     }
 
@@ -15,6 +15,7 @@ class EncryptionUtil {
         try {
             const response = await fetch('/api/key/get');
             const keyInfo = await response.json();
+            console.log(response)
             this.key = keyInfo.key;
             return true;
         } catch (error) {
@@ -40,7 +41,6 @@ class EncryptionUtil {
             // 分离IV和加密数据
             const iv = encryptedBuffer.slice(0, 12);
             const encrypted = encryptedBuffer.slice(12);
-            
             // 导入密钥
             const keyBuffer = this.stringToArrayBuffer(this.key);
             const cryptoKey = await crypto.subtle.importKey(
@@ -100,6 +100,7 @@ class EncryptionUtil {
      * @returns {Promise<any>} 解密后的响应数据
      */
     async fetchDecrypted(url, options = {}) {
+        console.log(url)
         try {
             const response = await fetch(url, {
                 ...options,
@@ -108,14 +109,15 @@ class EncryptionUtil {
                     ...options.headers
                 }
             });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            console.log(response)
+            // if (!response.ok) {
+            //     throw new Error(`HTTP error! status: ${response.status}`);
+            // }
             
             const data = await response.json();
             return await this.decryptResponse(data);
         } catch (error) {
+            console.log(error)
             console.error('API调用失败:', error);
             throw error;
         }

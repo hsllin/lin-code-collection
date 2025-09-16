@@ -25,3 +25,4 @@ public @interface EncryptResponse {
      */
     String[] fields() default {};
 }
+

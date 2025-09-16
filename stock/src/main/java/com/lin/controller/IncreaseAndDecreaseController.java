@@ -57,6 +57,7 @@ public class IncreaseAndDecreaseController {
      * @throws ScriptException
      * @throws IOException
      */
+    @EncryptResponse(encryptAll = true)
     @RequestMapping("/getOneWordData")
     public ResponseEntity<List<IncreaseRankData>> getOneWordData(HttpServletRequest request, Model model) throws ScriptException, IOException {
         String date = CommonUtils.getTradeDay(0);

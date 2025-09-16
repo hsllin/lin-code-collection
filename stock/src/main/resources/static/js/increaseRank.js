@@ -19,53 +19,33 @@ $(function () {
 // 模拟数据
 let stockData = [];
 
-function getIncreaseData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getIncreaseData",
-
-        data: {},
-
-        success: function (data) {
+async function getIncreaseData() {
+    window.encryptionUtil.fetchDecrypted("getIncreaseData", { method: 'GET' })
+        .then(function (data) {
             stockData = data;
             renderTable(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getIncreaseData 请求失败:', error);
+        });
 }
-function getOneWordData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getOneWordData",
-
-        data: {},
-
-        success: function (data) {
-            // stockData = data;
+async function getOneWordData() {
+    window.encryptionUtil.fetchDecrypted("getOneWordData", { method: 'GET' })
+        .then(function (data) {
             renderOneWordTable(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getOneWordData 请求失败:', error);
+        });
 }
-function getTLimitupData() {
-    $.ajax({
-
-        type: "get",
-
-        url: "getTLimitupData",
-
-        data: {},
-
-        success: function (data) {
-            // stockData = data;
+async function getTLimitupData() {
+    window.encryptionUtil.fetchDecrypted("getTLimitupData", { method: 'GET' })
+        .then(function (data) {
             renderTLimitUpTable(data);
-        }
-
-    });
+        })
+        .catch(function (error) {
+            console.log('getTLimitupData 请求失败:', error);
+        });
 }
 
 
