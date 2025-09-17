@@ -30,7 +30,7 @@ public class AdvancedConceptCloudUtil {
 
         // 3. 创建词云
         try {
-            generateWordCloud(wordFrequencies, "D:\\1stock\\最强概念.png");
+            generateWordCloud(wordFrequencies, "最强概念.png");
         } catch (Exception e) {
 
         }

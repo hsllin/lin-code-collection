@@ -5,10 +5,12 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.pluginking.RankIncreaseData;
+import com.lin.config.DataPathConfig;
 import com.lin.util.CommonUtils;
 import com.lin.util.DateUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
@@ -27,6 +29,10 @@ import java.util.Map;
  */
 @Service
 public class PluginKingService {
+    
+    @Autowired
+    private DataPathConfig dataPathConfig;
+    
     public static void main(String[] args) {
 //        getRangeIncreaseBoardData("1", "1");
 //        downLoadRangeIncreaseStockData("1", "1");
@@ -165,7 +171,7 @@ public class PluginKingService {
      *
      * @return
      */
-    public static String downLoadRangeIncreaseStockData(String days, String sort) {
+    public String downLoadRangeIncreaseStockData(String days, String sort) {
         String currentTray = CommonUtils.getTradeDay(0);
         String startTray = CommonUtils.getTradeDay(Integer.parseInt(days) - 1);
         currentTray = DateUtils.transferFormatTime(currentTray, DateFormatEnum.DATE_WITH_OUT_LINE, DateFormatEnum.DATE);
@@ -180,7 +186,7 @@ public class PluginKingService {
 //        transferData();
 //        decodeUnicode(result);
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\涨幅榜" + days + ".txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("涨幅榜" + days + ".txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 

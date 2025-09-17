@@ -83,7 +83,7 @@ public class BeanFieldConverterUtil {
         g.dispose();
 
         // 保存图片为 PNG
-        ImageIO.write(image, "png", new File("D:\\1stock\\table_output.png"));
+        ImageIO.write(image, "png", new File("table_output.png"));
         System.out.println("图片已生成：table_output.png");
     }
 

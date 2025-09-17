@@ -116,7 +116,7 @@ public class PhoUtil {
             System.out.println(Arrays.toString(row));
         }
 
-//        createTableImage(data, "D:\\1stock\\stock_table.png");
+//        createTableImage(data, "stock_table.png");
     }
 
     public static void createTableImage(List<String[]> data, String filename) {

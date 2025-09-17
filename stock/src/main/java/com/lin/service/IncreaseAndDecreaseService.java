@@ -7,11 +7,13 @@ import com.lin.bean.DateFormatEnum;
 import com.lin.bean.tonghuashun.AutionTradingBean;
 import com.lin.bean.tonghuashun.IncreaseRankData;
 import com.lin.bean.tonghuashun.LimitUpData;
+import com.lin.config.DataPathConfig;
 import com.lin.util.BeanFieldConverterUtil;
 import com.lin.util.CommonUtils;
 import com.lin.util.PhoUtil;
 import com.lin.util.WencaiUtils;
 import groovy.util.logging.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.script.ScriptException;
@@ -30,6 +32,10 @@ import java.util.*;
 @Service
 @Slf4j
 public class IncreaseAndDecreaseService {
+    
+    @Autowired
+    private DataPathConfig dataPathConfig;
+    
     private static final List<String> USER_AGENTS = Arrays.asList(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
@@ -508,9 +514,9 @@ public class IncreaseAndDecreaseService {
         return list;
     }
 
-    public static void downloadTrendData() {
+    public void downloadTrendData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\今日趋势.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("今日趋势.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -530,9 +536,9 @@ public class IncreaseAndDecreaseService {
 
     }
 
-    public static void downloadOneWordData() {
+    public void downloadOneWordData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\今日一字.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("今日一字.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -553,7 +559,7 @@ public class IncreaseAndDecreaseService {
     }
 
 
-    public static void generateTrendDataPhoto() {
+    public void generateTrendDataPhoto() {
         List<IncreaseRankData> list = new ArrayList<>();
         try {
             list = getTop100Data();
@@ -572,7 +578,7 @@ public class IncreaseAndDecreaseService {
             bean.setIndustry("");
         }
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\今日热门.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("今日热门.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -588,16 +594,16 @@ public class IncreaseAndDecreaseService {
 
             List<IncreaseRankData> list1 = list.subList(0, 20);
             List<String[]> result1 = BeanFieldConverterUtil.convertBeansToFieldArrays(list1);
-            PhoUtil.createTableImage(result1, "D:\\1stock\\todayHotStock1.png");
+            PhoUtil.createTableImage(result1, dataPathConfig.getImageFilePath("todayHotStock1.png"));
             if (list.size() > 40) {
                 List<IncreaseRankData> list2 = list.subList(20, 40);
                 List<String[]> result2 = BeanFieldConverterUtil.convertBeansToFieldArrays(list2);
-                PhoUtil.createTableImage(result2, "D:\\1stock\\todayHotStock2.png");
+                PhoUtil.createTableImage(result2, dataPathConfig.getImageFilePath("todayHotStock2.png"));
             }
             if (list.size() >= 60) {
                 List<IncreaseRankData> list3 = list.subList(40, 60);
                 List<String[]> result3 = BeanFieldConverterUtil.convertBeansToFieldArrays(list3);
-                PhoUtil.createTableImage(result3, "D:\\1stock\\todayHotStock3.png");
+                PhoUtil.createTableImage(result3, dataPathConfig.getImageFilePath("todayHotStock3.png"));
             }
 
         } catch (Exception e) {
@@ -876,7 +882,7 @@ public class IncreaseAndDecreaseService {
      * @throws ScriptException
      * @throws IOException
      */
-    public static Map<String, List<IncreaseRankData>> getHotConcept() throws ScriptException, IOException {
+    public Map<String, List<IncreaseRankData>> getHotConcept() throws ScriptException, IOException {
         Map<String, List<IncreaseRankData>> resultMap = new HashMap<>();
         String date = "[" + CommonUtils.getTradeDay(0) + "]";
         String url = "https://www.iwencai.com/customized/chart/get-robot-data";
@@ -1602,9 +1608,9 @@ public class IncreaseAndDecreaseService {
         return list;
     }
 
-    public static void downloadWeakToStrongData() {
+    public void downloadWeakToStrongData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\弱转强.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("弱转强.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -1624,9 +1630,9 @@ public class IncreaseAndDecreaseService {
 
     }
 
-    public static void downDragonFirstGreenData() {
+    public void downDragonFirstGreenData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\龙头首阴.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("龙头首阴.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -1646,9 +1652,9 @@ public class IncreaseAndDecreaseService {
 
     }
 
-    public static void downStockPackagingData() {
+    public void downStockPackagingData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\反包大阳线.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("反包大阳线.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -1668,9 +1674,9 @@ public class IncreaseAndDecreaseService {
 
     }
 
-    public static void downloadStockBuyLowStrong() {
+    public void downloadStockBuyLowStrong() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\低吸妖股.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("低吸妖股.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -1690,9 +1696,9 @@ public class IncreaseAndDecreaseService {
 
     }
 
-    public static void downStockBuyLowNormalData() {
+    public void downStockBuyLowNormalData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\低吸正常回调.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("低吸正常回调.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -1711,9 +1717,9 @@ public class IncreaseAndDecreaseService {
         }
 
     }
-    public static void downStockIncreaseVolumeData() {
+    public void downStockIncreaseVolumeData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\放量2倍.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("放量2倍.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 

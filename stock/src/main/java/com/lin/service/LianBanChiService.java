@@ -5,7 +5,9 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.lianban.LianBanBean;
+import com.lin.config.DataPathConfig;
 import com.lin.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
@@ -14,6 +16,10 @@ import java.util.*;
 
 @Service
 public class LianBanChiService {
+    
+    @Autowired
+    private DataPathConfig dataPathConfig;
+    
     public static void main(String[] args) {
 
         String today = DateUtil.format(DateUtil.date(), DateFormatEnum.DATE_WITH_OUT_LINE.getValue());
@@ -25,7 +31,7 @@ public class LianBanChiService {
 //        lianBan("20250122");
 //        lianBan("20250123");
 //        lianBan("20250127");
-        downloadData("20250127");
+//        downloadData("20250127");
     }
 
     public static List<LianBanBean.DataBean> lianBan(String date) {
@@ -68,10 +74,10 @@ public class LianBanChiService {
         return listBeanList;
     }
 
-    public static void downloadData(String date) {
+    public void downloadData(String date) {
 
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\连板池.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("连板池.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 

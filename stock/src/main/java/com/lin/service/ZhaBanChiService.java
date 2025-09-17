@@ -7,8 +7,10 @@ import com.lin.bean.Constants;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.lianban.LianBanBean;
 import com.lin.bean.lianban.ZhaBanBean;
+import com.lin.config.DataPathConfig;
 import com.lin.util.CommonUtils;
 import com.lin.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
@@ -17,6 +19,10 @@ import java.util.*;
 
 @Service
 public class ZhaBanChiService {
+    
+    @Autowired
+    private DataPathConfig dataPathConfig;
+    
     public static void main(String[] args) {
 
         String today = DateUtil.format(DateUtil.date(), DateFormatEnum.DATE_WITH_OUT_LINE.getValue());
@@ -30,7 +36,7 @@ public class ZhaBanChiService {
 //        lianBan("20250127");
 //        downloadData("20250127");
 //        getZhaBanData("20250513");
-        downloadData("20250513");
+//        downloadData("20250513");
     }
 
     public static List<ZhaBanBean.DataDTO.InfoDTO> getZhaBanData(String date) {
@@ -55,10 +61,10 @@ public class ZhaBanChiService {
         return listBeanList;
     }
 
-    public static void downloadData(String date) {
+    public void downloadData(String date) {
 
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\炸板池.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("炸板池.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 

@@ -6,8 +6,10 @@ import cn.hutool.json.JSONUtil;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.lianban.LimitUpPoolBean;
 import com.lin.bean.lianban.LimitUpPoolResultBean;
+import com.lin.config.DataPathConfig;
 import com.lin.util.CommonUtils;
 import com.lin.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
@@ -23,6 +25,10 @@ import java.util.Map;
  */
 @Service
 public class SentimentIndexService {
+    
+    @Autowired
+    private DataPathConfig dataPathConfig;
+    
     public static void main(String[] args) {
 
         String today = DateUtil.format(DateUtil.date(), DateFormatEnum.DATE_WITH_OUT_LINE.getValue());
@@ -32,7 +38,7 @@ public class SentimentIndexService {
 //        logLianBan(yesterDay);
 //        logLianBan(today);
 //        getLimitUpPoolList("330324", "1");
-        downloadLimitUpData();
+//        downloadLimitUpData();
     }
 
     public static List<LimitUpPoolResultBean> getLimitUpPoolList(String orderFiled, String orderBy) {
@@ -85,9 +91,9 @@ public class SentimentIndexService {
         return resultList;
     }
 
-    public static void downloadLimitUpData() {
+    public void downloadLimitUpData() {
         try {
-            FileWriter fw = new FileWriter("D:\\昨日涨停.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("昨日涨停.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 

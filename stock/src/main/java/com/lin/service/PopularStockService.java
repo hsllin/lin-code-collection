@@ -13,6 +13,7 @@ import com.lin.bean.popular.DongCaiPopularStock;
 import com.lin.bean.popular.FlushPopularStock;
 import com.lin.bean.popular.IndustryPopularStock;
 import com.lin.bean.strongstock.StrongStockBean;
+import com.lin.config.DataPathConfig;
 import com.lin.util.AdvancedConceptCloudUtil;
 import com.lin.util.CommonUtils;
 import com.lin.util.ConceptFrequencyAnalyzer;
@@ -21,6 +22,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,6 +44,9 @@ import java.util.*;
  */
 @Service
 public class PopularStockService {
+    
+    @Autowired
+    private DataPathConfig dataPathConfig;
     public static void main(String[] args) {
         getPopularConceptList("normal");
     }
@@ -80,9 +85,9 @@ public class PopularStockService {
         return infoList;
     }
 
-    public static void downLoadHotBoardAndConceptData() {
+    public void downLoadHotBoardAndConceptData() {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\今日热门板块概念.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("今日热门板块概念.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
 

@@ -54,7 +54,7 @@ public class HotSpotService {
             resultBean.setUrl("https://finance.eastmoney.com/a/" + resultBean.getCode() + ".html");
             System.out.println(info);
         }
-        try (FileWriter writer = new FileWriter("E:/stockOutput/hotspot.html")) {
+        try (FileWriter writer = new FileWriter("hotspot.html")) {
             // 写入HTML内容
             writer.write(Constants.newsCss + message.toString() + "</div>");
         } catch (IOException e) {

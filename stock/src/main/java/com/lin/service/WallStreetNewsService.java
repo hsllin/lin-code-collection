@@ -136,7 +136,7 @@ public class WallStreetNewsService {
             message.append(newsContent1 + itemsBean.getUri() + "\">" + itemsBean.getContent() + newsContent2 + DateUtils.changeTime(itemsBean.getDisplay_time(), HOUR_MIN_SECORD) + newsConetent3);
             System.out.println(info);
         }
-        try (FileWriter writer = new FileWriter("E:/stockOutput/news.html")) {
+        try (FileWriter writer = new FileWriter("news.html")) {
             // 写入HTML内容
             writer.write(html + message.toString() + "</div>");
         } catch (IOException e) {

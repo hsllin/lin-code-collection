@@ -6,10 +6,12 @@ import cn.hutool.json.JSONUtil;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.lianban.LianBanNew;
 import com.lin.bean.strongstock.StrongStockBean;
+import com.lin.config.DataPathConfig;
 import com.lin.util.AdvancedConceptCloudUtil;
 import com.lin.util.CommonUtils;
 import com.lin.util.ConceptFrequencyAnalyzer;
 import com.lin.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
@@ -22,6 +24,10 @@ import java.util.*;
  */
 @Service
 public class StrongStockService {
+    
+    @Autowired
+    private DataPathConfig dataPathConfig;
+    
     public static void main(String[] args) {
 
         String today = DateUtil.format(DateUtil.date(), DateFormatEnum.DATE_WITH_OUT_LINE.getValue());
@@ -104,11 +110,11 @@ public class StrongStockService {
         return banNewList;
     }
 
-    public static void downloadStrongSrockData(String date) {
+    public void downloadStrongSrockData(String date) {
         try {
-            FileWriter fw = new FileWriter("D:\\1stock\\最强风口.txt");
-            FileWriter oneFw = new FileWriter("D:\\1stock\\一板.txt");
-            FileWriter twoFw = new FileWriter("D:\\1stock\\二板以上.txt");
+            FileWriter fw = dataPathConfig.getDataFileWriter("最强风口.txt");
+            FileWriter oneFw = dataPathConfig.getDataFileWriter("一板.txt");
+            FileWriter twoFw = dataPathConfig.getDataFileWriter("二板以上.txt");
 
             BufferedWriter bw = new BufferedWriter(fw);
             BufferedWriter oneBw = new BufferedWriter(oneFw);
