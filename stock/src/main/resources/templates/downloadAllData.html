@@ -193,6 +193,60 @@
     </style>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
+    <script type="text/javascript">
+        // 下载所有数据为ZIP文件
+        function downloadAllDataAsZip() {
+            // 显示加载提示
+            const button = event.target.closest('a');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 正在打包...';
+            button.style.pointerEvents = 'none';
+            
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.href = '/downloadAllDataAsZip';
+            link.download = 'stock_data_' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '.zip';
+            
+            // 触发下载
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 恢复按钮状态
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.pointerEvents = 'auto';
+            }, 2000);
+        }
+        
+        // 原有的下载数据函数
+        function downloadAllData() {
+            $.ajax({
+                url: '/downloadAllData',
+                type: 'GET',
+                success: function(data) {
+                    alert('数据导出成功！');
+                },
+                error: function() {
+                    alert('数据导出失败！');
+                }
+            });
+        }
+        
+        // 同步stock数据函数
+        function sysStockData() {
+            $.ajax({
+                url: '/sysStockData',
+                type: 'GET',
+                success: function(data) {
+                    alert('stock数据同步成功！');
+                },
+                error: function() {
+                    alert('stock数据同步失败！');
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -202,11 +256,15 @@
     <div class="container">
         <div class="header-toolbar">
 
-            <a href="javascript:;" onclick="downloadAllData()" class="action-btn" title="导出"
+            <a href="javascript:;" onclick="downloadAllData()" class="action-btn" title="导出数据"
                style="margin-left: 10px;">
-                <i class="fa fa-refresh"></i> 导出
+                <i class="fa fa-refresh"></i> 导出数据
             </a>
-            <a href="javascript:;" onclick="sysStockData()" class="action-btn" title="导出" style="margin-left: 10px;">
+            <a href="javascript:;" onclick="downloadAllDataAsZip()" class="action-btn" title="下载ZIP文件"
+               style="margin-left: 10px; background: #28a745;">
+                <i class="fa fa-download"></i> 下载ZIP
+            </a>
+            <a href="javascript:;" onclick="sysStockData()" class="action-btn" title="同步stock数据" style="margin-left: 10px;">
                 <i class="fa fa-refresh"></i> 同步stock
             </a>
         </div>

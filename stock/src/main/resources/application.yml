@@ -59,4 +59,13 @@ encryption:
   # 加密模式
   mode: "GCM"
 
+# 数据目录配置
+data:
+  # 数据存储根目录
+  # Windows: D:\1stock
+  # Linux: /opt/stock
+  root-path: ${DATA_ROOT_PATH:D:/1stock}
+  # 临时文件目录
+  temp-path: ${DATA_TEMP_PATH:${java.io.tmpdir}}
+
 
