@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.IndustryAnalyzeBean;
 import com.lin.service.IndustryAnalyzeService;
@@ -16,6 +17,7 @@ public class IndustryAnalyzeController {
     @Autowired
     IndustryAnalyzeService industryAnalyzeService;
 
+    @Cacheable(key = "industryAnalyzeData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getIndustryAnalyzeData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<IndustryAnalyzeBean> list(HttpServletRequest request, Model model) {

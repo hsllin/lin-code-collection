@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.DecryptRequest;
 import com.lin.annotation.EncryptResponse;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,6 +22,7 @@ public class StockBoardController {
     @Autowired
     StockBoardService BoardService;
 
+    @Cacheable(key = "stockBoardList:#{#current}:#{#size}:#{#request.getParameter('keyword')}", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStockBoardList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockBoard>> getStockBoardList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
@@ -39,6 +41,7 @@ public class StockBoardController {
         return ResponseEntity.ok(result);
     }
 
+    @Cacheable(key = "deleteStockBoard:#{#id}", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/deleteStockBoard")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockBoard(HttpServletRequest request, String id) {
@@ -46,6 +49,7 @@ public class StockBoardController {
         return ResponseEntity.ok(result);
     }
 
+    @Cacheable(key = "updateBoardData:default", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/updateBoardData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> updateBoardData(HttpServletRequest request) {

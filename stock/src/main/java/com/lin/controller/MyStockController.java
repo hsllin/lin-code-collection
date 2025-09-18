@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.MyStock;
 import com.lin.service.MyStockService;
@@ -26,6 +27,7 @@ public class MyStockController {
     @Autowired
     MyStockService myStockService;
 
+    @Cacheable(key = "sysMyStockData:default", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/sysMyStockData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> sysMyStockData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
@@ -33,6 +35,7 @@ public class MyStockController {
         return ResponseEntity.ok(list);
     }
 
+    @Cacheable(key = "myStockList:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getMyStockList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<MyStock>> getTodayMyStockList(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {

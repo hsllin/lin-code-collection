@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LimitUpPoolResultBean;
 import com.lin.service.LimitUpPoolService;
@@ -21,6 +22,7 @@ public class LimitUpPoolController {
     @Autowired
     LimitUpPoolService limitUpPoolService;
 
+    @Cacheable(key = "limitUpPoolList:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getLimitUpPoolList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LimitUpPoolResultBean>> list(HttpServletRequest request, Model model) {

@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.RatioRankingResultBean;
 import com.lin.service.RatioRankingService;
@@ -19,6 +20,7 @@ public class RatioRankingController {
     @Autowired
     RatioRankingService ratioRankingService;
 
+    @Cacheable(key = "ratioRanking:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getRatioRanking")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<RatioRankingResultBean> list(HttpServletRequest request, Model model) {

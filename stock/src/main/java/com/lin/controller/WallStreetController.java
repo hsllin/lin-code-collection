@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.NewsBean;
 import com.lin.service.WallStreetNewsService;
@@ -17,6 +18,7 @@ public class WallStreetController {
     @Autowired
     WallStreetNewsService wallStreetNewsService;
 
+    @Cacheable(key = "wallStreetNews:default", type = Cacheable.CacheType.HOT_DATA)
     @RequestMapping("/getWallStreetNews")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<NewsBean.DataBean.ItemsBean>> list(HttpServletRequest request, Model model) {

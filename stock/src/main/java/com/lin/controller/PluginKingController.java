@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.pluginking.LiveStreamingBean;
 import com.lin.bean.tonghuashun.BigOrderBean;
@@ -29,6 +30,7 @@ public class PluginKingController {
     @Autowired
     PluginKingService pluginKingService;
 
+    @Cacheable(key = "liveStreamingData:default", type = Cacheable.CacheType.HOT_DATA)
     @RequestMapping("/getLiveStreamingData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getLiveStreamingData(HttpServletRequest request, Model model) throws ScriptException, IOException {
@@ -37,6 +39,7 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @Cacheable(key = "featuredBoards:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getFeaturedBoards")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getFeaturedBoards(HttpServletRequest request, Model model) throws ScriptException, IOException {
@@ -45,6 +48,7 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @Cacheable(key = "featuredBoardsData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getFeaturedBoardsData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getFeaturedBoardsData(HttpServletRequest request, Model model) throws ScriptException, IOException {
@@ -54,6 +58,7 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @Cacheable(key = "rangeIncreaseBoardData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getRangeIncreaseBoardData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getRangeIncreaseBoardData(HttpServletRequest request, Model model) throws ScriptException, IOException {
@@ -64,6 +69,7 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @Cacheable(key = "rangeIncreaseStockData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getRangeIncreaseStockData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getRangeIncreaseStockData(HttpServletRequest request, Model model) throws ScriptException, IOException {
@@ -74,6 +80,7 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @Cacheable(key = "stockThemeChance:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStockThemeChance")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getStockThemeChance(HttpServletRequest request, Model model) throws ScriptException, IOException {
@@ -84,6 +91,7 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @Cacheable(key = "limitUpAnalyze:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getLimitUpAnalyze")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getLimitUpAnalyze(HttpServletRequest request, Model model) throws ScriptException, IOException {

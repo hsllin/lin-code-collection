@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.util.EncryptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class KeyController {
      * 获取解密密钥
      * 注意：实际生产环境中应该通过更安全的方式传递密钥
      */
+    @Cacheable(key = "encryptionKey:default", type = Cacheable.CacheType.DEFAULT, ttl = 3600)
     @GetMapping("/get")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Map<String, String>> getKey(HttpServletRequest request) {

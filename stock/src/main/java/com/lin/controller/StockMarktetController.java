@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.DecryptRequest;
 import com.lin.annotation.EncryptResponse;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,6 +22,7 @@ public class StockMarktetController {
     @Autowired
     StockMarketService marketService;
 
+    @Cacheable(key = "stockMarketList:#{#current}:#{#size}:#{#request.getParameter('keyword')}", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStockMarketList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockMarket>> getStockMarketList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
@@ -39,6 +41,7 @@ public class StockMarktetController {
         return ResponseEntity.ok(result);
     }
 
+    @Cacheable(key = "deleteStockMarket:#{#id}", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/deleteStockMarket")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockMarket(HttpServletRequest request, String id) {

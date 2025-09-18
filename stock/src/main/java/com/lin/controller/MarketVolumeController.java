@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.market.MarketBean;
 import com.lin.bean.market.MarketTimeLineBean;
@@ -22,6 +23,7 @@ public class MarketVolumeController {
     @Autowired
     MarketVolumeTemperatureService marketVolumeTemperatureService;
 
+    @Cacheable(key = "marketVolume:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getMarketVolume")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<MarketBean> list(HttpServletRequest request, Model model) {
@@ -33,6 +35,7 @@ public class MarketVolumeController {
         return ResponseEntity.ok(bean);
     }
 
+    @Cacheable(key = "marketTimeLine:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getMarketTimeLine")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<MarketTimeLineBean> getMarketTimeLine(HttpServletRequest request, Model model) {
@@ -43,6 +46,7 @@ public class MarketVolumeController {
         return ResponseEntity.ok(bean);
     }
 
+    @Cacheable(key = "marketYzzt:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getMarketYzzt")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<OneWordLimitBean> getStrongStockList(HttpServletRequest request, Model model) {

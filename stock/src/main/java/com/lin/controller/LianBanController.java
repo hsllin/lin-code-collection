@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.DateFormatEnum;
 import com.lin.bean.lianban.LianBanBean;
@@ -28,6 +29,7 @@ public class LianBanController {
      * @param model
      * @return
      */
+    @Cacheable(key = "lianBanChiList:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getLianBanChiList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LianBanBean>> getLianBanChiList(HttpServletRequest request, Model model) {
@@ -60,6 +62,7 @@ public class LianBanController {
         return ResponseEntity.ok(resultList);
     }
 
+    @Cacheable(key = "downloadLianBanData:default", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/downloadLianBanData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downloadData(HttpServletRequest request, Model model) {

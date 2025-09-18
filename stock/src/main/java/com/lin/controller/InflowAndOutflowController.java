@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.jfzt.InflowAndOutFlowBean;
 import com.lin.bean.jfzt.InflowAndOutFlowRankBean;
@@ -30,6 +31,7 @@ public class InflowAndOutflowController {
     @Autowired
     InAndOutFlowService inAndOutFlowService;
 
+    @Cacheable(key = "inflowAndOutFlowListData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getInflowAndOutFlowListData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<InflowAndOutFlowBean.DataDTO.ListDTO>> getInflowAndOutFlowListData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
@@ -38,6 +40,7 @@ public class InflowAndOutflowController {
         return ResponseEntity.ok(list);
     }
 
+    @Cacheable(key = "inflowAndOutFlowRankData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getInflowAndOutFlowRankData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<InflowAndOutFlowRankBean.DataDTO.ListDTO>> getInflowAndOutFlowRankData(HttpServletRequest request, Model model) throws ScriptException, IOException {

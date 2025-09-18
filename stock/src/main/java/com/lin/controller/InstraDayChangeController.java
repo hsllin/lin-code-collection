@@ -1,6 +1,7 @@
 package com.lin.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.intradaychange.BuyChangeBean;
 import com.lin.bean.intradaychange.IntradayChange;
@@ -22,6 +23,7 @@ public class InstraDayChangeController {
 
     @RequestMapping("/intraDayChange")
     @EncryptResponse(encryptAll = true)
+    @Cacheable(key = "intraDayChange:default", type = Cacheable.CacheType.STOCK_DATA)
     public ResponseEntity<List<IntradayChange.DataBean.AllstockBean>> list(HttpServletRequest request, Model model) {
         String type = request.getParameter("type");
         String checkedData = request.getParameter("checkedData");

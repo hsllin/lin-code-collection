@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tigerdragon.LhbBean;
 import com.lin.service.TigerAndDragonService;
@@ -20,6 +21,7 @@ public class TigerAndDragonController {
     @Autowired
     TigerAndDragonService tigerAndDragonService;
 
+    @Cacheable(key = "tigerAndDragonData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getTigerAndDragonData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<LhbBean> getTigerAndDragonData(HttpServletRequest request, Model model) {

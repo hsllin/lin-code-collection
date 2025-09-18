@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.annotation.DecryptRequest;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,6 +27,7 @@ public class StockRuleManageController {
     @Autowired
     private com.lin.mapper.StockRuleMapper stockRuleMapper;
 
+    @Cacheable(key = "stockRuleList:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStockRuleList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<StockRule>> getStockRuleList(HttpServletRequest request, Model model) {
@@ -43,6 +45,7 @@ public class StockRuleManageController {
         return ResponseEntity.ok(result);
     }
 
+    @Cacheable(key = "deleteStockRule:#{#id}", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/deleteStockRule")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockRule(HttpServletRequest request, @RequestParam("id") Integer id) {
@@ -50,6 +53,7 @@ public class StockRuleManageController {
         return ResponseEntity.ok(result);
     }
 
+    @Cacheable(key = "deleteStockRuleByContent:#{#content}", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/deleteStockRuleByContent")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockRuleByContent(HttpServletRequest request, @RequestParam("content") String content) {
@@ -58,6 +62,7 @@ public class StockRuleManageController {
     }
 
     // 测试方法，用于调试参数类型问题
+    @Cacheable(key = "testDeleteStockRule:#{#id}", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/testDeleteStockRule")
     public ResponseEntity<String> testDeleteStockRule(HttpServletRequest request, @RequestParam("id") String id) {
         try {

@@ -1,6 +1,7 @@
 package com.lin.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tonghuashun.IncreaseRankData;
 import com.lin.bean.xuangutong.XuanGuTongBoardBean;
@@ -32,6 +33,7 @@ public class BoardAndConceptsController {
     @Autowired
     IndustryAndBoardService industryAndBoardService;
 
+    @Cacheable(key = "boardAndConcepts:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getBoardAndConcepts")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<XuanGuTongBoardBean>> getIncreaseData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
@@ -44,6 +46,7 @@ public class BoardAndConceptsController {
         return ResponseEntity.ok(list);
     }
 
+    @Cacheable(key = "boardCardList:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getBoardCardList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<XuanGuTongCardBean.DataDTO.ItemsDTO>> getBoardCardList(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {

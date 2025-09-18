@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.DecryptRequest;
 import com.lin.annotation.EncryptResponse;
 import cn.hutool.core.util.IdUtil;
@@ -27,6 +28,7 @@ public class StockConceptController {
     @Autowired
     StockConceptService conceptService;
 
+    @Cacheable(key = "stockConceptList:#{#current}:#{#size}", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStockConceptList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockConcept>> getStockConceptList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
@@ -45,6 +47,7 @@ public class StockConceptController {
         return ResponseEntity.ok(result);
     }
 
+//    @Cacheable(key = "deleteStockConcept:#{#id}", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/deleteStockConcept")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> deleteStockConcept(HttpServletRequest request, String id) {
@@ -52,6 +55,7 @@ public class StockConceptController {
         return ResponseEntity.ok(result);
     }
 
+//    @Cacheable(key = "sysTonghuaShunConcept:default", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/sysTonghuaShunConcept")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> sysTonghuaShunConcept(HttpServletRequest request) {

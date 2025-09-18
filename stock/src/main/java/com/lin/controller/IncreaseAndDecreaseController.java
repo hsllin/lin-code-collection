@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tonghuashun.AutionTradingBean;
 import com.lin.bean.tonghuashun.BigOrderBean;
@@ -32,6 +33,7 @@ public class IncreaseAndDecreaseController {
     @Autowired
     IncreaseAndDecreaseService increaseAndDecreaseService;
 
+    @Cacheable(key = "increaseData:default", type = Cacheable.CacheType.STOCK_DATA)
     @EncryptResponse(encryptAll = true)
     @RequestMapping("/getIncreaseData")
     public ResponseEntity<List<IncreaseRankData>> getIncreaseData(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {
@@ -40,6 +42,7 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
+    @Cacheable(key = "decreaseData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getDecreaseData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IncreaseRankData>> getDecreaseData(HttpServletRequest request, Model model) throws ScriptException, IOException {

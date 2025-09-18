@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.YiDong;
 import com.lin.bean.lianban.ZhaBanBean;
@@ -27,6 +28,7 @@ public class ZhaBanController {
     @Autowired
     ZhaBanChiService zhaBanChiService;
 
+    @Cacheable(key = "zhaBanData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getZhaBanData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<ZhaBanBean.DataDTO.InfoDTO>> list(HttpServletRequest request, Model model) {

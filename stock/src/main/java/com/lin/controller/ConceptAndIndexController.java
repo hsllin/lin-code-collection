@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.index.ConceptAndIndex;
 import com.lin.service.ConceptBoardService;
@@ -20,6 +21,7 @@ public class ConceptAndIndexController {
     @Autowired
     GlobalIndexService globalIndexService;
 
+    @Cacheable(key = "conceptAndIndexList:#{#request.getParameter('type')}", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getConceptAndIndexList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<ConceptAndIndex> list(HttpServletRequest request, Model model) {

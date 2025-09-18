@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LianBanNew;
 import com.lin.bean.popular.DongCaiPopularStock;
@@ -30,6 +31,7 @@ public class PopularStockController {
      * @return
      */
     //
+    @Cacheable(key = "popularStockList:#{#type}", type = Cacheable.CacheType.HOT_DATA)
     @RequestMapping("/getPopularStockList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<FlushPopularStock.DataDTO.StockListDTO>> getPopularStockList(HttpServletRequest request, Model model) {
@@ -43,6 +45,7 @@ public class PopularStockController {
      * @param model
      * @return
      */
+    @Cacheable(key = "popularConceptList:#{#type}", type = Cacheable.CacheType.HOT_DATA)
     @RequestMapping("/getPopularConceptList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<IndustryPopularStock.DataDTO.PlateListDTO>> getPopularConceptList(HttpServletRequest request, Model model) {

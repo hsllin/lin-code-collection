@@ -68,4 +68,25 @@ data:
   # 临时文件目录
   temp-path: ${DATA_TEMP_PATH:${java.io.tmpdir}}
 
+# 缓存配置
+cache:
+  # 是否启用缓存
+  enabled: ${CACHE_ENABLED:false}
+  # 默认缓存时间（秒）
+  default-ttl: ${CACHE_DEFAULT_TTL:5}
+  # 股票数据缓存时间（秒）
+  stock-data-ttl: ${CACHE_STOCK_DATA_TTL:5}
+  # 热门数据缓存时间（秒）
+  hot-data-ttl: ${CACHE_HOT_DATA_TTL:180}
+  # 实时数据缓存时间（秒）
+  realtime-data-ttl: ${CACHE_REALTIME_DATA_TTL:60}
+  # 统计数据缓存时间（秒）
+  statistics-data-ttl: ${CACHE_STATISTICS_DATA_TTL:600}
+  # 缓存键前缀
+  key-prefix: ${CACHE_KEY_PREFIX:stock:}
+  # 是否启用缓存预热
+  preload-enabled: ${CACHE_PRELOAD_ENABLED:false}
+  # 缓存预热时间间隔（秒）
+  preload-interval: ${CACHE_PRELOAD_INTERVAL:3600}
+
 

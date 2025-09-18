@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.YiDong;
 import com.lin.bean.strongstock.StrongStockBean;
@@ -27,6 +28,7 @@ public class YiDongController {
     @Autowired
     YidongService yidongService;
 
+    @Cacheable(key = "yidongList:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getYidongList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<YiDong>> list(HttpServletRequest request, Model model) {

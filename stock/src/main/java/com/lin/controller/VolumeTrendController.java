@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.index.VolumeTrend;
 import com.lin.service.VolumeTrendService;
@@ -21,6 +22,7 @@ public class VolumeTrendController {
     @Autowired
     VolumeTrendService volumeTrendService;
 
+    @Cacheable(key = "volumeTrendData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getVolumeTrendData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<VolumeTrend>> getVolumeTrendData(HttpServletRequest request, Model model) {

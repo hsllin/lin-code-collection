@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LimitDownPoolResultBean;
 import com.lin.service.LimitDownPoolService;
@@ -24,6 +25,7 @@ public class StockMarketConceptBoardController {
     @Autowired
     SysnConceptStockService sysnConceptStockService;
 
+    @Cacheable(key = "stockKnownList:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStockKnownList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<LimitDownPoolResultBean>> list(HttpServletRequest request, Model model) {

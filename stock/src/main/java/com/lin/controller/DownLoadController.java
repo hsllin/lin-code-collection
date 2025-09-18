@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.config.DataPathConfig;
 import com.lin.service.*;
@@ -48,6 +49,7 @@ public class DownLoadController {
     PluginKingService pluginKingService;
 
 
+    @Cacheable(key = "downloadAllData:default", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/downloadAllData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Boolean> downloadAllData(HttpServletRequest request, Model model) {
@@ -79,6 +81,7 @@ public class DownLoadController {
     /**
      * 下载所有数据文件为ZIP压缩包
      */
+    @Cacheable(key = "downloadAllDataAsZip:default", type = Cacheable.CacheType.DEFAULT, ttl = 300)
     @RequestMapping("/downloadAllDataAsZip")
     public ResponseEntity<Resource> downloadAllDataAsZip(HttpServletRequest request, Model model) {
         try {

@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.tonghuashun.BigOrderBean;
 import com.lin.service.BigOrderService;
@@ -27,6 +28,7 @@ public class BigOrderController {
     @Autowired
     BigOrderService bigOrderService;
 
+    @Cacheable(key = "bigOrderData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getBigOrderData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<BigOrderBean>> list(HttpServletRequest request, Model model) throws ScriptException, IOException {

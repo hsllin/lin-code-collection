@@ -2,6 +2,7 @@ package com.lin.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.crypto.Mode;
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.intradaychange.BuyChangeBean;
 import com.lin.bean.intradaychange.IntradayChange;
@@ -25,6 +26,7 @@ public class RpsController {
     @Autowired
     private RpsService rpsService;
 
+    @Cacheable(key = "rpsData:default", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getRpsData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<RpsBean>> getRpsData(HttpServletRequest request, Model model) {
@@ -42,6 +44,7 @@ public class RpsController {
         return modelAndView;
     }
 
+    @Cacheable(key = "rpsDataDetail:#{#request.getParameter('blockName')}", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getRpsDataDetail")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<RpsDetailBean>> buyChange(HttpServletRequest request, ModelAndView modelAndView) {

@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.document.DocumentResultBean;
 import com.lin.service.DocumentService;
@@ -17,6 +18,7 @@ public class DocumentController {
     @Autowired
     DocumentService documentService;
 
+    @Cacheable(key = "documentList:#{#request.getParameter('type')}", type = Cacheable.CacheType.DEFAULT)
     @RequestMapping("/getDocumentList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<DocumentResultBean>> list(HttpServletRequest request, Model model) {

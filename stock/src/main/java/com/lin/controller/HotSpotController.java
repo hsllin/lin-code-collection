@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.HotSpotBean;
 import com.lin.service.HotSpotService;
@@ -17,6 +18,7 @@ public class HotSpotController {
     @Autowired
     HotSpotService hotSpotService;
 
+    @Cacheable(key = "hotSpotNews:default", type = Cacheable.CacheType.HOT_DATA)
     @RequestMapping("/getHotSpotNews")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<HotSpotBean.DataBean.FastNewsListBean>> list(HttpServletRequest request, Model model) {

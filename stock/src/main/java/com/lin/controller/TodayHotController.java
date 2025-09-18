@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.TodayHotBean;
 import com.lin.bean.lianban.ZhaBanBean;
@@ -26,6 +27,7 @@ public class TodayHotController {
     @Autowired
     TodayHotService todayHotService;
 
+    @Cacheable(key = "dayHotData:default", type = Cacheable.CacheType.HOT_DATA)
     @RequestMapping("/getDayHotData")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<TodayHotBean.DataDTO>> list(HttpServletRequest request) {

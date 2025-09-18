@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.lianban.LianBanNew;
 import com.lin.bean.strongstock.StrongStockBean;
@@ -22,6 +23,7 @@ public class StrongStockController {
     @Autowired
     StrongStockService strongStockService;
 
+    @Cacheable(key = "strongStockList:#{#request.getParameter('orderFiled')}:#{#request.getParameter('orderBy')}", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStrongStockList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<List<StrongStockBean.DataBean>> list(HttpServletRequest request, Model model) {

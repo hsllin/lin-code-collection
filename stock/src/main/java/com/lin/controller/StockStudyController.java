@@ -1,6 +1,7 @@
 package com.lin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.bean.stockknow.Stock;
 import com.lin.bean.stockstudy.StockStudy;
@@ -42,6 +43,7 @@ public class StockStudyController {
         return ResponseEntity.ok(list);
     }
 
+    @Cacheable(key = "studyStockList:#{#current}:#{#size}", type = Cacheable.CacheType.STOCK_DATA)
     @RequestMapping("/getStudyStockList")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Page<StockStudy>> getTodayStudyStockList(HttpServletRequest request, @RequestParam(value = "current", defaultValue = "1") Integer current,
@@ -69,6 +71,7 @@ public class StockStudyController {
         return ResponseEntity.ok(result);
     }
 
+    @Cacheable(key = "studyNum:default", type = Cacheable.CacheType.STATISTICS_DATA)
     @RequestMapping("/getStudyNum")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<Map<String, Object>> getStudyNum(HttpServletRequest request, Model model) throws ScriptException, IOException, InterruptedException {

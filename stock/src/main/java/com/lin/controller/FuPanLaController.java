@@ -1,5 +1,6 @@
 package com.lin.controller;
 
+import com.lin.annotation.Cacheable;
 import com.lin.annotation.EncryptResponse;
 import com.lin.service.FupanlaService;
 import com.lin.util.CommonUtils;
@@ -25,6 +26,7 @@ public class FuPanLaController {
     @Autowired
     FupanlaService fupanlaService;
 
+    @Cacheable(key = "fuPanLaData:default", type = Cacheable.CacheType.STOCK_DATA)
     @GetMapping(value = "getFuPanLaData", produces = "text/html;charset=utf-8")
     @EncryptResponse(encryptAll = true)
     public ResponseEntity<String> getBigOrderData(HttpServletRequest request, HttpServletResponse response) throws ScriptException, IOException {
