@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>菜单管理</title>
+    <style>
+        .menu-tree {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+        .menu-item {
+            margin: 5px 0;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+            background-color: white;
+        }
+        .menu-item.level-1 {
+            margin-left: 0;
+        }
+        .menu-item.level-2 {
+            margin-left: 20px;
+        }
+        .menu-item.level-3 {
+            margin-left: 40px;
+        }
+        .menu-actions {
+            float: right;
+        }
+        .menu-actions button {
+            margin-left: 5px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-group {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div data-layout-fragment="content">
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>菜单管理</h3>
+                </div>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>菜单树</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="menu-tree" id="menuTree">
+                                <!-- 菜单树将在这里动态加载 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>菜单编辑</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <form id="menuForm">
+                                <input type="hidden" id="menuId" name="id">
+                                
+                                <div class="form-group">
+                                    <label for="parentId">父菜单:</label>
+                                    <select class="form-control" id="parentId" name="parentId">
+                                        <option value="0">顶级菜单</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="menuName">菜单名称:</label>
+                                    <input type="text" class="form-control" id="menuName" name="menuName" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="menuIcon">菜单图标:</label>
+                                    <input type="text" class="form-control" id="menuIcon" name="menuIcon" placeholder="如: fa fa-book">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="menuUrl">菜单链接:</label>
+                                    <input type="text" class="form-control" id="menuUrl" name="menuUrl" placeholder="如: /stockRuleManage">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="menuType">菜单类型:</label>
+                                    <select class="form-control" id="menuType" name="menuType">
+                                        <option value="1">目录</option>
+                                        <option value="2">菜单</option>
+                                        <option value="3">按钮</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="sortOrder">排序:</label>
+                                    <input type="number" class="form-control" id="sortOrder" name="sortOrder" value="0">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="status">状态:</label>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="1">启用</option>
+                                        <option value="0">禁用</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="remark">备注:</label>
+                                    <textarea class="form-control" id="remark" name="remark" rows="3"></textarea>
+                                </div>
+                                
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" onclick="saveMenu()">保存</button>
+                                    <button type="button" class="btn btn-default" onclick="resetForm()">重置</button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteMenu()" id="deleteBtn" style="display:none;">删除</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 菜单管理相关JavaScript
+let currentMenuId = null;
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    loadMenuTree();
+    loadParentMenuOptions();
+});
+
+// 加载菜单树
+function loadMenuTree() {
+    window.encryptionUtil.fetchDecrypted('/api/menu/tree', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function(menuData) {
+        if (menuData && Array.isArray(menuData)) {
+            renderMenuTree(menuData);
+        } else {
+            console.error('菜单数据格式错误:', menuData);
+        }
+    }).catch(function(error) {
+        console.error('加载菜单失败:', error);
+    });
+}
+
+// 渲染菜单树
+function renderMenuTree(menuTree) {
+    const container = document.getElementById('menuTree');
+    container.innerHTML = '';
+    
+    menuTree.forEach(function(menu) {
+        const menuElement = createMenuElement(menu, 1);
+        container.appendChild(menuElement);
+    });
+}
+
+// 创建菜单元素
+function createMenuElement(menu, level) {
+    const div = document.createElement('div');
+    div.className = 'menu-item level-' + level;
+    
+    let html = '<span>' + menu.menuName + '</span>';
+    html += '<div class="menu-actions">';
+    html += '<button class="btn btn-xs btn-primary" onclick="editMenu(' + menu.id + ')">编辑</button>';
+    html += '<button class="btn btn-xs btn-danger" onclick="deleteMenu(' + menu.id + ')">删除</button>';
+    html += '</div>';
+    
+    if (menu.children && menu.children.length > 0) {
+        html += '<div style="margin-top: 10px;">';
+        menu.children.forEach(function(child) {
+            const childElement = createMenuElement(child, level + 1);
+            html += childElement.outerHTML;
+        });
+        html += '</div>';
+    }
+    
+    div.innerHTML = html;
+    return div;
+}
+
+// 加载父菜单选项
+function loadParentMenuOptions() {
+    window.encryptionUtil.fetchDecrypted('/api/menu/list', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function(menuData) {
+        if (menuData && Array.isArray(menuData)) {
+            const select = document.getElementById('parentId');
+            select.innerHTML = '<option value="0">顶级菜单</option>';
+            
+            menuData.forEach(function(menu) {
+                if (menu.menuType === 1) { // 只显示目录类型的菜单作为父菜单
+                    const option = document.createElement('option');
+                    option.value = menu.id;
+                    option.textContent = menu.menuName;
+                    select.appendChild(option);
+                }
+            });
+        }
+    }).catch(function(error) {
+        console.error('加载父菜单选项失败:', error);
+    });
+}
+
+// 编辑菜单
+function editMenu(menuId) {
+    window.encryptionUtil.fetchDecrypted('/api/menu/' + menuId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function(menu) {
+        if (menu) {
+            currentMenuId = menuId;
+            document.getElementById('menuId').value = menu.id;
+            document.getElementById('parentId').value = menu.parentId;
+            document.getElementById('menuName').value = menu.menuName;
+            document.getElementById('menuIcon').value = menu.menuIcon || '';
+            document.getElementById('menuUrl').value = menu.menuUrl || '';
+            document.getElementById('menuType').value = menu.menuType;
+            document.getElementById('sortOrder').value = menu.sortOrder;
+            document.getElementById('status').value = menu.status;
+            document.getElementById('remark').value = menu.remark || '';
+            document.getElementById('deleteBtn').style.display = 'inline-block';
+        }
+    }).catch(function(error) {
+        console.error('加载菜单详情失败:', error);
+    });
+}
+
+// 保存菜单
+function saveMenu() {
+    const form = document.getElementById('menuForm');
+    const formData = new FormData(form);
+    const menuData = {};
+    
+    for (let [key, value] of formData.entries()) {
+        if (key === 'id' && value) {
+            menuData[key] = parseInt(value);
+        } else if (key === 'parentId' || key === 'menuType' || key === 'sortOrder' || key === 'status') {
+            menuData[key] = parseInt(value);
+        } else {
+            menuData[key] = value;
+        }
+    }
+    
+    const url = menuData.id ? '/api/menu/update' : '/api/menu/save';
+    const method = menuData.id ? 'PUT' : 'POST';
+    
+    window.encryptionUtil.fetchDecrypted(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(menuData)
+    }).then(function(result) {
+        if (result) {
+            alert('保存成功');
+            resetForm();
+            loadMenuTree();
+            loadParentMenuOptions();
+        } else {
+            alert('保存失败');
+        }
+    }).catch(function(error) {
+        console.error('保存菜单失败:', error);
+        alert('保存失败: ' + error.message);
+    });
+}
+
+// 删除菜单
+function deleteMenu(menuId) {
+    if (!menuId) {
+        menuId = currentMenuId;
+    }
+    
+    if (!menuId) {
+        alert('请选择要删除的菜单');
+        return;
+    }
+    
+    if (!confirm('确定要删除这个菜单吗？')) {
+        return;
+    }
+    
+    window.encryptionUtil.fetchDecrypted('/api/menu/' + menuId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function(result) {
+        if (result) {
+            alert('删除成功');
+            resetForm();
+            loadMenuTree();
+            loadParentMenuOptions();
+        } else {
+            alert('删除失败');
+        }
+    }).catch(function(error) {
+        console.error('删除菜单失败:', error);
+        alert('删除失败: ' + error.message);
+    });
+}
+
+// 重置表单
+function resetForm() {
+    document.getElementById('menuForm').reset();
+    currentMenuId = null;
+    document.getElementById('deleteBtn').style.display = 'none';
+}
+</script>
+</body>
+</html>
