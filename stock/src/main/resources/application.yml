@@ -89,4 +89,60 @@ cache:
   # 缓存预热时间间隔（秒）
   preload-interval: ${CACHE_PRELOAD_INTERVAL:3600}
 
+# 安全配置
+security:
+  # JWT配置
+#  jwt:
+#    secret: ${JWT_SECRET:MySecretKey123456789012345678901234567890}
+#    expiration: ${JWT_EXPIRATION:86400}  # 24小时
+#    refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800}  # 7天
+  
+  # 重放攻击防护配置
+  replay-attack:
+    secret-key: ${REPLAY_ATTACK_SECRET_KEY:defaultSecretKey}
+    window: ${REPLAY_ATTACK_WINDOW:300000}  # 5分钟
+    expire-time: ${REPLAY_ATTACK_EXPIRE_TIME:600000}  # 10分钟
+  
+  # 限流配置
+  rate-limit:
+    default-capacity: ${RATE_LIMIT_DEFAULT_CAPACITY:100}
+    default-refill-tokens: ${RATE_LIMIT_DEFAULT_REFILL_TOKENS:10}
+    default-refill-duration: ${RATE_LIMIT_DEFAULT_REFILL_DURATION:60000}  # 1分钟
+    api-capacity: ${RATE_LIMIT_API_CAPACITY:1000}
+    api-refill-tokens: ${RATE_LIMIT_API_REFILL_TOKENS:100}
+    api-refill-duration: ${RATE_LIMIT_API_REFILL_DURATION:60000}  # 1分钟
+    login-capacity: ${RATE_LIMIT_LOGIN_CAPACITY:5}
+    login-refill-tokens: ${RATE_LIMIT_LOGIN_REFILL_TOKENS:1}
+    login-refill-duration: ${RATE_LIMIT_LOGIN_REFILL_DURATION:60000}  # 1分钟
+  
+  # XSS防护配置
+  xss:
+    enabled: ${XSS_PROTECTION_ENABLED:true}
+    log-attacks: ${XSS_LOG_ATTACKS:true}
+    block-attacks: ${XSS_BLOCK_ATTACKS:true}
+  
+  # SQL注入防护配置
+  sql-injection:
+    enabled: ${SQL_INJECTION_PROTECTION_ENABLED:true}
+    log-attacks: ${SQL_INJECTION_LOG_ATTACKS:true}
+    block-attacks: ${SQL_INJECTION_BLOCK_ATTACKS:true}
+  
+  # CSRF防护配置
+  csrf:
+    enabled: ${CSRF_PROTECTION_ENABLED:true}
+    token-expire-time: ${CSRF_TOKEN_EXPIRE_TIME:1800000}  # 30分钟
+
+# 日志配置
+logging:
+  level:
+    com.lin.security: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/security.log
+    max-size: 100MB
+    max-history: 30
+
 
