@@ -3,76 +3,465 @@
 <head>
     <title>Plain Page</title>
     <meta charset="utf-8">
+    <!-- 安全响应头 -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <!-- 加载安全配置 -->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
 </head>
 <style>
-    .refresh-btn {
-        padding: 3px 8px;
-        background: #0c91f8; /* 主色调绿色 */
-        color: white !important;
-        border-radius: 6px;
-        margin: 4px 6px 0 0;
-        transition: background 0.3s;
-        float: right;
+    /** {*/
+    /*    box-sizing: border-box;*/
+    /*    margin: 0;*/
+    /*    padding: 0;*/
+    /*}*/
+
+    /*body {*/
+    /*    font-family: 'Microsoft YaHei', Arial, sans-serif;*/
+    /*    line-height: 1.6;*/
+    /*    color: #333;*/
+    /*    background-color: #f5f7fa;*/
+    /*    max-width: 1200px;*/
+    /*    margin: 0 auto;*/
+    /*    padding: 20px;*/
+    /*}*/
+
+    .container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        margin-bottom: 30px;
     }
 
-    .refresh-btn:hover {
-        background: #63b7ee; /* 悬停深绿色 */
+    header {
+        text-align: center;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #3498db;
+    }
+
+    h1 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .description {
+        color: #7f8c8d;
+        font-size: 1.1em;
+    }
+
+    .announcement-container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        color: #3498db;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #eaeaea;
+    }
+
+    h3 {
+        color: #2c3e50;
+        margin: 15px 0 10px;
+    }
+
+    p {
+        margin-bottom: 15px;
+        text-align: justify;
+    }
+
+    ul, ol {
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #eaeaea;
+        color: #7f8c8d;
+        font-size: 0.9em;
+    }
+
+    /* 整合的支持区域样式 */
+    .support-section {
+        background: linear-gradient(135deg, #eaf2f8 0%, #f8f0ff 100%);
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin: 40px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        gap: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .support-section::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 0;
+    }
+
+    .support-section::after {
+        content: "";
+        position: absolute;
+        bottom: -50px;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 0;
+    }
+
+    .support-title {
+        text-align: center;
+        width: 100%;
+        font-size: 1.8em;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .support-column {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .like-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .like-btn {
+        background: #f8f9fa;
+        border: 2px solid #3498db;
+        border-radius: 50px;
+        padding: 12px 25px;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #3498db;
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
     }
 
-    .refresh-btn .fa-refresh {
-        margin-right: 5px;
+    .like-btn:hover {
+        background: #e3f2fd;
+        transform: translateY(-2px);
+    }
+
+    .like-btn.active {
+        background: #fff0f0;
+        border-color: #ff6b6b;
+        color: #ff6b6b;
+    }
+
+    .like-count-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .like-count-label {
+        font-size: 0.9em;
+        color: #7f8c8d;
+    }
+
+    .like-count {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #ff6b6b;
+        transition: all 0.3s ease;
+    }
+
+    .like-count.animate {
+        animation: pulse 0.5s ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.2);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .heart-icon {
+        width: 28px;
+        height: 28px;
+        fill: currentColor;
+    }
+
+    .like-message {
+        margin-top: 15px;
+        font-size: 1.1em;
+        color: #3498db;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        text-align: center;
+    }
+
+    .like-message.show {
+        opacity: 1;
+    }
+
+    .qrcode-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .qrcode-img-container {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin: 10px 0;
+    }
+
+    .qrcode-img-container img {
+        width: 180px;
+        height: 180px;
+        display: block;
+    }
+
+    .tip {
+        font-size: 0.9em;
+        color: #7f8c8d;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .support-text {
+        text-align: center;
+        margin-top: 10px;
+        color: #555;
+    }
+
+    .divider {
+        width: 1px;
+        height: 200px;
+        background: linear-gradient(to bottom, transparent, #3498db, transparent);
+        margin: 0 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 15px;
+        }
+
+        .announcement-container {
+            padding: 15px;
+        }
+
+        h1 {
+            font-size: 1.5em;
+        }
+
+        h2 {
+            font-size: 1.3em;
+        }
+
+        .support-section {
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .support-column {
+            min-width: 100%;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 20px 0;
+        }
+
+        .like-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+
+        .like-count {
+            font-size: 2em;
+        }
+
+        .qrcode-img-container img {
+            width: 150px;
+            height: 150px;
+        }
     }
 </style>
 <body>
 <div class="right_col" role="main" data-layout-fragment="content">
-    <div class="row mainContent" id="content-main">
-        <!-- 标签页容器 -->
-        <div id="tabs" class="tabs-container">
-            <!-- 标签页将在这里动态生成 -->
-        </div>
-        <!-- iframe 内容区域 -->
-        <div id="iframeContent" class="iframe-content">
-            <!-- iframe 将在这里动态生成 -->
-        </div>
-        
-        <!-- 测试加密API的按钮 -->
-        <div style="margin: 20px; padding: 20px; border: 1px solid #ccc;">
-            <h3>加密API测试</h3>
-            <button onclick="testEncryptedAPI()" class="btn btn-primary">测试加密API</button>
-            <div id="testResult" style="margin-top: 10px;"></div>
+    <div id="header" hidden="hidden" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
         </div>
     </div>
-    
-    <!-- 引入加密相关脚本 -->
-    <script src="/js/encryption.js"></script>
-    <script src="/js/api-client.js"></script>
-    
-    <script>
-        // 测试加密API
+    <div class="container">
+        <header>
+            <h1>个人系统说明</h1>
+            <p class="description">欢迎使用我的个人系统，以下是详细功能介绍和使用说明</p>
+        </header>
 
-        async function testEncryptedAPI() {
-            const resultDiv = document.getElementById('testResult');
-            resultDiv.innerHTML = '正在测试...';
-            console.log(apiClient)
-            try {
-                // 测试获取涨幅数据
-                const data = await apiClient.stock.getIncreaseData();
-                console.log(data)
-                console.log(data)
-                resultDiv.innerHTML = `
-                    <h4>测试成功！</h4>
-                    <p>获取到 ${data.length} 条涨幅数据</p>
-                    <pre>${JSON.stringify(data.slice(0, 3), null, 2)}</pre>
-                `;
-            } catch (error) {
-                resultDiv.innerHTML = `
-                    <h4>测试失败！</h4>
-                    <p style="color: red;">错误信息: ${error.message}</p>
-                `;
-            }
-        }
-    </script>
+<!--        <main>-->
+            <div class="announcement-container">
+                <h2>系统概述</h2>
+                <p>
+                    本系统是一个集成化的个人管理平台，旨在帮助用户更高效地组织个人信息、项目和日常任务。系统采用现代化设计，注重用户体验和数据安全。</p>
+
+                <h2>主要功能</h2>
+                <h3>1. 个人信息管理</h3>
+                <p>提供完整的个人信息管理功能，包括资料编辑、隐私设置和数据备份功能。</p>
+
+                <h3>2. 项目跟踪</h3>
+                <p>支持多项目管理，可以创建任务、设置里程碑和跟踪进度。使用看板视图可视化工作流程。</p>
+
+                <h3>3. 文件存储</h3>
+                <p>提供安全的云存储空间，支持多种文件格式，可设置访问权限和共享链接。</p>
+
+                <h3>4. 数据分析</h3>
+                <p>内置数据分析工具，可生成个人生产力报告和项目统计图表，帮助优化工作流程。</p>
+
+                <h2>使用指南</h2>
+                <ol>
+                    <li><strong>账户设置</strong>：首次使用请完善您的个人资料和偏好设置</li>
+                    <li><strong>功能探索</strong>：逐步了解系统各功能模块，从仪表盘开始</li>
+                    <li><strong>数据导入</strong>：您可以从原有系统导入数据（支持CSV、JSON格式）</li>
+                    <li><strong>自定义设置</strong>：根据个人习惯调整界面布局和通知偏好</li>
+                </ol>
+
+                <h2>常见问题</h2>
+                <h3>Q: 如何保证我的数据安全？</h3>
+                <p>A: 系统采用端到端加密和定期备份机制，您的数据只会存储在您授权的设备上。</p>
+
+                <h3>Q: 系统是否支持多设备同步？</h3>
+                <p>A: 是的，系统支持在多个设备上同步数据，只需登录您的账户即可。</p>
+
+                <h3>Q: 遇到技术问题如何获取帮助？</h3>
+                <p>A: 您可以通过系统内置的反馈功能提交问题，或查阅我们的在线文档。</p>
+            </div>
+
+            <!-- 整合的点赞和赞赏区域 -->
+            <div class="support-section">
+                <h2 class="support-title">支持与赞赏</h2>
+
+                <div class="support-column">
+                    <div class="like-container">
+                        <h3>喜欢这个系统吗？</h3>
+                        <button id="likeBtn" class="like-btn">
+                            <svg class="heart-icon" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            点赞支持
+                        </button>
+
+                        <div class="like-count-container">
+                            <div class="like-count-label">总点赞数</div>
+                            <div class="like-count" id="likeCount">0</div>
+                        </div>
+
+                        <div class="like-message" id="likeMessage">感谢您的支持！</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="support-column">
+                    <div class="qrcode-container">
+                        <h3>赞赏支持</h3>
+                        <p class="support-text">您的支持是我持续更新的动力！</p>
+
+                        <div class="qrcode-img-container">
+                            <!-- 这里需要替换为您的实际二维码图片 -->
+                            <img src="placeholder.jpg" alt="赞赏二维码">
+                            <p class="tip">使用微信或支付宝扫描二维码</p>
+                        </div>
+
+                        <p class="support-text">赞赏时请备注您的用户名或邮箱，以便我更好地感谢您！</p>
+                    </div>
+                </div>
+            </div>
+<!--        </main>-->
+        <div id="refreshBtn" hidden="hidden"></div>
+
+        <!--    <footer>-->
+        <!--        <p>© 2025 个人系统 | 最后更新：2025年9月22日</p>-->
+        <!--    </footer>-->
+    </div>
 </div>
 </body>
 </html>

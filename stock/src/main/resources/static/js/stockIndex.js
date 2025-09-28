@@ -136,3 +136,19 @@ function refreshData() {
     }
 
 }
+
+function cleanCacheBtn(){
+    $.ajax({
+
+        type: "get",
+
+        url: "cleanIncreaseChangeCached",
+
+        data: {
+        },
+        success: function (data) {
+            refreshData();
+        }
+
+    });
+}

@@ -55,7 +55,7 @@ public class DownLoadController {
     public ResponseEntity<Boolean> downloadAllData(HttpServletRequest request, Model model) {
         String dateIndex = "0";
         String date = CommonUtils.getTradeDay(Integer.valueOf(dateIndex));
-//        date="20250829";
+//        date="20250919";
         strongStockService.downloadStrongSrockData(date);
         limitUpPoolService.downloadLimitUpData(date);
         limitDownPoolService.downloadLimitDownData(date);

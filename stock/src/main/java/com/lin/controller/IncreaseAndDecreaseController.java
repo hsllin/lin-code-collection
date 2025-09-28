@@ -446,6 +446,22 @@ public class IncreaseAndDecreaseController {
         return ResponseEntity.ok(list);
     }
 
-
+    /**
+     * 获取同花顺破30日前高，近10日有过涨停
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getStockTwentyData")
+    @EncryptResponse(encryptAll = true)
+    public ResponseEntity<List<IncreaseRankData>> getStockTwentyData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getStockTwentyData();
+        return ResponseEntity.ok(list);
+    }
 
 }

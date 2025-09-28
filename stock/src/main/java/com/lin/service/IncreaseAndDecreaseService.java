@@ -1608,6 +1608,69 @@ public class IncreaseAndDecreaseService {
         return list;
     }
 
+    /**
+     * 获取同花顺放量2倍以上涨幅大于3.5%的票
+     *
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    public static List<IncreaseRankData> getStockTwentyData() throws ScriptException, IOException {
+        String date = "[" + CommonUtils.getTradeDay(0) + "]";
+        String morningDate = "[" + CommonUtils.getTradeDay(0) + " 09:25]";
+        String url = "https://www.iwencai.com/gateway/urp/v7/landing/getDataList";
+        Map<String, Object> param = new HashMap<>();
+        String tradeDay = CommonUtils.getTradeDay(0);
+        String condition ="[{\"score\":0,\"node_type\":\"op\",\"chunkedResult\":\"20日新高_&_涨幅大于3.5%_&_近20日有过涨停_&_非st的股票_&_市值大于35亿_&_dde大单净量_&_涨跌幅_&_行业概念\",\"children\":[],\"opName\":\"and\",\"ci\":false,\"opPropertiesMap\":{},\"opProperty\":\"\",\"sonSize\":11,\"opPropertyMap\":{},\"source\":\"text2sql\"},{\"ci\":true,\"opPropertiesMap\":{},\"opProperty\":\"[起始交易日期 20250901,截止交易日期 {{date}}]\",\"source\":\"text2sql\",\"score\":0,\"ciChunk\":\"20日新高\",\"createBy\":\"preCache\",\"node_type\":\"op\",\"children\":[],\"opName\":\"创新高\",\"uiText\":\"20日的最高价创新高时间20日\",\"sonSize\":1,\"opPropertyMap\":{}},{\"dateText\":\"\",\"ci\":false,\"indexName\":\"最高价:后复权\",\"indexProperties\":[\"n日 20日\",\"nodate 1\",\"交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"n日\":\"20日\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"createBy\":\"preCache\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"valueType\":\"_浮点型数值(元)\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"涨跌幅:前复权\",\"indexProperties\":[\"(0.035\",\"nodate 1\",\"交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"(\":\"0.035\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"涨幅大于3.5%\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"uiText\":\"涨跌幅大于3.5%\",\"valueType\":\"_浮点型数值(%)\",\"sonSize\":0},{\"dateText\":\"近20日\",\"ci\":true,\"indexName\":\"涨停次数\",\"indexProperties\":[\"起始交易日期 20250901\",\"截止交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"起始交易日期\":\"20250901\",\"截止交易日期\":\"{{date}}\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"近20日有过涨停\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"dateType\":\"+区间\",\"domain\":\"abs_股票领域\",\"uiText\":\"近20日的涨停次数\",\"valueType\":\"_整型数值(次|个)\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"股票简称\",\"indexProperties\":[\"不包含st\"],\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"不包含\":\"st\"},\"reportType\":\"null\",\"score\":0,\"ciChunk\":\"非st的股票\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"domain\":\"abs_股票领域\",\"uiText\":\"股票简称不包含st\",\"valueType\":\"_股票简称\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"总市值\",\"indexProperties\":[\"(3500000000\",\"nodate 1\",\"交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"(\":\"3500000000\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"市值大于35亿\",\"createBy\":\"ner_con\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"uiText\":\"总市值大于35亿\",\"valueType\":\"_浮点型数值(元|港元|美元|英镑)\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"dde大单净量\",\"indexProperties\":[\"nodate 1\",\"交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"dde大单净量\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"uiText\":\"dde大单净量\",\"valueType\":\"_浮点型数值(%)\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"涨跌幅:前复权\",\"indexProperties\":[\"nodate 1\",\"交易日期 {{date}}\"],\"dateUnit\":\"日\",\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{\"交易日期\":\"{{date}}\",\"nodate\":\"1\"},\"reportType\":\"TRADE_DAILY\",\"score\":0,\"ciChunk\":\"涨跌幅\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"dateType\":\"交易日期\",\"domain\":\"abs_股票领域\",\"uiText\":\"涨跌幅\",\"valueType\":\"_浮点型数值(%)\",\"sonSize\":0},{\"ci\":true,\"opPropertiesMap\":{},\"opProperty\":\"\",\"source\":\"text2sql\",\"score\":0,\"ciChunk\":\"行业概念\",\"createBy\":\"preCache\",\"node_type\":\"op\",\"children\":[],\"opName\":\"and\",\"uiText\":\"所属同花顺行业并且所属概念\",\"sonSize\":2,\"opPropertyMap\":{}},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"所属同花顺行业\",\"indexProperties\":[],\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{},\"reportType\":\"null\",\"score\":0,\"ciChunk\":\"行业概念\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"domain\":\"abs_股票领域\",\"uiText\":\"所属同花顺行业\",\"valueType\":\"_所属同花顺行业\",\"sonSize\":0},{\"dateText\":\"\",\"ci\":true,\"indexName\":\"所属概念\",\"indexProperties\":[],\"source\":\"text2sql\",\"type\":\"index\",\"indexPropertiesMap\":{},\"reportType\":\"null\",\"score\":0,\"ciChunk\":\"行业概念\",\"createBy\":\"preCache\",\"node_type\":\"index\",\"domain\":\"abs_股票领域\",\"uiText\":\"所属概念\",\"valueType\":\"_所属概念\",\"sonSize\":0}]";
+        condition = condition.replace("{{date}}", tradeDay);
+        param.put("query", "20日新高，涨幅大于3.5%，近20日有过涨停，非st的股票，市值大于35亿，dde大单净量，涨跌幅，行业概念");
+        param.put("question", "20日新高，涨幅大于3.5%，近20日有过涨停，非st的股票，市值大于35亿，dde大单净量，涨跌幅，行业概念");
+        param.put("urp_sort_index", "最新涨跌幅");
+        param.put("page", "1");
+        param.put("perpage", "100");
+        param.put("condition", condition);
+        param.put("logid", "0f22ab71785c210b94f61de3b8267d9c");
+        param.put("ret", "json_all");
+        param.put("sessionid", "0f22ab71785c210b94f61de3b8267d9c");
+        param.put("iwc_token", "0ac9f00417490487071945389");
+        param.put("uuids[0]", "24087");
+        param.put("comp_id", "6836372");
+        param.put("user_id", "Ths_iwencai_Xuangu_ta7wv6968l1v5l2l8orrl4ohcg77279g");
+        param.put("comp_id", "6836372");
+        param.put("business_cat", "soniu");
+        param.put("uuid", "24087");
+
+
+        Map<String, Object> result = WencaiUtils.getData("", param);
+        // Convert Map to JsonNode
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.convertValue(result, JsonNode.class);
+//        JsonNode txtNode = jsonNode.at("/answer/components").get(0).at("/data/datas");
+//        List<Map<String, Object>> txtMap = mapper.convertValue(txtNode, List.class);
+        JsonNode txtNode = jsonNode.at("/data/answer").get(0).at("/txt").get(0).at("/content/components").get(0).at("/data/datas");
+        List<Map<String, Object>> txtMap = mapper.convertValue(txtNode, List.class);
+        List<IncreaseRankData> list = new ArrayList<>();
+        for (int i = 0; i < txtMap.size(); i++) {
+            Map<String, Object> txt = txtMap.get(i);
+            IncreaseRankData bean = new IncreaseRankData();
+            bean.setCode(txt.get("code") + "");
+            bean.setName(txt.get("股票简称") + "");
+            bean.setPrice(txt.get("最新价") + "");
+            bean.setRate(CommonUtils.formatStringPrice(txt.get("涨跌幅:前复权"+date) + ""));
+            bean.setMoneyInNum(txt.get("dde大单净量" + date) + "");
+            bean.setCicuration(txt.get("流通a股" + date) + "");
+            bean.setNetInFlow(txt.get("最新dde大单净额") + "");
+            bean.setConcepts(txt.get("所属概念") + "");
+            bean.setIndustry(txt.get("所属同花顺行业") + "");
+            bean.setVolality(txt.get("a股市值(不含限售股)" + date) + "");
+            bean.setTradeMoney(txt.get("成交额" + date) + "");
+            bean.setMorningRate(CommonUtils.formatStringPrice(txt.get("分时涨跌幅:前复权" + morningDate) + ""));
+            list.add(bean);
+        }
+        return list;
+    }
+
+
     public void downloadWeakToStrongData() {
         try {
             FileWriter fw = dataPathConfig.getDataFileWriter("弱转强.txt");
