@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            font-size: 15px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .tab {
+            padding: 8px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            border-bottom: 2px solid #e74c3c;
+            color: #e74c3c;
+        }
+        .sector-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 20px;
+        }
+        .sector-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .sector-change {
+            background-color: #2ecc71;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .sector-change.negative {
+            background-color: #45B7D1;
+        }
+        .sector-info {
+            background-color: #fff9f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .sector-driver {
+            background-color: #ffdddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .stock-table th {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-weight: normal;
+            color: #666;
+        }
+        .stock-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .stock-name {
+            font-weight: bold;
+        }
+        .stock-code {
+            color: #999;
+            font-size: 12px;
+        }
+        .stock-change.positive {
+            color: #3caee0;
+        }
+        .stock-change.negative {
+            color: #2ecc71;
+        }
+        .stock-highlight {
+            display: inline-block;
+            padding: 2px 5px;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .stock-description {
+            padding: 15px;
+            margin-top: 10px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/caiLianSheLimitUp.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="main">
+        <div class="tabs">
+            <div class="tab active">芯片产业链(6)</div>
+            <div class="tab" id="test">煤炭(3)</div>
+            <div class="tab">航运港口(3)</div>
+            <div class="tab">创新药(2)</div>
+            <div class="tab">充电桩(2)</div>
+            <div class="tab">业绩超</div>
+        </div>
+
+        <div class="sector-title">
+            <div class="sector-name">芯片产业链</div>
+            <div class="sector-change negative">-1.16%</div>
+        </div>
+
+        <div class="sector-info">
+            <div class="sector-driver">驱动因素</div>
+            <div>CFM闪存市场发布2025年Q4存储市场展望报告。报告指出，预计四季度，服务器eSSD涨幅将达到10%以上，DDR5 RDIMM价格涨幅约10%~15%。</div>
+        </div>
+
+        <table class="stock-table">
+            <thead>
+            <tr>
+                <th>简称</th>
+                <th>现价</th>
+                <th>涨幅</th>
+                <th>涨停时间</th>
+                <th>流通市值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div class="stock-name">合肥城建</div>
+                    <div class="stock-code">SZ 002208</div>
+                </td>
+                <td>11.81</td>
+                <td class="stock-change positive">+9.96%</td>
+                <td>10:38:15</td>
+                <td>94.84亿</td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div class="stock-highlight">9天5板</div>
+                    <div class="stock-description">
+                        长鑫存储概念|公司于2020年7月13日晚公告，公司与合肥长鑫集成电路有限责任公司签订项目合作框架协议，公司拟携合肥工投工业科技发展有限公司，为长鑫集成提供厂区、办公区、生活区等专业化项目代建等服务。合肥长鑫集成电路制造基地项目总投资超2200亿元，由长鑫12时存储器晶圆制造基地、空港集成电路配套产业园、空港国际小镇组成。公司去年已通过间接参股合肥华侨城实业方式参与空港国际小镇项目建设。
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="stock-name">三孚股份</div>
+                    <div class="stock-code">SH 603938</div>
+                </td>
+                <td>17.59</td>
+                <td class="stock-change positive">+10.01%</td>
+                <td>09:25:01</td>
+                <td>67.30亿</td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div class="stock-highlight">2天2板</div>
+                    <div class="stock-description">
+                        存储芯片上游材料|公司"年产500吨电子级二氯二氢硅及年产1000吨电子级三氯氢硅"已于2020年11月投产，主要应用于先进晶圆加工，存储芯片制造，硅外延片制造，是半导体行业的重要辅助材料。
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="stock-name">纳尔股份</div>
+                    <div class="stock-code">SZ 002825</div>
+                </td>
+                <td>11.89</td>
+                <td class="stock-change positive">+9.99%</td>
+                <td>09:25:00</td>
+                <td>30.50亿</td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div class="stock-highlight"></div>
+                    <div class="stock-description">
+                        并购重组+半导体|纳尔股份公告称，公司与上海菲光管理咨询合伙企业（有限合伙）、张华签订了《股权收购意向协议》，公司以受让出售方所持上海菲莱测试技术有限公司股权的方式投资菲莱测试。投资完成后，公司将持有菲莱测试不低于51%的股权，取得菲莱测试的控制权。交易金额预计为3.5亿至4亿元左右。菲莱测试专注于半导体芯片测试可靠性解决方案，提供从晶圆、芯片到器件的全形态方案。
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

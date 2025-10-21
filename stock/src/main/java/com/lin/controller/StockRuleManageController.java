@@ -5,6 +5,7 @@ import com.lin.annotation.EncryptResponse;
 import com.lin.annotation.DecryptRequest;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lin.bean.StockRule;
+import com.lin.service.ShengKaoService;
 import com.lin.service.StockBoardService;
 import com.lin.service.StockRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**

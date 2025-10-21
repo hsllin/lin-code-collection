@@ -42,7 +42,6 @@
             min-width: 600px; /* 确保3列布局空间 */
         }
 
-        /* 股票项优化 */
         .stock-item {
             display: flex;
             justify-content: space-between;
@@ -305,11 +304,11 @@
             </div>
             <div class="toolbar-buttons">
                 <button class="btn btn-refresh" id="refreshBtn">
-                    <i class="fas fa-sync-alt"></i> 刷新数据
+                    <i class="fa fa-refresh"></i> 刷新数据
                 </button>
-                <!--            <button class="btn btn-export" id="exportBtn">-->
-                <!--                <i class="fas fa-download"></i> 导出报告-->
-                <!--            </button>-->
+                <button class="btn btn-export" id="cleanChachedBtn" onclick="cleanCacheBtn()">
+                    <i class="fa fa-repeat"></i> 清除缓存
+                </button>
             </div>
         </div>
     </div>
@@ -320,7 +319,7 @@
         </div>
         <!-- 上涨行业 -->
         <div class="card">
-<!--            <div class="header up">📈 快速上涨</div>-->
+            <!--            <div class="header up">📈 快速上涨</div>-->
             <div class="industry-item" id="industry-item-up">
                 <!--                <div class="stock-item">-->
                 <!--                    <span>🐲 圣诺生物</span>-->
@@ -342,33 +341,33 @@
         </div>
 
         <!-- 下跌行业 -->
-<!--        <div class="card">-->
-<!--            <div class="header down">📉 跌幅行业</div>-->
-<!--            <div class="industry-item" id="industry-item-down">-->
-<!--                <div class="industry-name">电机</div>-->
-<!--                <div class="industry-change down">涨幅：-3.17%</div>-->
-<!--                &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
-<!--                &lt;!&ndash;                    <span>🐲 八方股份</span>&ndash;&gt;-->
-<!--                &lt;!&ndash;                    <span class="positive">+0.27%</span>&ndash;&gt;-->
-<!--                &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
-<!--                &lt;!&ndash;                    <span>⬇️ 兆威机电</span>&ndash;&gt;-->
-<!--                &lt;!&ndash;                    <span class="negative">-7.55%</span>&ndash;&gt;-->
-<!--                &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--            </div>-->
-<!--            &lt;!&ndash;            <div class="industry-item">&ndash;&gt;-->
-<!--            &lt;!&ndash;                <div class="industry-name">通信设备</div>&ndash;&gt;-->
-<!--            &lt;!&ndash;                <div class="industry-change down">涨幅：-3.13%</div>&ndash;&gt;-->
-<!--            &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
-<!--            &lt;!&ndash;                    <span>🐲 长飞光纤</span>&ndash;&gt;-->
-<!--            &lt;!&ndash;                    <span class="positive">+9.00%</span>&ndash;&gt;-->
-<!--            &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--            &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
-<!--            &lt;!&ndash;                    <span>⬇️ 银河电子</span>&ndash;&gt;-->
-<!--            &lt;!&ndash;                    <span class="negative">-9.93%</span>&ndash;&gt;-->
-<!--            &lt;!&ndash;                </div>&ndash;&gt;-->
-<!--            &lt;!&ndash;            </div>&ndash;&gt;-->
-<!--        </div>-->
+        <!--        <div class="card">-->
+        <!--            <div class="header down">📉 跌幅行业</div>-->
+        <!--            <div class="industry-item" id="industry-item-down">-->
+        <!--                <div class="industry-name">电机</div>-->
+        <!--                <div class="industry-change down">涨幅：-3.17%</div>-->
+        <!--                &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    <span>🐲 八方股份</span>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    <span class="positive">+0.27%</span>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    <span>⬇️ 兆威机电</span>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    <span class="negative">-7.55%</span>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+        <!--            </div>-->
+        <!--            &lt;!&ndash;            <div class="industry-item">&ndash;&gt;-->
+        <!--            &lt;!&ndash;                <div class="industry-name">通信设备</div>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                <div class="industry-change down">涨幅：-3.13%</div>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+        <!--            &lt;!&ndash;                    <span>🐲 长飞光纤</span>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                    <span class="positive">+9.00%</span>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                </div>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                <div class="stock-item">&ndash;&gt;-->
+        <!--            &lt;!&ndash;                    <span>⬇️ 银河电子</span>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                    <span class="negative">-9.93%</span>&ndash;&gt;-->
+        <!--            &lt;!&ndash;                </div>&ndash;&gt;-->
+        <!--            &lt;!&ndash;            </div>&ndash;&gt;-->
+        <!--        </div>-->
     </div>
 </div>
 </body>

@@ -102,5 +102,15 @@ public class PluginKingController {
         return ResponseEntity.ok(data);
     }
 
+    @Cacheable(key = "hotTheme:default", type = Cacheable.CacheType.STOCK_DATA)
+    @RequestMapping("/getHotTheme")
+    @EncryptResponse(encryptAll = true)
+    public ResponseEntity<String> getHotTheme(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String days = request.getParameter("days");
+        String sort = request.getParameter("sort");
+        String data = pluginKingService.getHotTheme();
+        return ResponseEntity.ok(data);
+    }
 
 }

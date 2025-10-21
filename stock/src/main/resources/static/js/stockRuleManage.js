@@ -183,7 +183,7 @@ function addRule(content) {
 
     const stockRule = {
         content: content,
-        sortOrder: rules.length + 1
+        // sortOrder: rules.length + 1
     };
 
     window.encryptionUtil.fetchDecrypted(`/addOrEditStockRuleData`, {
@@ -229,7 +229,7 @@ function updateRule(index, content) {
     // 从保存的原始数据中获取ID
     let stockRule = {
         content: content,
-        sortOrder: parseInt(ruleNumber)
+        // sortOrder: parseInt(ruleNumber)
     };
     
     // 如果有原始数据且索引有效，则添加ID
@@ -306,87 +306,9 @@ function handleSearch() {
 //     ruleContent.focus();
 // });
 
-/* 3. 渲染右侧个股 */
-function renderBoardData(plate) {
-}
 
 
-function getRangeIncreaseBoardData() {
-    $.ajax({
 
-        type: "get",
-
-        url: "getRangeIncreaseBoardData",
-
-        data: {
-            days: days,
-            sort: sort
-        },
-
-        success: function (reuslt) {
-            reuslt = unicodeToChinese(reuslt);
-            boardData = JSON.parse(reuslt);
-            console.log(boardData)
-            renderBoard();
-        }
-
-    });
-}
-
-// Function to render the table
-function renderStock() {
-    let htmlArray = '';
-    stockData.List.forEach(item => {
-        htmlArray += `
-                <tr>
-                <td>${item[0]}</td>
-                <td>${item[1]}</td>
-                <td class="up">${item[3]}</td>
-                <td>${formatToYi(item[6])}</td>
-                <td>${item[7].toFixed(2)}%</td>
-                <td>${item[13]}</td>
-                <td class="myTag">${item[10]}</td>
-            </tr>
-            `;
-
-    });
-    document.getElementById("stockBody").innerHTML = htmlArray;
-}
-
-
-function formatToYi(num) {
-    // 转换为数字类型并验证有效性
-    const number = parseFloat(num);
-    if (isNaN(number)) return '0';
-
-    const absNum = Math.abs(number);
-
-    // 超过1亿：转换为亿单位
-    if (absNum >= 100000000) {
-        const result = (number / 100000000).toFixed(2).replace(/\.?0+$/, '');
-        return result + '亿';
-    }
-    // 超过1万但不足1亿：转换为万单位
-    else if (absNum >= 10000) {
-        const result = (number / 10000).toFixed(2).replace(/\.?0+$/, '');
-        return result + '万';
-    }
-    // 不足1万：直接返回整数
-    return Math.round(number).toString();
-}
-
-function changeSort() {
-    if (sort == '1') {
-        sort = '0'
-    } else {
-        sort = '1'
-    }
-    if (tagType == 'stock') {
-        getRangeIncreaseStockData()
-    } else {
-        getRangeIncreaseBoardData();
-    }
-}
 
 
 

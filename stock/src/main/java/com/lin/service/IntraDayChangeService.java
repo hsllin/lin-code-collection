@@ -190,13 +190,13 @@ public class IntraDayChangeService {
             param.put("pageindex", i);
             String tempResult = "";
 
-            cachedKey = cachedKey + "_" + i;
-            Optional<String> cachedPageData = iStringRedisRepository.getString(INCREASE_CHANGE, cachedKey);
+            String tempCachedKey = cachedKey + "_" + i;
+            Optional<String> cachedPageData = iStringRedisRepository.getString(INCREASE_CHANGE, tempCachedKey);
 //            tempResult = HttpUtil.get(url, param);
             if (!cachedPageData.isPresent()) {
                 tempResult = HttpUtil.get(url, param);
-                iStringRedisRepository.setStringValue(INCREASE_CHANGE, cachedKey, tempResult);
-                iStringRedisRepository.expire(INCREASE_CHANGE, cachedKey, 1, TimeUnit.HOURS);
+                iStringRedisRepository.setStringValue(INCREASE_CHANGE, tempCachedKey, tempResult);
+                iStringRedisRepository.expire(INCREASE_CHANGE, tempCachedKey, 1, TimeUnit.HOURS);
             } else {
                 tempResult = cachedPageData.get();
             }
@@ -294,15 +294,15 @@ public class IntraDayChangeService {
         try {
             // 获取当前交易日
             String tradeDay = CommonUtils.getTradeDay(0);
-            
+
             // 清理所有相关的缓存键
             // 格式: IntradayChange_{type}_{tradeDay}_{pageIndex}
             String[] types = {INCREASE, DECREASE, BUY, SELL, SIXTY_DAY, OPEN_LIMIT_DOWN};
             boolean allCleared = true;
-            
+
             for (String type : types) {
                 String baseKey = "IntradayChange_" + type + "_" + tradeDay;
-                
+
                 // 清理所有页面的缓存（从第1页到第200页）
                 for (int i = 1; i <= 200; i++) {
                     String cacheKey = baseKey + "_" + i;
@@ -314,7 +314,7 @@ public class IntraDayChangeService {
                     }
                 }
             }
-            
+
             System.out.println("缓存清理完成，交易日: " + tradeDay);
             return allCleared;
         } catch (Exception e) {
@@ -322,9 +322,10 @@ public class IntraDayChangeService {
             return false;
         }
     }
-    
+
     /**
      * 清理指定类型的缓存
+     *
      * @param type 类型（如INCREASE, DECREASE等）
      * @return 是否清理成功
      */
@@ -333,7 +334,7 @@ public class IntraDayChangeService {
             String tradeDay = CommonUtils.getTradeDay(0);
             String baseKey = "IntradayChange_" + type + "_" + tradeDay;
             boolean allCleared = true;
-            
+
             // 清理该类型的所有页面缓存
             for (int i = 1; i <= 200; i++) {
                 String cacheKey = baseKey + "_" + i;
@@ -344,7 +345,7 @@ public class IntraDayChangeService {
                     allCleared = false;
                 }
             }
-            
+
             System.out.println("类型 " + type + " 的缓存清理完成，交易日: " + tradeDay);
             return allCleared;
         } catch (Exception e) {
@@ -352,10 +353,11 @@ public class IntraDayChangeService {
             return false;
         }
     }
-    
+
     /**
      * 检查缓存是否存在
-     * @param type 类型
+     *
+     * @param type      类型
      * @param pageIndex 页面索引
      * @return 是否存在
      */
@@ -369,32 +371,33 @@ public class IntraDayChangeService {
             return false;
         }
     }
-    
+
     /**
      * 测试缓存清理功能
+     *
      * @return 测试结果
      */
     public String testCacheCleanup() {
         StringBuilder result = new StringBuilder();
         String tradeDay = CommonUtils.getTradeDay(0);
-        
+
         result.append("=== 缓存清理测试 ===\n");
         result.append("当前交易日: ").append(tradeDay).append("\n");
-        
+
         // 测试清理前检查缓存
         String testType = INCREASE;
         String testKey = "IntradayChange_" + testType + "_" + tradeDay + "_1";
         boolean beforeClean = iStringRedisRepository.getString(INCREASE_CHANGE, testKey).isPresent();
         result.append("清理前缓存存在: ").append(beforeClean).append("\n");
-        
+
         // 执行清理
         boolean cleanResult = cleanCached();
         result.append("清理操作结果: ").append(cleanResult).append("\n");
-        
+
         // 测试清理后检查缓存
         boolean afterClean = iStringRedisRepository.getString(INCREASE_CHANGE, testKey).isPresent();
         result.append("清理后缓存存在: ").append(afterClean).append("\n");
-        
+
         result.append("=== 测试完成 ===\n");
         return result.toString();
     }
@@ -429,14 +432,27 @@ public class IntraDayChangeService {
         param.put("_", System.currentTimeMillis());
         param.put("ut", "7eea3edcaed734bea9cbfc24409ed989");
 
+        String tradeDay = CommonUtils.getTradeDay(0);
+        String cachedKey = "IntradayChange_" + type + "_" + tradeDay;
+
         String result = HttpUtil.get(url, param);
         BuyChangeBean bean = JSONUtil.toBean(JSONUtil.toJsonStr(result), BuyChangeBean.class);
         List<BuyChangeBean.DataDTO.AllstockDTO> allstockBeanList = bean.getData().getAllstock();
         HashMap<String, Integer> countMap = new HashMap<>();
-
+        String tempResult = "";
         for (int i = 1; i < 200; i++) {
             param.put("pageindex", i);
-            String tempResult = HttpUtil.get(url, param);
+//            String tempResult = HttpUtil.get(url, param);
+
+            String tempCachedKey = cachedKey + "_" + i;
+            Optional<String> cachedPageData = iStringRedisRepository.getString(INCREASE_CHANGE, tempCachedKey);
+            if (!cachedPageData.isPresent()) {
+                tempResult = HttpUtil.get(url, param);
+                iStringRedisRepository.setStringValue(INCREASE_CHANGE, tempCachedKey, tempResult);
+                iStringRedisRepository.expire(INCREASE_CHANGE, tempCachedKey, 1, TimeUnit.HOURS);
+            } else {
+                tempResult = cachedPageData.get();
+            }
             BuyChangeBean tempBean = JSONUtil.toBean(JSONUtil.toJsonStr(tempResult), BuyChangeBean.class);
             if (null == tempBean.getData()) {
                 break;

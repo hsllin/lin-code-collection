@@ -75,6 +75,7 @@ function buildBuyChangeHtml(data) {
         <span class="${code}">${icon} ${stock.n}(${stock.c})</span>
         <span class="positive">${stock.buyNum}万手</span>
         <span class="positive">${stock.percent}%</span>
+<!--        <span>${stock.industry}</span>-->
     </div>
   `
     });
@@ -98,6 +99,7 @@ function buildSellChangeHtml(data) {
         <span>${stock.time} </span>
         <span>${icon}${stock.n}(${stock.c})</span>
         <span class="negative">${stock.percent}%</span>
+<!--        <span>${stock.industry}</span>-->
     </div>
   `
     });
@@ -135,4 +137,26 @@ function getSelectedValues(wrapperSelector = '.filter-options') {
 
 function updateData() {
     checkedData = getSelectedValues();
+}
+
+function cleanCacheBtn(){
+    console.log("2222222222222222222222222222222222")
+    $.ajax({
+
+        type: "get",
+
+        url: "cleanIncreaseChangeCached",
+
+        data: {
+        },
+        success: function (data) {
+            console.log(222222222)
+            setTimeout(() => {
+                console.log(11111)
+                refreshData();
+            }, 2000);
+
+        }
+
+    });
 }

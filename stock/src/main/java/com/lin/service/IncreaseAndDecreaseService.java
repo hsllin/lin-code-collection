@@ -54,7 +54,8 @@ public class IncreaseAndDecreaseService {
 //        getDragonToGreenData();
 //        getIncreaseYesterdayData();
 //        getIncreaseConcept("asc");
-        getNewHighData();
+//        getNewHighData();
+        getLimitUp2Data();
     }
 
     public static List<IncreaseRankData> getIncreaseData() throws ScriptException, IOException, InterruptedException {
@@ -678,7 +679,7 @@ public class IncreaseAndDecreaseService {
     }
 
     /**
-     * 获取上日涨停数据
+     * 获取今日涨停，涨停封单量从大到小排列数据
      *
      * @return
      * @throws ScriptException
@@ -743,7 +744,7 @@ public class IncreaseAndDecreaseService {
     }
 
     /**
-     * 获取上日涨停数据
+     * 获取集合竞价未匹配量数据
      *
      * @return
      * @throws ScriptException
@@ -810,7 +811,7 @@ public class IncreaseAndDecreaseService {
     }
 
     /**
-     * 获取上日涨停数据
+     * 获取集合竞价未匹配量＞10000手数据
      *
      * @return
      * @throws ScriptException
@@ -876,13 +877,13 @@ public class IncreaseAndDecreaseService {
     }
 
     /**
-     * 获取同花顺一字涨停
+     * 获取同花顺概念热度
      *
      * @return
      * @throws ScriptException
      * @throws IOException
      */
-    public Map<String, List<IncreaseRankData>> getHotConcept() throws ScriptException, IOException {
+    public  List<IncreaseRankData> getHotConcept() throws ScriptException, IOException {
         Map<String, List<IncreaseRankData>> resultMap = new HashMap<>();
         String date = "[" + CommonUtils.getTradeDay(0) + "]";
         String url = "https://www.iwencai.com/customized/chart/get-robot-data";
@@ -909,7 +910,6 @@ public class IncreaseAndDecreaseService {
         List<Map<String, Object>> conceptMap = mapper.convertValue(conceptNode, List.class);
 
         List<IncreaseRankData> industryList = new ArrayList<>();
-        List<IncreaseRankData> conceptList = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             Map<String, Object> txt = industryMap.get(i);
             IncreaseRankData bean = new IncreaseRankData();
@@ -926,13 +926,17 @@ public class IncreaseAndDecreaseService {
             bean.setName(txt.get("指数@领涨股简称") + "");
             bean.setRate(CommonUtils.formatStringPrice(txt.get("指数@涨跌幅:前复权") + ""));
             bean.setConcepts(txt.get("指数简称") + "");
-            conceptList.add(bean);
+            industryList.add(bean);
         }
-        resultMap.put("industry", industryList);
-        resultMap.put("concepts", conceptList);
-        return resultMap;
+        return industryList;
     }
 
+    /**
+     * 成交额超过10亿排行
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
     public static List<IncreaseRankData> getTradeData() throws ScriptException, IOException {
         String date = "[" + CommonUtils.getTradeDay(0) + "]";
         String url = "https://www.iwencai.com/gateway/urp/v7/landing/getDataList";
@@ -1073,7 +1077,7 @@ public class IncreaseAndDecreaseService {
 //        param.put("comp_id", "6836372");
 //        param.put("business_cat", "soniu");
 //        param.put("uuid", "24087");
-        param.put("question", "近10日涨停次数大于等于2 且 昨日涨停 且 今日为阴线 且 非ST股 且 流通市值小于200亿大于35亿涨跌幅，行业概念");
+        param.put("question", "近10日涨停次数大于等于3 且 昨日涨停 且 今日为阴线 且 非ST股 且 流通市值小于200亿大于35亿涨跌幅，行业概念");
 
 
         Map<String, Object> result = WencaiUtils.getRootData(url, param);
@@ -1666,6 +1670,116 @@ public class IncreaseAndDecreaseService {
             bean.setTradeMoney(txt.get("成交额" + date) + "");
             bean.setMorningRate(CommonUtils.formatStringPrice(txt.get("分时涨跌幅:前复权" + morningDate) + ""));
             list.add(bean);
+        }
+        return list;
+    }
+
+    /**
+     * 昨日两板以上
+     *
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    public static List<IncreaseRankData> getLimitUp2Data() throws ScriptException, IOException {
+        String date = "[" + CommonUtils.getTradeDay(0) + "]";
+        String url = "https://www.iwencai.com/customized/chart/get-robot-data";
+        Map<String, Object> param = new HashMap<>();
+        param.put("question", "昨天二板以上;非st；dde大单净量，涨跌幅，行业概念");
+        param.put("page", "1");
+        param.put("perpage", "100");
+        String tradeDay = CommonUtils.getTradeDay(0);
+
+
+        Map<String, Object> result = WencaiUtils.getRootData(url, param);
+        // Convert Map to JsonNode
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.convertValue(result, JsonNode.class);
+        JsonNode txtNode = jsonNode.at("/data/answer").get(0).at("/txt").get(0).at("/content/components").get(0).at("/data/datas");
+        List<Map<String, Object>> txtMap = mapper.convertValue(txtNode, List.class);
+
+        List<IncreaseRankData> list = new ArrayList<>();
+        for (int i = 0; i < txtMap.size(); i++) {
+            Map<String, Object> txt = txtMap.get(i);
+
+            IncreaseRankData bean = new IncreaseRankData();
+            bean.setCode(txt.get("code") + "");
+            bean.setName(txt.get("股票简称") + "");
+            bean.setPrice(txt.get("最新价") + "");
+            bean.setIncreaseReason(txt.get("涨停原因类别" + date) + "");
+            bean.setIncreaseType(txt.get("涨停类型" + date) + "");
+            for (Map.Entry<String, Object> entry : txt.entrySet()) {
+                if (entry.getKey().startsWith("涨跌幅")) {
+                    bean.setRate(CommonUtils.formatStringPrice(entry.getValue()+""));
+                }
+            }
+//            bean.setRate(CommonUtils.formatStringPrice(txt.get("最新涨跌幅") + ""));
+            bean.setMoneyInNum(txt.get("dde大单净流入量" + date) + "");
+            bean.setCicuration(txt.get("流通a股" + date) + "");
+            bean.setNetInFlow(txt.get("dde大单净量" + date) + "");
+            bean.setConcepts(txt.get("所属概念") + "");
+            bean.setIndustry(txt.get("所属同花顺行业") + "");
+            list.add(bean);
+        }
+        Iterator<IncreaseRankData> allstockBeanIterator = list.iterator();
+        while (allstockBeanIterator.hasNext()) {
+            IncreaseRankData allstockBean = allstockBeanIterator.next();
+            if (allstockBean.getCode().startsWith("8") || allstockBean.getCode().startsWith("3") || allstockBean.getCode().startsWith("68") || allstockBean.getName().contains("ST")) {
+                allstockBeanIterator.remove();
+            }
+
+        }
+        return list;
+    }
+
+    /**
+     * 昨日炸板
+     *
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    public static List<IncreaseRankData> getYesterdayBrokenData() throws ScriptException, IOException {
+        String date = "[" + CommonUtils.getTradeDay(0) + "]";
+        String url = "https://www.iwencai.com/customized/chart/get-robot-data";
+        Map<String, Object> param = new HashMap<>();
+        param.put("question", "昨天炸板;非st；dde大单净量，涨跌幅，行业概念");
+        param.put("page", "1");
+        param.put("perpage", "100");
+        String tradeDay = CommonUtils.getTradeDay(0);
+
+
+        Map<String, Object> result = WencaiUtils.getRootData(url, param);
+        // Convert Map to JsonNode
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.convertValue(result, JsonNode.class);
+        JsonNode txtNode = jsonNode.at("/data/answer").get(0).at("/txt").get(0).at("/content/components").get(0).at("/data/datas");
+        List<Map<String, Object>> txtMap = mapper.convertValue(txtNode, List.class);
+
+        List<IncreaseRankData> list = new ArrayList<>();
+        for (int i = 0; i < txtMap.size(); i++) {
+            Map<String, Object> txt = txtMap.get(i);
+            IncreaseRankData bean = new IncreaseRankData();
+            bean.setCode(txt.get("code") + "");
+            bean.setName(txt.get("股票简称") + "");
+            bean.setPrice(txt.get("最新价") + "");
+            bean.setIncreaseReason(txt.get("涨停原因类别" + date) + "");
+            bean.setIncreaseType(txt.get("涨停类型" + date) + "");
+            bean.setRate(CommonUtils.formatStringPrice(txt.get("最新涨跌幅") + ""));
+            bean.setMoneyInNum(txt.get("dde大单净流入量" + date) + "");
+            bean.setCicuration(txt.get("流通a股" + date) + "");
+            bean.setNetInFlow(txt.get("dde大单净量" + date) + "");
+            bean.setConcepts(txt.get("所属概念") + "");
+            bean.setIndustry(txt.get("所属同花顺行业") + "");
+            list.add(bean);
+        }
+        Iterator<IncreaseRankData> allstockBeanIterator = list.iterator();
+        while (allstockBeanIterator.hasNext()) {
+            IncreaseRankData allstockBean = allstockBeanIterator.next();
+            if (allstockBean.getCode().startsWith("8") || allstockBean.getCode().startsWith("3") || allstockBean.getCode().startsWith("68") || allstockBean.getName().contains("ST")) {
+                allstockBeanIterator.remove();
+            }
+
         }
         return list;
     }

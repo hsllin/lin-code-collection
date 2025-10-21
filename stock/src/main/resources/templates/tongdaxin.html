@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            /*padding: 20px;*/
+            min-height: 100vh;
+        }
+
+        /*.container {*/
+        /*    max-width: 1400px;*/
+        /*    margin: 0 auto;*/
+        /*    background-color: white;*/
+        /*    border-radius: 8px;*/
+        /*    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
+        /*    overflow: hidden;*/
+        /*}*/
+
+        /* 主题标签栏样式 */
+        .theme-tabs {
+            display: flex;
+            background-color: #3a5167;
+            color: white;
+            padding: 0 15px;
+        }
+
+        .theme-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .theme-tab.active {
+            background-color: #446391;
+            border-bottom-color: white;
+        }
+
+        .theme-tab:hover {
+            background-color: #446391;
+        }
+
+        /* 主题内容区样式 */
+        .theme-content {
+            display: none;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .theme-content.active {
+            display: block;
+        }
+
+        .theme-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .theme-tag {
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-tag:hover {
+            background-color: #d0d0d0;
+        }
+
+        .theme-tag.active {
+            background-color: #446391;
+            color: white;
+        }
+
+        /* 主题信息区域样式 */
+        .theme-info {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .theme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .theme-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d81e06;
+        }
+
+        .theme-code {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .theme-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .stat-value.positive {
+            color: #d81e06;
+        }
+
+        .theme-tags-container {
+            margin-top: 15px;
+        }
+
+        .sub-themes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .sub-theme {
+            background-color: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        /* 表格样式 */
+        .stock-table-container {
+            overflow-x: auto;
+        }
+
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stock-table th {
+            background-color: #f5f5f5;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        .stock-table th:hover {
+            background-color: #eeeeee;
+        }
+
+        .stock-table th.sort-asc::after {
+            content: "↑";
+            margin-left: 5px;
+            font-size: 12px;
+        }
+
+        .stock-table th.sort-desc::after {
+            content: "↓";
+            margin-left: 5px;
+            font-size: 12px;
+        }
+
+        .stock-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stock-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .relevance-stars {
+            color: #ffc107;
+            font-size: 14px;
+        }
+
+        .stock-code {
+            color: #666;
+            font-family: monospace;
+        }
+
+        .stock-name {
+            font-weight: 500;
+        }
+
+        .positive {
+            color: #d81e06;
+        }
+
+        .negative {
+            color: #1e90ff;
+        }
+
+        /* 控制栏样式 */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-option {
+            padding: 8px 15px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .view-option.active {
+            background-color: #d81e06;
+            color: white;
+            border-color: #d81e06;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/tongdaxin.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="main">
+        <!-- 主题标签栏 -->
+        <div class="theme-tabs">
+            <div class="theme-tab active" data-tab="hot">HOT 最热门</div>
+            <div class="theme-tab" data-tab="new">NEW 最新主题</div>
+            <div class="theme-tab" data-tab="top">TOP 置顶主题</div>
+            <div class="theme-tab" data-tab="my">MY 我的收藏</div>
+        </div>
+
+        <!-- 热门主题内容 -->
+        <div class="theme-content active" id="hot-content">
+            <div class="theme-tags" id="hot-theme">
+                <div class="theme-tag active" data-theme="chip">芯片</div>
+                <div class="theme-tag" data-theme="storage">存储芯片</div>
+                <div class="theme-tag" data-theme="battery">固态电池</div>
+                <div class="theme-tag" data-theme="robot">机器人概念</div>
+                <div class="theme-tag" data-theme="humanoid">人形机器人</div>
+                <div class="theme-tag" data-theme="military">军贸概念</div>
+                <div class="theme-tag" data-theme="photovoltaic">光伏设备</div>
+                <div class="theme-tag" data-theme="auto">汽车零部件</div>
+                <div class="theme-tag" data-theme="medicine">创新药</div>
+                <div class="theme-tag" data-theme="tungsten">钨金属</div>
+                <div class="theme-tag" data-theme="energy">能源金属</div>
+                <div class="theme-tag" data-theme="oil">油服工程</div>
+                <div class="theme-tag" data-theme="furniture">家居用品</div>
+                <div class="theme-tag" data-theme="optics">光学光电</div>
+                <div class="theme-tag" data-theme="cinema">影视院线</div>
+            </div>
+        </div>
+
+        <!-- 最新主题内容 -->
+        <div class="theme-content" id="new-content">
+            <div class="theme-tags">
+                <div class="theme-tag" data-theme="methanol">绿色甲醇</div>
+                <div class="theme-tag" data-theme="yangtze">长江存储概念</div>
+                <div class="theme-tag" data-theme="moore">摩尔线程概念</div>
+                <div class="theme-tag" data-theme="analog">模拟芯片</div>
+                <div class="theme-tag" data-theme="fp8">FP8概念</div>
+                <div class="theme-tag" data-theme="kechuang">科创成长层</div>
+                <div class="theme-tag" data-theme="lowcode">AI低代码</div>
+                <div class="theme-tag" data-theme="mosquito">驱蚊概念</div>
+                <div class="theme-tag" data-theme="tunnel">盾构机</div>
+                <div class="theme-tag" data-theme="hydro">雅江水电概念</div>
+                <div class="theme-tag" data-theme="rda">RDA概念</div>
+                <div class="theme-tag" data-theme="changxin">长鑫存储概念</div>
+                <div class="theme-tag" data-theme="delivery">外卖概念</div>
+                <div class="theme-tag" data-theme="film">骨架膜</div>
+                <div class="theme-tag" data-theme="powerbank">充电宝概念</div>
+            </div>
+        </div>
+
+        <!-- 置顶主题内容 -->
+        <div class="theme-content" id="top-content">
+            <div class="theme-tags">
+                <div class="theme-tag" data-theme="storage">存储芯片</div>
+                <div class="theme-tag" data-theme="storage-power">储能</div>
+                <div class="theme-tag" data-theme="gold">黄金概念</div>
+            </div>
+        </div>
+
+        <!-- 我的收藏内容 -->
+        <div class="theme-content" id="my-content">
+            <div class="theme-tags">
+                <div class="theme-tag active" data-theme="chip">芯片(778)</div>
+            </div>
+        </div>
+
+        <!-- 主题信息区域 -->
+        <div class="theme-info">
+            <div class="theme-header">
+                <div>
+                    <span class="theme-title">芯片</span>
+                    <span class="theme-code">880952</span>
+                </div>
+                <button class="refresh-btn">刷新行情</button>
+            </div>
+
+            <div class="theme-stats">
+                <div class="stat-item">
+                    <span class="stat-label">均涨幅</span>
+                    <span class="stat-value positive">1.54%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">加权涨幅</span>
+                    <span class="stat-value positive">1.10%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">龙头股</span>
+                    <span class="stat-value">云汉芯城</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">上涨比例</span>
+                    <span class="stat-value positive">59.84%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">5日涨</span>
+                    <span class="stat-value">--</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">近1月</span>
+                    <span class="stat-value positive">4.42%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">近6月</span>
+                    <span class="stat-value positive">34.96%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">今年来</span>
+                    <span class="stat-value positive">44.67%</span>
+                </div>
+            </div>
+
+            <div class="theme-tags-container">
+                <div class="sub-themes">
+                    <div class="sub-theme">军用特种集成电路</div>
+                    <div class="sub-theme">封装材料</div>
+                    <div class="sub-theme">半导体硅片</div>
+                    <div class="sub-theme">电子特种气体</div>
+                    <div class="sub-theme">光掩膜版</div>
+                    <div class="sub-theme">半导体级单晶硅</div>
+                    <div class="sub-theme">CMP抛光材料</div>
+                    <div class="sub-theme">半导体前驱体</div>
+                    <div class="sub-theme">半导体封装基板</div>
+                    <div class="sub-theme">硅片加工设备</div>
+                    <div class="sub-theme">半导体测试设备</div>
+                    <div class="sub-theme">半导体制造设备</div>
+                    <div class="sub-theme">PVD设备</div>
+                    <div class="sub-theme">CVD设备</div>
+                    <div class="sub-theme">刻蚀机</div>
+                    <div class="sub-theme">涂胶显影机</div>
+                    <div class="sub-theme">半导体清洗设备</div>
+                    <div class="sub-theme">离子注入机</div>
+                    <div class="sub-theme">晶圆热处理设备</div>
+                    <div class="sub-theme">CMP设备</div>
+                    <div class="sub-theme">MBE设备</div>
+                    <div class="sub-theme">MOCVD设备</div>
+                    <div class="sub-theme">高纯工艺系统</div>
+                    <div class="sub-theme">存储器</div>
+                    <div class="sub-theme">DRAM</div>
+                    <div class="sub-theme">NAND Flash</div>
+                    <div class="sub-theme">NOR Flash</div>
+                    <div class="sub-theme">EEPROM</div>
+                    <div class="sub-theme">SRAM</div>
+                    <div class="sub-theme">内存接口芯片</div>
+                    <div class="sub-theme">MCU</div>
+                    <div class="sub-theme">电源管理芯片</div>
+                    <div class="sub-theme">射频芯片</div>
+                    <div class="sub-theme">MEMS</div>
+                    <div class="sub-theme">智能应用处理器</div>
+                    <div class="sub-theme">安防芯片</div>
+                    <div class="sub-theme">电视及机顶盒芯片</div>
+                    <div class="sub-theme">WIFI及蓝牙芯片</div>
+                    <div class="sub-theme">TWS耳机芯片</div>
+                    <div class="sub-theme">物联网芯片</div>
+                    <div class="sub-theme">半导体IP授权</div>
+                    <div class="sub-theme">信号锁芯片</div>
+                    <div class="sub-theme">国产CPU</div>
+                    <div class="sub-theme">国产GPU</div>
+                    <div class="sub-theme">LED驱动芯片</div>
+                    <div class="sub-theme">FPGA</div>
+                    <div class="sub-theme">CMOS图像传感器</div>
+                    <div class="sub-theme">指纹芯片</div>
+                    <div class="sub-theme">固态硬盘主控芯片</div>
+                    <div class="sub-theme">卫星导航芯片</div>
+                    <div class="sub-theme">电力载波芯片</div>
+                    <div class="sub-theme">智能安全芯片</div>
+                    <div class="sub-theme">LCD驱动芯片</div>
+                    <div class="sub-theme">音频功放芯片</div>
+                    <div class="sub-theme">其他芯片</div>
+                    <div class="sub-theme">激光芯片</div>
+                    <div class="sub-theme">二极管</div>
+                    <div class="sub-theme">晶闸管</div>
+                    <div class="sub-theme">MOSFET</div>
+                    <div class="sub-theme">IGBT</div>
+                    <div class="sub-theme">硅晶圆制造</div>
+                    <div class="sub-theme">芯片封装测试</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 控制栏 -->
+        <div class="controls">
+            <div class="view-options">
+                <div class="view-option active">相关个股</div>
+                <div class="view-option">主题走势</div>
+                <div class="view-option">主题估值</div>
+                <div class="view-option">主题资讯</div>
+            </div>
+            <div>
+                <button class="refresh-btn">涨停斩</button>
+            </div>
+        </div>
+
+        <!-- 个股表格 -->
+        <div class="stock-table-container">
+            <table class="stock-table">
+                <thead>
+                <tr>
+                    <th data-sort="relevance">关联度</th>
+                    <th data-sort="code">代码</th>
+                    <th data-sort="name">名称</th>
+                    <th data-sort="change">涨幅</th>
+                    <th data-sort="price">现价</th>
+                    <th data-sort="days">连板天数</th>
+                    <th data-sort="volume">成交额(亿)</th>
+                    <th data-sort="marketValue">市值(亿)</th>
+                </tr>
+                </thead>
+                <tbody id="stock-table-body">
+                <!-- 表格数据将通过JavaScript动态生成 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

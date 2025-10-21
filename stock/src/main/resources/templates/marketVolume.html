@@ -8,22 +8,30 @@
     <script src="/js/echarts.min.js"></script>
     <!-- 样式整合 -->
     <style>
-        :root {
-            --primary-color: #ffffff;
-            --rise-color: #1981f5;
-            --fall-color: #3c3f3c;
-            --neutral-color: #9e9e9e;
-            --text-dark: #2c3e50;
-            --text-light: #f8f9fa;
-            --card-bg: #ffffff;
-            --chart-bg: #f8f9fa;
-        }
 
-        body {
-            font-family: 'Segoe UI', '微软雅黑', system-ui, sans-serif;
-            background: #f5f6f7;
-            color: var(--text-dark);
+        .container {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+            /*padding: 15px;*/
         }
+        /*:root {*/
+        /*    --primary-color: #ffffff;*/
+        /*    --rise-color: #1981f5;*/
+        /*    --fall-color: #3c3f3c;*/
+        /*    --neutral-color: #9e9e9e;*/
+        /*    --text-dark: #2c3e50;*/
+        /*    --text-light: #f8f9fa;*/
+        /*    --card-bg: #ffffff;*/
+        /*    --chart-bg: #f8f9fa;*/
+        /*}*/
+
+        /*body {*/
+        /*    font-family: 'Segoe UI', '微软雅黑', system-ui, sans-serif;*/
+        /*    background: #f5f6f7;*/
+        /*    color: var(--text-dark);*/
+        /*}*/
 
         /* 主内容区优化 */
         .right_col {
@@ -44,11 +52,24 @@
         }
 
         .temperature {
+            /*padding: 0.8rem 1.5rem;*/
+            /*background: linear-gradient(135deg, #ffffff, #ffffff);*/
+            /*border-radius: 8px;*/
+            /*color: #FF9671;*/
+            /*font-weight: 600;*/
+            /*display: inline-block;*/
+            /*width: 20px;*/
+            /*height: 20px;*/
             padding: 0.8rem 1.5rem;
-            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            line-height: 20px;
             border-radius: 8px;
-            color: var(--text-light);
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            /*margin-left: 5px;*/
+            background-color: #4ECDC4;
             font-weight: 600;
+            display: inline-block;
         }
 
         /* 统计卡片 */
@@ -133,6 +154,109 @@
             border-radius: 6px;
         }
 
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .myPanel {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .panel-header {
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        .panel-1 .panel-header {
+            background-color: #4a6fa5;
+            color: #ffffff;
+            /*font-weight: 400;*/
+            /*font-size: 16px;*/
+        }
+
+        .panel-2 .panel-header {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        .panel-3 .panel-header {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        /*.temperature {*/
+        /*    font-size: 1rem;*/
+        /*    background-color: rgba(255, 255, 255, 0.2);*/
+        /*    padding: 3px 10px;*/
+        /*    border-radius: 20px;*/
+        /*}*/
+
+        .data-list {
+            padding: 15px 20px;
+        }
+
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-item:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            color: #666;
+        }
+
+        .data-value {
+            font-weight: bold;
+        }
+
+        .up {
+            color: #3caee0;
+        }
+
+        .down {
+            color: rgba(74, 111, 165, 0.73);
+        }
+
+        .highlight {
+            background-color: #f8f9fa;
+            margin: 0 -20px;
+            padding: 0 20px;
+        }
+
+        .timestamp {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+        }
+
         /* 响应式优化 */
         @media (max-width: 768px) {
             .dashboard-header {
@@ -182,7 +306,7 @@
     </div>
     <div class="container">
         <div class="dashboard-header">
-            <h6>📈 股票交易情绪看板 <span style="color:#666">2025-02-12</span></h6>
+            <h6> <span style="color:#666;text-align: center"></span></h6>
             <div class="temperature" id="temperature">
                 市场温度：61.75°C
             </div>
@@ -210,6 +334,145 @@
                 <div class="stat-value" style="color:var(--fall-color)">16</div>
             </div>
         </div>
+        <div class="dashboard" id="sentiment">
+            <div class="myPanel panel-1">
+                <div class="panel-header">
+                    <span>★短线情绪</span>
+                    <!--                    <span class="temperature">8℃</span>-->
+                </div>
+                <div class="data-list">
+                    <div class="data-item">
+                        <span class="data-label">涨停</span>
+                        <span class="data-value">-/<span class="data-label">昨-</span></span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">连板高度</span>
+                        <span class="data-value">-/<span class="data-label">昨-</span></span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">炸板</span>
+                        <span class="data-value">-</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">炸板率</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">跌停</span>
+                        <span class="data-value">-</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">昨日二板以上</span>
+                        <span class="data-value up">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">昨日涨停</span>
+                        <span class="data-value up">-%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 市场情绪面板 -->
+            <div class="myPanel panel-2">
+                <div class="panel-header">
+                    <span>★市场情绪</span>
+                    <!--                    <span class="temperature">10℃</span>-->
+                </div>
+                <div class="data-list">
+                    <div class="data-item">
+                        <span class="data-label">上涨</span>
+                        <span class="data-value">-家</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">下跌</span>
+                        <span class="data-value">-家</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">沪上涨</span>
+                        <span class="data-value">-家</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">沪下跌</span>
+                        <span class="data-value">-家</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">深上涨</span>
+                        <span class="data-value">-家</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">深下跌</span>
+                        <span class="data-value">-家</span>
+                    </div>
+                    <div class="data-item highlight">
+                        <span class="data-label">两市成交金额</span>
+                        <span class="data-value">-</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">涨超5%</span>
+                        <span class="data-value up">-</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">跌超5%</span>
+                        <span class="data-value up">-</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">微盘股</span>
+                        <span class="data-value up">-%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 指数面板 -->
+            <div class="myPanel panel-3">
+                <div class="panel-header">
+                    <span>★上证指数</span>
+                    <!--                    <span class="data-value down">-1.95%</span>-->
+                </div>
+                <div class="data-list">
+                    <div class="data-item">
+                        <span class="data-label">上证点数</span>
+                        <span class="data-value">-点</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">上证指数</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">深证成指</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">中证500</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">创业板指</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">道琼斯</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">日经225</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">沪深指数</span>
+                        <span class="data-value">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">恒生指数</span>
+                        <span class="data-value up">-%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">恒生科技</span>
+                        <span class="data-value up" >-%</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="chart-container">
             <h6>📊 涨跌分布可视化</h6>
             <div id="distributionChart" style="height: 420px;"></div>
@@ -222,12 +485,12 @@
         </div>
 
         <section class="day-section">
-<!--            <h5 class="date-header">一字涨停</h5>-->
+            <!--            <h5 class="date-header">一字涨停</h5>-->
             <div class="streak-level">
                 <div class="stock-list" id="yzzt">
                 </div>
             </div>
-<!--            <h5 class="date-header">一字跌停</h5>-->
+            <!--            <h5 class="date-header">一字跌停</h5>-->
             <div class="streak-level">
                 <div class="stock-list" id="yzdt">
                 </div>

@@ -317,4 +317,23 @@ public class PluginKingService {
             }
         }
     }
+
+    /**
+     * 获取涨停原因分析
+     *
+     * @return
+     */
+    public static String getHotTheme() {
+        String url = "http://hot.icfqs.com:7615/TQLEX?Entry=CWServ.pcwebcall_zttzk_zttzk";
+        // 直接构造 JSON 字符串（确保格式正确）
+        String requestBody = " {\"Params\":[\"0\",\"\",\"0\"]}";
+
+        // 发送请求
+        String result = HttpRequest.post(url)
+                .header("Content-Type", "application/json")
+                .body(requestBody)
+                .execute()
+                .body();
+        return result;
+    }
 }

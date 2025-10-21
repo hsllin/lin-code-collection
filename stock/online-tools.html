@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript混淆工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tool-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .tool-section h2 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        .tool-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .tool-link {
+            display: block;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        .tool-link:hover {
+            background: #e9ecef;
+            border-color: #007bff;
+            transform: translateY(-2px);
+        }
+        .tool-link h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .tool-link p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .steps {
+            counter-reset: step-counter;
+        }
+        .step {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 5px 5px 0;
+        }
+        .step::before {
+            content: counter(step-counter);
+            background: #007bff;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 JavaScript混淆和压缩工具</h1>
+        
+        <div class="warning">
+            <h4>⚠️ 重要提醒</h4>
+            <p>JavaScript混淆只是增加了逆向工程的难度，但不能完全防止代码被查看。真正的安全防护应该在后端实现。</p>
+        </div>
+
+        <div class="tool-section">
+            <h2>🌐 在线工具（推荐新手）</h2>
+            <p>无需安装，直接在浏览器中使用：</p>
+            
+            <div class="tool-links">
+                <a href="https://obfuscator.io/" target="_blank" class="tool-link">
+                    <h3>JavaScript Obfuscator</h3>
+                    <p>功能最强大的在线混淆工具，支持多种混淆选项</p>
+                </a>
+                
+                <a href="https://skalman.github.io/UglifyJS-online/" target="_blank" class="tool-link">
+                    <h3>UglifyJS Online</h3>
+                    <p>轻量级压缩工具，适合简单的代码压缩</p>
+                </a>
+                
+                <a href="https://www.danstools.com/javascript-obfuscate/" target="_blank" class="tool-link">
+                    <h3>Dan's Tools</h3>
+                    <p>简单易用的JavaScript混淆工具</p>
+                </a>
+                
+                <a href="https://www.toptal.com/developers/javascript-minifier" target="_blank" class="tool-link">
+                    <h3>Toptal Minifier</h3>
+                    <p>专业的代码压缩工具</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="tool-section">
+            <h2>💻 本地工具（推荐开发者）</h2>
+            <p>需要安装Node.js，但功能更强大：</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <strong>安装Node.js</strong><br>
+                    下载地址：<a href="https://nodejs.org/" target="_blank">https://nodejs.org/</a>
+                </div>
+                
+                <div class="step">
+                    <strong>安装混淆工具</strong><br>
+                    <div class="code-example">
+npm install -g javascript-obfuscator
+# 或者
+npm install -g uglify-js
+# 或者
+npm install -g terser
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>使用工具</strong><br>
+                    <div class="code-example">
+# JavaScript Obfuscator
+javascript-obfuscator input.js --output output.js
+
+# UglifyJS
+uglifyjs input.js -o output.min.js -c -m
+
+# Terser
+terser input.js -o output.min.js -c -m
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool-section">
+            <h2>🛠️ 项目集成工具</h2>
+            <p>我已经为您的项目创建了完整的构建工具：</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <strong>Windows用户</strong><br>
+                    双击运行 <code>build-frontend.bat</code> 文件
+                </div>
+                
+                <div class="step">
+                    <strong>Linux/Mac用户</strong><br>
+                    <div class="code-example">
+chmod +x build-frontend.sh
+./build-frontend.sh
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <strong>手动执行</strong><br>
+                    <div class="code-example">
+npm install
+node build-frontend.js
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool-section">
+            <h2>📊 工具对比</h2>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #f8f9fa;">
+                        <th style="padding: 10px; border: 1px solid #ddd;">工具</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">混淆强度</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">压缩效果</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">性能影响</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">推荐场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">JavaScript Obfuscator</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">高安全要求</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">UglifyJS</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">性能优先</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Terser</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐⭐⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">⭐⭐⭐⭐</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">现代项目</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tool-section">
+            <h2>💡 使用建议</h2>
+            <ul>
+                <li><strong>开发环境</strong>：使用原始代码，便于调试</li>
+                <li><strong>测试环境</strong>：轻度混淆，测试兼容性</li>
+                <li><strong>生产环境</strong>：高度混淆，保护代码</li>
+                <li><strong>性能敏感</strong>：使用UglifyJS或Terser</li>
+                <li><strong>安全敏感</strong>：使用JavaScript Obfuscator</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

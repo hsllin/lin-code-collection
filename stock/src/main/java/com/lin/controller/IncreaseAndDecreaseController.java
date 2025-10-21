@@ -229,8 +229,8 @@ public class IncreaseAndDecreaseController {
      */
     @RequestMapping("/getHotConceptAndIndustry")
     @EncryptResponse(encryptAll = true)
-    public ResponseEntity<Map<String, List<IncreaseRankData>>> getHotConceptAndIndustry(HttpServletRequest request, Model model) throws ScriptException, IOException {
-        Map<String, List<IncreaseRankData>> list = increaseAndDecreaseService.getHotConcept();
+    public ResponseEntity<List<IncreaseRankData>> getHotConceptAndIndustry(HttpServletRequest request, Model model) throws ScriptException, IOException {
+         List<IncreaseRankData> list = increaseAndDecreaseService.getHotConcept();
         return ResponseEntity.ok(list);
     }
 
@@ -461,6 +461,42 @@ public class IncreaseAndDecreaseController {
         String date = CommonUtils.getTradeDay(0);
         String sort = request.getParameter("sort");
         List<IncreaseRankData> list = increaseAndDecreaseService.getStockTwentyData();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺2板以上数据
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getLimitUp2Data")
+    @EncryptResponse(encryptAll = true)
+    public ResponseEntity<List<IncreaseRankData>> getLimitUp2Data(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getLimitUp2Data();
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 获取同花顺昨日炸板
+     *
+     * @param request
+     * @param model
+     * @return
+     * @throws ScriptException
+     * @throws IOException
+     */
+    @RequestMapping("/getYesterdayBrokenData")
+    @EncryptResponse(encryptAll = true)
+    public ResponseEntity<List<IncreaseRankData>> getYesterdayBrokenData(HttpServletRequest request, Model model) throws ScriptException, IOException {
+        String date = CommonUtils.getTradeDay(0);
+        String sort = request.getParameter("sort");
+        List<IncreaseRankData> list = increaseAndDecreaseService.getYesterdayBrokenData();
         return ResponseEntity.ok(list);
     }
 

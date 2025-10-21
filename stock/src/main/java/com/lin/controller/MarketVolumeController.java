@@ -30,7 +30,7 @@ public class MarketVolumeController {
         String orderFiled = request.getParameter("orderFiled");
         String orderBy = request.getParameter("orderBy");
         String date = CommonUtils.getTradeDay(0);
-        MarketBean bean = marketVolumeTemperatureService.getMarketList(date);
+        MarketBean bean = marketVolumeTemperatureService.getMarketList();
 
         return ResponseEntity.ok(bean);
     }

@@ -28,7 +28,7 @@ function buildLianBanChiListHtml(data) {
 
     data.forEach((group, groupIndex) => {
             htmlArray += `
-              <h3>${group.limitNum}连板 </h3>
+              <h3 style="text-align: center">${group.limitNum}板 </h3>
         <table class="stock-table">
             <thead>
             <tr>

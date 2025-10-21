@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
  * 
  * @author lin
  */
-@Component
-@ConfigurationProperties(prefix = "security")
+//@Component
+//@ConfigurationProperties(prefix = "security")
 public class SecurityProperties {
 
     /**

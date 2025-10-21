@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>电报</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            /*padding: 20px;*/
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        p {
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.8;
+            /*padding-left: 20px;*/
+        }
+        .container {
+            background-color: white;
+            /*padding: 20px;*/
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .news-item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 20px;
+        }
+        .news-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #3a5167;
+            margin-bottom: 5px;
+        }
+        .news-time {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        .news-content {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .market-data {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .stock-item {
+            /*display: flex;*/
+            align-items: center;
+            font-size: 14px;
+            padding: 4px 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .stock-item .up {
+            color: #e74c3c;
+        }
+        .stock-item .down {
+            color: #2ecc71;
+        }
+        .stats-section {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+            padding: 10px 0;
+        }
+        .stats-text {
+            flex: 1;
+        }
+        .stats-actions {
+            display: flex;
+            gap: 15px;
+        }
+        .stats-actions span {
+            cursor: pointer;
+            color: #666;
+        }
+        .expand-btn {
+            cursor: pointer;
+            color: #666;
+            font-size: 12px;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .hidden-content {
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+        .hidden-content.expanded {
+            max-height: none;
+        }
+        .image-container img {
+            max-width: 100%;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/telegraph.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="main">
+        <!-- 新闻一 -->
+        <div class="news-item">
+            <div class="news-title">14:23:33 【主力资金监控：三花智控净买入超15亿】</div>
+            <div class="news-time">2025.10.15 星期三</div>
+            <div class="news-content hidden-content">
+                <p>财联社10月15日电，财联社星矿数据显示，今日主力资金净流入医药、化学制药、汽车整车行业等板块，净流出有色金属、半导体、国防军工等板块，其中有色金属板块净流出超58亿元。个股方面，三花智控涨停，主力资金净买入15.09亿元位居首位，阳光电源、立讯精密、盛和资源主力资金净流入居前；北方稀土遭净卖出超13亿元位居首位，包钢股份、山子高科、闻泰科技主力资金净流出额居前。</p>
+                <div class="image-container">
+                    <img src="https://via.placeholder.com/400x200?text=资金流入数据图表" alt="资金流入数据图表" onclick="openImageModal(this.src)">
+                </div>
+            </div>
+            <div class="expand-btn" onclick="toggleExpand(this)">展开更多...</div>
+            <div class="market-data">
+                <div class="stock-item">
+                    <span>三花智控</span>
+                    <span>-2.85%</span>
+                </div>
+                <div class="stock-item">
+                    <span>包钢股份</span>
+                    <span>-1.44%</span>
+                </div>
+                <div class="stock-item">
+                    <span>山子高科</span>
+                    <span>-0.23%</span>
+                </div>
+                <div class="stock-item">
+                    <span>阳光电源</span>
+                    <span class="up">+7.66%</span>
+                </div>
+                <div class="stock-item">
+                    <span>盛和资源</span>
+                    <span class="down">-7.43%</span>
+                </div>
+                <div class="stock-item">
+                    <span>闻泰科技</span>
+                    <span class="down">-3.33%</span>
+                </div>
+                <div class="stock-item">
+                    <span>北方稀土</span>
+                    <span class="down">-2.48%</span>
+                </div>
+            </div>
+            <div class="stats-section">
+                <div class="stats-text">阅262.31W</div>
+                <div class="stats-actions">
+                    <span>评论(0)</span>
+                    <span>分享(69)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新闻二 -->
+        <div class="news-item">
+            <div class="news-title">14:16:47 【黄金概念探底回升 招金黄金涨停】</div>
+            <div class="news-time">2025.10.15 星期三</div>
+            <div class="news-content hidden-content">
+                <p>财联社10月15日电，黄金概念午后探底回升，招金黄金涨停，此前盛屯矿业触及涨停，紫金矿业、鹏欣资源、赤峰黄金、豫光金铅跟涨。消息面上，现货黄金日内涨超1%，突破4190美元/盎司，续创历史新高。</p>
+            </div>
+            <div class="expand-btn" onclick="toggleExpand(this)">展开更多...</div>
+            <div class="market-data">
+                <div class="stock-item">
+                    <span>鹏欣资源</span>
+                    <span class="up">+6.53%</span>
+                </div>
+                <div class="stock-item">
+                    <span>盛屯矿业</span>
+                    <span class="down">-4.53%</span>
+                </div>
+                <div class="stock-item">
+                    <span>豫光金铅</span>
+                    <span class="up">+2.89%</span>
+                </div>
+                <div class="stock-item">
+                    <span>赤峰黄金</span>
+                    <span class="down">-1.33%</span>
+                </div>
+                <div class="stock-item">
+                    <span>招金黄金</span>
+                    <span class="down">-1.03%</span>
+                </div>
+                <div class="stock-item">
+                    <span>紫金矿业</span>
+                    <span class="down">-1.65%</span>
+                </div>
+            </div>
+            <div class="stats-section">
+                <div class="stats-text">阅254.26W</div>
+                <div class="stats-actions">
+                    <span>评论(3)</span>
+                    <span>分享(53)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新闻三 -->
+        <div class="news-item">
+            <div class="news-title">14:12:40 【创业板指涨逾2% 上涨个股近3900只】</div>
+            <div class="news-time">2025.10.15 星期三</div>
+            <div class="news-content hidden-content">
+                <p>财联社10月15日电，指数走强，创业板指拉升涨逾2.00%，沪指涨0.90%，深成指涨1.40%。医药医疗、机器人、电网电源、纺织服装等方向涨幅居前，沪深京三市上涨个股近3900只。</p>
+            </div>
+            <div class="expand-btn" onclick="toggleExpand(this)">展开更多...</div>
+            <div class="market-data">
+                <div class="stock-item">
+                    <span>创业板指</span>
+                    <span class="up">+0.38%</span>
+                </div>
+                <div class="stock-item">
+                    <span>机器人</span>
+                    <span class="down">-3.00%</span>
+                </div>
+            </div>
+            <div class="stats-section">
+                <div class="stats-text">阅266.27W</div>
+                <div class="stats-actions">
+                    <span>评论(12)</span>
+                    <span>分享(114)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 图片查看模态框 -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeImageModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+</div>
+</body>
+</html>

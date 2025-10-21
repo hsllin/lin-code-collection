@@ -17,8 +17,8 @@ import java.io.IOException;
  * 
  * @author lin
  */
-@Component
-@Order(6)
+//@Component
+//@Order(6)
 public class SecurityHeadersFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityHeadersFilter.class);

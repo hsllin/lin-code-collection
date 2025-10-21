@@ -37,7 +37,7 @@ public class MarketVolumeTemperatureService {
         getStrongStockList("");
     }
 
-    public static MarketBean getMarketList(String date) {
+    public MarketBean getMarketList() {
 
         String url = "https://gateway.jrj.com/quot-dc/zdt/market";
         Map<String, Object> param = new HashMap<>();

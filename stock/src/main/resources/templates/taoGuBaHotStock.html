@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>淘股吧热榜</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /*.container {*/
+        /*    max-width: 800px;*/
+        /*    margin: 0 auto;*/
+        /*    background-color: #fff;*/
+        /*    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
+        /*}*/
+
+        /* 头部横幅 */
+        .header-banner {
+            /*background-color: #446391;*/
+            background-color: #446391;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .header-banner h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .header-banner p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 标签页导航 */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 16px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #446391;
+            border-bottom: 2px solid #446391;
+        }
+
+        /* 子标签 */
+        .sub-tabs {
+            display: flex;
+            background-color: #f9f9f9;
+            padding: 0 20px;
+        }
+
+        .sub-tab {
+            padding: 10px 0;
+            margin-right: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .sub-tab.active {
+            color: #446391;
+            border-bottom: 2px solid #446391;
+        }
+
+        /* 股票列表 */
+        .stock-list {
+            padding: 0 20px;
+        }
+
+        .stock-item {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .stock-rank {
+            width: 30px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #446391;
+        }
+
+        .stock-info {
+            flex: 1;
+        }
+
+        .stock-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stock-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+
+        .tag {
+            background-color: #f0f0f0;
+            color: #666;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 3px;
+        }
+
+        .tag.continuous {
+            background-color: #446391;
+            color: #446391;
+        }
+
+        .tag.normal {
+            background-color: rgb(145, 152, 161);
+            color: #45B7D1;
+        }
+
+        .stock-concepts {
+            font-size: 12px;
+            color: #3a5167;
+        }
+
+        .stock-change {
+            text-align: right;
+            font-weight: bold;
+            color: #446391;
+        }
+
+        .stock-change.positive {
+            color: #446391;
+        }
+
+        .stock-change.negative {
+            color: #00b050;
+        }
+
+        /* 提示信息 */
+        .hint {
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #999;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+            }
+
+            .stock-item {
+                flex-wrap: wrap;
+            }
+
+            .stock-info {
+                width: 70%;
+            }
+
+            .stock-change {
+                width: 30%;
+                text-align: right;
+            }
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/taogubaHotStock.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="main">
+        <!-- 头部横幅 -->
+<!--        <div class="header-banner">-->
+<!--            <h1>淘股吧人气榜</h1>-->
+<!--            <p>聚焦市场热点抓住投资机会</p>-->
+<!--        </div>-->
+
+        <!-- 主标签页 -->
+        <div class="tabs">
+            <div class="tab active" data-tab="stock">热搜榜</div>
+<!--            <div class="tab" data-tab="user">用户榜</div>-->
+<!--            <div class="tab" data-tab="topic">话题榜</div>-->
+<!--            <div class="tab" data-tab="hall">名人堂</div>-->
+        </div>
+
+        <!-- 子标签页（股票榜下） -->
+        <div class="sub-tabs">
+            <div class="sub-tab" data-subtab="2">24小时榜单</div>
+            <div class="sub-tab active" data-subtab="1">1小时榜单</div>
+        </div>
+
+        <!-- 股票列表 -->
+        <div class="stock-list" id="stock-list">
+            <!-- 股票1 -->
+            <div class="stock-item">
+                <div class="stock-rank">1</div>
+                <div class="stock-info">
+                    <div class="stock-name">合锻智能</div>
+                    <div class="stock-tags">
+                        <div class="tag continuous">持续上榜</div>
+                        <div class="tag">可控核聚变</div>
+                        <div class="tag">食品安全</div>
+                    </div>
+                    <div class="stock-concepts">ITER概念+可控核聚变+核电</div>
+                </div>
+                <div class="stock-change positive">+5.81%</div>
+            </div>
+
+            <!-- 股票2 -->
+            <div class="stock-item">
+                <div class="stock-rank">2</div>
+                <div class="stock-info">
+                    <div class="stock-name">北方稀土</div>
+                    <div class="stock-tags">
+                        <div class="tag continuous">持续上榜</div>
+                        <div class="tag">稀土永磁</div>
+                        <div class="tag">2025三季报预增</div>
+                    </div>
+                    <div class="stock-concepts">稀土永磁+出口管制概念+涨价概念</div>
+                </div>
+                <div class="stock-change">-</div>
+            </div>
+
+            <!-- 股票3 -->
+            <div class="stock-item">
+                <div class="stock-rank">3</div>
+                <div class="stock-info">
+                    <div class="stock-name">新莱应材</div>
+                    <div class="stock-tags">
+                        <div class="tag continuous">持续上榜</div>
+                        <div class="tag">光刻机</div>
+                        <div class="tag">中芯国际概念</div>
+                    </div>
+                    <div class="stock-concepts">-</div>
+                </div>
+                <div class="stock-change positive">+14.03%</div>
+            </div>
+
+            <!-- 股票4 -->
+            <div class="stock-item">
+                <div class="stock-rank">4</div>
+                <div class="stock-info">
+                    <div class="stock-name">凯美特气</div>
+                    <div class="stock-tags">
+                        <div class="tag continuous">持续上榜</div>
+                        <div class="tag">光刻机</div>
+                        <div class="tag">光刻胶</div>
+                    </div>
+                    <div class="stock-concepts">光刻机+半导体+关税战概念</div>
+                </div>
+                <div class="stock-change positive">+4.39%</div>
+            </div>
+
+            <!-- 股票5 -->
+            <div class="stock-item">
+                <div class="stock-rank">5</div>
+                <div class="stock-info">
+                    <div class="stock-name">安泰科技</div>
+                    <div class="stock-tags">
+                        <div class="tag continuous">持续上榜</div>
+                        <div class="tag">稀土永磁</div>
+                        <div class="tag">中芯国际概念</div>
+                    </div>
+                    <div class="stock-concepts">-</div>
+                </div>
+                <div class="stock-change positive">+10.03%</div>
+            </div>
+
+            <!-- 股票6 -->
+            <div class="stock-item">
+                <div class="stock-rank">6</div>
+                <div class="stock-info">
+                    <div class="stock-name">白银有色</div>
+                    <div class="stock-tags">
+                        <div class="tag continuous">持续上榜</div>
+                        <div class="tag">超导概念</div>
+                        <div class="tag">金属铅</div>
+                    </div>
+                    <div class="stock-concepts">可控核聚变+出口管制概念+碳纤维 出口管制概念+黄金白银+可控核聚变
+                    </div>
+                </div>
+                <div class="stock-change">-</div>
+            </div>
+        </div>
+
+        <!-- 提示信息 -->
+        <div class="hint">
+            ? 连续上榜：股票连续两天保持榜单前十 连板：展示股票连板情况
+        </div>
+    </div>
+</body>
+</html>

@@ -105,6 +105,22 @@ function formatToYi(num) {
     // 不足1万：直接返回整数
     return Math.round(number).toString();
 }
+function unicodeToChinese(str) {
+    return str.replace(/\\u([\da-fA-F]{4})/g,
+        (_, hex) => String.fromCharCode(parseInt(hex, 16))
+    );
+}
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp * 1000);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // 补零
+    const seconds = date.getSeconds().toString().padStart(2, '0'); // 补零
+    return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
+}
+
 $(function(){
     updateClock();
     setInterval(updateClock,1000);

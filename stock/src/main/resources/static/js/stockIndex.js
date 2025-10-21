@@ -147,7 +147,9 @@ function cleanCacheBtn(){
         data: {
         },
         success: function (data) {
-            refreshData();
+            setTimeout(() => {
+                refreshData();
+            }, 2000);
         }
 
     });

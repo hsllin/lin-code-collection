@@ -104,7 +104,7 @@ function getHotConceptAndIndustryData() {
 function renderIndustryAndConcept(data) {
     var conceptHtmlArray = '';
     var industryHtmlArray = '';
-    data.concepts.forEach((item, index) => {
+    data.slice(0, 6).forEach((item, index) => {
 
         conceptHtmlArray += `
         <li class="concept-item">
@@ -113,7 +113,7 @@ function renderIndustryAndConcept(data) {
                         </li>
   `
     });
-    data.industry.forEach((item, index) => {
+    data.slice(6, 12).forEach((item, index) => {
 
         industryHtmlArray += `
                      <li class="concept-item">

@@ -39,14 +39,14 @@ public class VolumeTrendServiceImpl extends ServiceImpl<VolumeTrendMapper, Volum
 
     @Override
     public boolean saveOrUpdateData() {
-        MarketBean marketBean = marketVolumeTemperatureService.getMarketList("");
+        MarketBean marketBean = marketVolumeTemperatureService.getMarketList();
         MarketBean.DataBean.MoneyBean moneyBean = marketBean.getData().getMoneyBean();
         MarketBean.DataBean.StockBean stockBean = marketBean.getData().getStock();
         VolumeTrend bean = new VolumeTrend();
         Integer aUp = Integer.valueOf(moneyBean.getAUp());
         Integer bUp = Integer.valueOf(moneyBean.getBDown());
         String today = CommonUtils.getTradeDay(0);
-        today="20250523";
+//        today="20250523";
         List<LianBanBean.DataBean> lianbanList = lianBanChiService.lianBan(today);
 
         bean.setVolume(moneyBean.getTotalOriginalMoney());

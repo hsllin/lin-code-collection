@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-decorate="~{fragments/layout}">
+<head>
+    <title>连板池</title>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        h1 {
+            color: #1a5276;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .search-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-section label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .time-btn {
+            padding: 8px 15px;
+            border: 1px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .search-btn, .reset-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .search-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .search-btn:hover {
+            background: #2980b9;
+        }
+
+        .reset-btn {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #eaeaea;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            text-align: left;
+            padding: 12px 15px;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .result-info {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .trend-up {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .trend-down {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .trend-stable {
+            color: #7f8c8d;
+        }
+
+        .chart-container {
+            margin-top: 30px;
+            height: 400px;
+            display: none;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .show-chart-btn {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 12px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+
+        @media (max-width: 768px) {
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                min-width: 100%;
+            }
+
+            .button-group {
+                display: flex;
+                gap: 10px;
+            }
+
+            .search-btn, .reset-btn {
+                flex: 1;
+            }
+
+            .time-filter {
+                justify-content: center;
+            }
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/shengKao.js"></script>
+</head>
+
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="clearfix"></div>
+    <div id="header" class="main_menu_side hidden-print main_menu" data-th-fragment="header">
+        <div class="toolbar">
+            <div class="disclaimer">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div class="disclaimer-text">
+                    以上数据来源于网络，仅供参考使用，<span class="highlight">不作为投资建议，投资需谨慎！</span>
+                </div>
+            </div>
+            <div class="toolbar-buttons">
+                <!-- 优化后的实时时钟 -->
+                <div class="clock-container">
+                    <i class="fa fa-calendar"></i>
+                    <div class="clock-content">
+                        <div class="clock-time"><span id="time">00:00:00</span></div>
+                        <div class="clock-date"><span id="date">2023年11月15日 星期三</span></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-refresh" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="main">
+        <header>
+            <h1>报名人数变化展示系统</h1>
+            <p>岗位报名情况统计（多时间段对比）</p>
+        </header>
+
+        <section class="search-section">
+            <label for="jobCode">岗位代码查询：</label>
+            <input type="text" id="jobCode" class="search-input" placeholder="请输入完整的岗位代码">
+            <div class="time-filter">
+                <span>时间段筛选：</span>
+                <button class="time-btn active" data-time="1">全部</button>
+                <button class="time-btn" data-time="2">我的</button>
+            </div>
+            <div class="button-group">
+                <button id="searchBtn" class="search-btn">查询</button>
+                <button id="resetBtn" class="reset-btn">同步数据</button>
+            </div>
+        </section>
+
+<!--        <div class="result-info" id="resultInfo">显示全部 18 条记录</div>-->
+
+        <div class="table-container">
+            <table id="jobTable">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>招考单位</th>
+                    <th>招考职位</th>
+                    <th>职位代码</th>
+                    <th>招录人数</th>
+                    <th>2025-10-21 18:00</th>
+                    <th>2025-10-22 12:00</th>
+                    <th>2025-10-22 18:00</th>
+                    <th>2025-10-23 12:00</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                <!-- 表格数据将通过JavaScript动态生成 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

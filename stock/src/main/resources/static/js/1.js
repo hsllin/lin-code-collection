@@ -1,10 +1,10 @@
 $(function () {
     document.getElementById('main').innerHTML = '';
-    getLianBanChiListData();
+    getData();
 
 })
 
-function getLianBanChiListData() {
+function getData() {
     $.ajax({
 
         type: "get",
@@ -14,13 +14,13 @@ function getLianBanChiListData() {
         data: {},
 
         success: function (data) {
-            buildLianBanChiListHtml(data);
+            buildHtml(data);
         }
 
     });
 }
 
-function buildLianBanChiListHtml(data) {
+function buildHtml(data) {
     console.log(data)
     var htmlArray = '';
     data.forEach((group, groupIndex) => {
@@ -35,7 +35,7 @@ function buildLianBanChiListHtml(data) {
 
 function refreshData() {
     document.getElementById('main').innerHTML = '';
-    getLianBanChiListData();
+    getData();
 }
 
 
